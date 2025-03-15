@@ -6,7 +6,15 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/webdown.svg)](https://pypi.org/project/webdown/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A Python CLI tool for converting web pages to Markdown.
+A Python CLI tool for converting web pages to clean, readable Markdown format. Webdown makes it easy to extract content from websites for documentation, notes, content migration, or offline reading.
+
+## Why Webdown?
+
+- **Clean Conversion**: Produces readable Markdown without formatting artifacts
+- **Selective Extraction**: Target specific page sections with CSS selectors
+- **Customization Options**: Control links, images, text wrapping, and more
+- **Progress Tracking**: Visual download progress for large pages
+- **Python Integration**: Use as a CLI tool or integrate into your Python projects
 
 ## Installation
 
@@ -82,7 +90,7 @@ webdown --help
 
 ```bash
 # Clone the repository
-git clone https://github.com/username/webdown.git
+git clone https://github.com/kelp/webdown.git
 cd webdown
 
 # Install dependencies with Poetry
@@ -159,6 +167,52 @@ poetry update
 poetry build
 ```
 
+## Python API Usage
+
+Webdown can also be used as a Python library in your own projects:
+
+```python
+from webdown.converter import convert_url_to_markdown
+
+# Basic conversion
+markdown = convert_url_to_markdown("https://example.com")
+
+# With all options
+markdown = convert_url_to_markdown(
+    url="https://example.com",
+    include_links=True,
+    include_images=True,
+    include_toc=True,
+    css_selector="main",  # Only extract main content
+    compact_output=True,  # Remove excessive blank lines
+    body_width=80,        # Wrap text at 80 characters
+    show_progress=True    # Show download progress bar
+)
+
+# Save to file
+with open("output.md", "w") as f:
+    f.write(markdown)
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Run tests to make sure everything works (`poetry run pytest`)
+4. Commit your changes (`git commit -m 'Add some amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+Please make sure your code passes all tests, type checks, and follows our coding style (enforced by pre-commit hooks).
+
+For more details, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Support
+
+If you encounter any problems or have feature requests, please [open an issue](https://github.com/kelp/webdown/issues) on GitHub.
+
 ## License
 
-MIT
+MIT License - see the [LICENSE](LICENSE) file for details.
