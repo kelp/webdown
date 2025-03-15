@@ -60,8 +60,8 @@
 - [x] Organize development dependencies in pyproject.toml
 - [x] Update Python requirements to 3.10+ (all versions not EOL as of 2025)
 - [x] Test building the package: `poetry build`
-- [ ] Test installing the built package
-- [ ] Verify the CLI script works when installed
+- [x] Test installing the built package
+- [x] Verify the CLI script works when installed
 
 ## GitHub
 - [x] Update GitHub Actions workflow:
@@ -89,5 +89,5 @@
 - [ ] Support for rendering math equations (MathJax/LaTeX)
 - [ ] Command-line option for output file format (Markdown, CommonMark, GitHub Flavored Markdown)
 - [ ] Interactive mode to select page sections to convert
-- [ ] Option to compact output by removing excessive blank lines
+- [x] Option to compact output by removing excessive blank lines
 - [ ] Post-processing option to clean and normalize generated Markdown
