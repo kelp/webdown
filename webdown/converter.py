@@ -80,6 +80,7 @@ def html_to_markdown(
     include_images: bool = True,
     include_toc: bool = False,
     css_selector: Optional[str] = None,
+    compact_output: bool = False,
 ) -> str:
     """Convert HTML to Markdown.
 
@@ -89,6 +90,7 @@ def html_to_markdown(
         include_images: Whether to include images
         include_toc: Whether to generate table of contents
         css_selector: CSS selector to extract specific content
+        compact_output: Whether to remove excessive blank lines
 
     Returns:
         Markdown content
@@ -107,6 +109,13 @@ def html_to_markdown(
     h.body_width = 0  # Don't wrap text
 
     markdown = h.handle(html)
+
+    # Post-process to remove excessive blank lines if requested
+    if compact_output:
+        import re
+
+        # Replace 3 or more consecutive newlines with just 2
+        markdown = re.sub(r"\n{3,}", "\n\n", markdown)
 
     # Add table of contents if requested
     if include_toc:
@@ -136,6 +145,7 @@ def convert_url_to_markdown(
     include_images: bool = True,
     include_toc: bool = False,
     css_selector: Optional[str] = None,
+    compact_output: bool = False,
 ) -> str:
     """Convert a web page to markdown.
 
@@ -145,6 +155,7 @@ def convert_url_to_markdown(
         include_images: Whether to include images
         include_toc: Whether to generate table of contents
         css_selector: CSS selector to extract specific content
+        compact_output: Whether to remove excessive blank lines
 
     Returns:
         Markdown content
@@ -160,4 +171,5 @@ def convert_url_to_markdown(
         include_images=include_images,
         include_toc=include_toc,
         css_selector=css_selector,
+        compact_output=compact_output,
     )

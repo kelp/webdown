@@ -171,6 +171,24 @@ class TestHtmlToMarkdown:
             assert "- [Title 1](#title-1)" in result
             assert "  - [Title 2](#title-2)" in result
 
+    def test_compact_output(self) -> None:
+        """Test compact output option removes excessive blank lines."""
+        html = "<div>Test</div><p>Paragraph</p>"
+
+        with patch("webdown.converter.html2text.HTML2Text") as mock_html2text_class:
+            mock_html2text = MagicMock()
+            mock_html2text_class.return_value = mock_html2text
+            # Simulate output with excessive blank lines
+            mock_html2text.handle.return_value = "Test\n\n\n\n\nParagraph\n\n\n\nEnd"
+
+            # Without compact option
+            result = html_to_markdown(html, compact_output=False)
+            assert "Test\n\n\n\n\nParagraph\n\n\n\nEnd" in result
+
+            # With compact option
+            result = html_to_markdown(html, compact_output=True)
+            assert "Test\n\nParagraph\n\nEnd" in result
+
 
 class TestConvertUrlToMarkdown:
     """Tests for convert_url_to_markdown function."""
@@ -202,6 +220,7 @@ class TestConvertUrlToMarkdown:
             include_images=False,
             include_toc=True,
             css_selector="main",
+            compact_output=False,
         )
 
         # Verify result is returned from html_to_markdown

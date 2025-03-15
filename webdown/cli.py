@@ -27,6 +27,9 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
     )
     parser.add_argument("-I", "--no-images", action="store_true", help="Exclude images")
     parser.add_argument("-c", "--css", help="CSS selector to extract specific content")
+    parser.add_argument(
+        "--compact", action="store_true", help="Remove excessive blank lines"
+    )
 
     return parser.parse_args(args)
 
@@ -49,6 +52,7 @@ def main(args: Optional[List[str]] = None) -> int:
             include_links=not parsed_args.no_links,
             include_images=not parsed_args.no_images,
             css_selector=parsed_args.css,
+            compact_output=parsed_args.compact,
         )
 
         if parsed_args.output:

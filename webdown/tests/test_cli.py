@@ -85,6 +85,16 @@ class TestParseArgs:
         args = parse_args(["https://example.com", "--css", "article"])
         assert args.css == "article"
 
+    def test_compact_option(self) -> None:
+        """Test parsing compact option."""
+        # Default
+        args = parse_args(["https://example.com"])
+        assert args.compact is False
+
+        # With compact flag
+        args = parse_args(["https://example.com", "--compact"])
+        assert args.compact is True
+
 
 class TestMain:
     """Tests for main function."""
@@ -112,6 +122,7 @@ class TestMain:
             include_links=True,
             include_images=True,
             css_selector=None,
+            compact_output=False,
         )
 
     @patch("webdown.cli.convert_url_to_markdown")

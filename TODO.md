@@ -89,3 +89,5 @@
 - [ ] Support for rendering math equations (MathJax/LaTeX)
 - [ ] Command-line option for output file format (Markdown, CommonMark, GitHub Flavored Markdown)
 - [ ] Interactive mode to select page sections to convert
+- [ ] Option to compact output by removing excessive blank lines
+- [ ] Post-processing option to clean and normalize generated Markdown
