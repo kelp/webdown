@@ -69,11 +69,8 @@ jobs:
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5
       with:
-        # Public repositories can upload coverage without a token
-        # We removed the token requirement for now. To add a token:
-        # 1. Register at https://codecov.io with your GitHub account
-        # 2. Add CODECOV_TOKEN repository secret in GitHub repo settings
-        # token: ${{ secrets.CODECOV_TOKEN }}
+        # Add your Codecov token as a GitHub secret named CODECOV_TOKEN
+        token: ${{ secrets.CODECOV_TOKEN }}
         fail_ci_if_error: false
         verbose: true
 
