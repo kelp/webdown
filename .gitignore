@@ -71,3 +71,7 @@ poetry.lock
 # Temporary files
 tmp/
 temp/
+
+# Exclude .claude directory except for commands
+!.claude/
+!.claude/commands/
