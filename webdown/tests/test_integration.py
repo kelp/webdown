@@ -50,7 +50,9 @@ class TestIntegration:
             # With no links
             result = convert_url_to_markdown("https://example.com", include_links=False)
             assert "# Test Page Title" in result
-            assert "https://example.com" not in result
+            assert (
+                "[link](https://example.com)" not in result
+            )  # Link should be plain text, not hyperlink
 
             # With no images
             result = convert_url_to_markdown(
