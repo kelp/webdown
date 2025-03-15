@@ -13,4 +13,4 @@ Basic usage:
 See the README.md file for more detailed usage instructions.
 """
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
