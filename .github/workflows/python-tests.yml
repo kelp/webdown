@@ -60,7 +60,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        poetry run pytest --cov=webdown
+        poetry run pytest --cov=webdown --cov-report=xml --cov-report=term
 
     - name: Run integration tests
       run: |
