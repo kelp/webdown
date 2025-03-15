@@ -22,7 +22,7 @@
 - [x] Run linting: `flake8 webdown`
 - [x] Run type checking: `mypy webdown`
 - [x] Fix formatting issues with Black and isort
-- [ ] Fix remaining type issues
+- [x] Fix type annotation issues in test files
 - [x] Add modern Python project configuration:
   - [x] Create `pyproject.toml` (PEP 517/518 standard)
   - [x] Configure tools (flake8, mypy, black, isort) in pyproject.toml
@@ -30,6 +30,7 @@
 - [x] Consider adding pre-commit hooks for code quality
   - [x] Create `.pre-commit-config.yaml` with common Python linters
   - [x] Install with `pre-commit install`
+- [x] Set up Claude commands for code quality checks
 
 ## Documentation
 - [ ] Verify all docstrings are complete and follow standards
@@ -39,13 +40,9 @@
 
 ## Local Development Best Practices
 - [x] Set up local git hooks for linting/testing
-- [x] Create a Makefile for common development tasks:
-  ```
-  make lint    # Run linters
-  make test    # Run tests
-  make install # Install in development mode
-  make clean   # Clean build artifacts
-  ```
+- [x] Create a Makefile for common development tasks
+- [x] Add format-check target to validate formatting without changing files
+- [x] Ensure all targets include conftest.py and other relevant files
 - [x] Document development workflow in README.md
 - [ ] Consider using tox for testing across multiple Python versions
 
@@ -85,3 +82,10 @@
 - [ ] Support for authentication for accessing private web content
 - [ ] Markdown output styling options
 - [ ] Batch processing of multiple URLs
+- [ ] Add support for extracting specific page sections via CSS selectors
+- [ ] Add caching mechanism for frequently accessed pages
+- [ ] Support for generating heading IDs for better navigation
+- [ ] Add option to preserve or transform HTML comments
+- [ ] Support for rendering math equations (MathJax/LaTeX)
+- [ ] Command-line option for output file format (Markdown, CommonMark, GitHub Flavored Markdown)
+- [ ] Interactive mode to select page sections to convert
