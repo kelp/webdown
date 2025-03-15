@@ -16,7 +16,9 @@
 - [x] Run tests with coverage: `pytest --cov=webdown`
 - [x] Run integration tests: `pytest --integration`
 - [x] Fix any failing tests
-- [ ] Ensure all code paths are properly tested (aim for 100% coverage)
+- [x] Ensure all code paths are properly tested (aim for 100% coverage)
+  - [x] Fix coverage for CLI module with proper pragma handling
+  - [x] Fix coverage for converter module
 
 ## Code Quality
 - [x] Run linting: `flake8 webdown`
@@ -44,6 +46,7 @@
 - [x] Add format-check target to validate formatting without changing files
 - [x] Ensure all targets include conftest.py and other relevant files
 - [x] Document development workflow in README.md
+- [x] Add local user installation target (`make install-dev`)
 - [ ] Consider using tox for testing across multiple Python versions
 
 ## Packaging and Distribution
@@ -62,6 +65,8 @@
 - [x] Test building the package: `poetry build`
 - [x] Test installing the built package
 - [x] Verify the CLI script works when installed
+- [x] Support local development installation with `make install-dev`
+- [ ] Publish to PyPI with Poetry
 
 ## GitHub
 - [x] Update GitHub Actions workflow:
@@ -75,6 +80,7 @@
   - [ ] PyPI version
   - [ ] Python versions supported
 - [ ] Set up branch protection rules
+- [ ] Create release workflow
 
 ## Features to Consider
 - [ ] Add a progress bar for downloads
@@ -82,7 +88,8 @@
 - [ ] Support for authentication for accessing private web content
 - [ ] Markdown output styling options
 - [ ] Batch processing of multiple URLs
-- [ ] Add support for extracting specific page sections via CSS selectors
+- [x] Add support for extracting specific page sections via CSS selectors
+  - [x] Changed `-c/--css` flag to `-s/--css` (avoid conflict with compact)
 - [ ] Add caching mechanism for frequently accessed pages
 - [ ] Support for generating heading IDs for better navigation
 - [ ] Add option to preserve or transform HTML comments
@@ -90,4 +97,6 @@
 - [ ] Command-line option for output file format (Markdown, CommonMark, GitHub Flavored Markdown)
 - [ ] Interactive mode to select page sections to convert
 - [x] Option to compact output by removing excessive blank lines
+- [x] Remove zero-width spaces and other invisible characters
 - [ ] Post-processing option to clean and normalize generated Markdown
+- [ ] Add command-line option to set html2text body_width (currently hard-coded to 0)
