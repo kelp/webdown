@@ -4,6 +4,7 @@ import argparse
 import sys
 from typing import List, Optional
 
+from webdown import __version__
 from webdown.converter import convert_url_to_markdown
 
 
@@ -17,7 +18,7 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         Parsed arguments
     """
     parser = argparse.ArgumentParser(description="Convert web pages to markdown.")
-    parser.add_argument("url", help="URL of the web page to convert")
+    parser.add_argument("url", help="URL of the web page to convert", nargs="?")
     parser.add_argument("-o", "--output", help="Output file (default: stdout)")
     parser.add_argument(
         "-t", "--toc", action="store_true", help="Generate table of contents"
@@ -29,6 +30,13 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
     parser.add_argument("-c", "--css", help="CSS selector to extract specific content")
     parser.add_argument(
         "--compact", action="store_true", help="Remove excessive blank lines"
+    )
+    parser.add_argument(
+        "-V",
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="Show version information and exit",
     )
 
     return parser.parse_args(args)
@@ -45,6 +53,12 @@ def main(args: Optional[List[str]] = None) -> int:
     """
     try:
         parsed_args = parse_args(args)
+
+        # If no URL provided, show help
+        if parsed_args.url is None:
+            # This will print help and exit
+            parse_args(["-h"])
+            return 0
 
         markdown = convert_url_to_markdown(
             parsed_args.url,

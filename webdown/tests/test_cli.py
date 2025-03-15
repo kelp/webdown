@@ -1,5 +1,6 @@
 """Tests for command-line interface."""
 
+import argparse
 import io
 import sys
 from unittest.mock import MagicMock, patch
@@ -13,10 +14,13 @@ from webdown.converter import InvalidURLError, NetworkError
 class TestParseArgs:
     """Tests for parse_args function."""
 
-    def test_required_url_argument(self) -> None:
-        """Test that URL argument is required."""
-        with pytest.raises(SystemExit):
-            parse_args([])
+    def test_url_argument_optional(self) -> None:
+        """Test that URL argument is optional with nargs='?'."""
+        # We need to use a mock parser here to avoid sys.exit with --version
+        parser = argparse.ArgumentParser()
+        parser.add_argument("url", nargs="?")
+        args = parser.parse_args([])
+        assert args.url is None
 
     def test_url_argument(self) -> None:
         """Test parsing URL argument."""
@@ -95,6 +99,21 @@ class TestParseArgs:
         args = parse_args(["https://example.com", "--compact"])
         assert args.compact is True
 
+    def test_version_flag(self) -> None:
+        """Test version flag is recognized."""
+        # Testing that the flag is recognized correctly
+        from webdown import __version__
+
+        # Create a parser with version action
+        parser = argparse.ArgumentParser()
+        parser.add_argument(
+            "--version", action="version", version=f"test {__version__}"
+        )
+
+        # Test it raises SystemExit
+        with pytest.raises(SystemExit):
+            parser.parse_args(["--version"])
+
 
 class TestMain:
     """Tests for main function."""
@@ -124,6 +143,24 @@ class TestMain:
             css_selector=None,
             compact_output=False,
         )
+
+    @patch("webdown.cli.parse_args")
+    def test_no_url_shows_help(self, mock_parse_args: MagicMock) -> None:
+        """Test that no URL shows help message."""
+        # Set up the mock to return an object with url=None on first call
+        # and raise SystemExit (as if -h was passed) on second call
+        args = MagicMock()
+        args.url = None
+        mock_parse_args.side_effect = [args, SystemExit()]
+
+        # Execute main and verify it calls parse_args with -h
+        with pytest.raises(SystemExit):
+            main([])
+
+        # Verify parse_args was called twice (once normally, once with -h)
+        assert mock_parse_args.call_count == 2
+        mock_parse_args.assert_any_call([])
+        mock_parse_args.assert_any_call(["-h"])
 
     @patch("webdown.cli.convert_url_to_markdown")
     @patch("builtins.open", new_callable=MagicMock)
