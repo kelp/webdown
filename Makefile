@@ -23,22 +23,27 @@ integration-test:
 
 lint:
 	@echo "Running linter..."
-	@$(POETRY_RUN) flake8 webdown
+	@$(POETRY_RUN) flake8 webdown conftest.py
 
 type-check:
 	@echo "Running type checker..."
-	@$(POETRY_RUN) mypy webdown
+	@$(POETRY_RUN) mypy webdown conftest.py
 
 format:
 	@echo "Formatting code..."
-	@$(POETRY_RUN) black webdown
-	@$(POETRY_RUN) isort webdown
+	@$(POETRY_RUN) black webdown conftest.py
+	@$(POETRY_RUN) isort webdown conftest.py
 
 pre-commit:
 	@echo "Running pre-commit hooks on all files..."
 	@$(POETRY_RUN) pre-commit run --all-files
 
-all-checks: lint type-check test
+format-check:
+	@echo "Checking code formatting..."
+	@$(POETRY_RUN) black --check webdown conftest.py
+	@$(POETRY_RUN) isort --check webdown conftest.py
+
+all-checks: format-check lint type-check test
 	@echo "All checks passed!"
 
 build:
@@ -81,8 +86,9 @@ help:
 	@echo "  lint            Run flake8 linter"
 	@echo "  type-check      Run mypy type checking"
 	@echo "  format          Format code with black and isort"
+	@echo "  format-check    Check code formatting with black and isort without modifying files"
 	@echo "  pre-commit      Run pre-commit hooks on all files"
-	@echo "  all-checks      Run linting, type checking, and tests"
+	@echo "  all-checks      Run format checks, linting, type checking, and tests"
 	@echo "  build           Build package for distribution"
 	@echo "  lock            Update lock file (poetry.lock)"
 	@echo "  update          Update dependencies"
