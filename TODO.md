@@ -78,11 +78,6 @@
 - [x] Test installing the built package
 - [x] Verify the CLI script works when installed
 - [x] Support local development installation with `make install-dev`
-- [ ] Publish to PyPI with Poetry
-  - [ ] Create PyPI account and configure credentials
-  - [ ] Verify all package metadata is correct
-  - [ ] Run `poetry publish --build` command
-  - [ ] Update documentation with installation instructions from PyPI
 
 ## GitHub
 - [x] Update GitHub Actions workflow:
@@ -100,6 +95,13 @@
   - [ ] Set up automatic version detection
   - [ ] Configure automatic PyPI publishing on new release tags
   - [ ] Create GitHub release notes template
+
+## Future Publishing Tasks
+- [ ] Publish to PyPI with Poetry
+  - [ ] Create PyPI account and configure credentials
+  - [ ] Verify all package metadata is correct
+  - [ ] Run `poetry publish --build` command
+  - [ ] Update documentation with installation instructions from PyPI
 
 ## Features to Consider
 - [ ] Add a progress bar for downloads
