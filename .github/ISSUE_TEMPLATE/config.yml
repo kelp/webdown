@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Webdown Documentation
+    url: https://github.com/kelp/webdown/tree/main/docs/api
+    about: Check the documentation before opening an issue
+  - name: Question or Discussion
+    url: https://github.com/kelp/webdown/discussions
+    about: Ask questions or start discussions about webdown

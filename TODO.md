@@ -47,10 +47,9 @@
   - [x] Create CONTRIBUTING.md with development instructions
   - [x] Include coding standards and PR process
 - [x] Confirm license (MIT) and update copyright information
-- [ ] Set up ReadTheDocs documentation with Sphinx
-  - [ ] Create Sphinx documentation structure
-  - [ ] Configure automatic API doc generation
-  - [ ] Set up ReadTheDocs integration
+- [x] Improve API documentation
+  - [x] Auto-generate API docs with pydoc
+  - [x] Document all functions, classes, and modules
 
 ## Local Development Best Practices
 - [x] Set up local git hooks for linting/testing
@@ -85,16 +84,16 @@
   - [x] Test against modern Python versions (3.10-3.13)
   - [x] Add caching for pip dependencies
   - [x] Configure dependabot for dependency updates
-- [ ] Consider adding badges for:
-  - [ ] Tests status
-  - [ ] Coverage
-  - [ ] PyPI version
-  - [ ] Python versions supported
-- [ ] Set up branch protection rules
-- [ ] Create release workflow
-  - [ ] Set up automatic version detection
-  - [ ] Configure automatic PyPI publishing on new release tags
-  - [ ] Create GitHub release notes template
+- [x] Consider adding badges for:
+  - [x] Tests status
+  - [x] Coverage
+  - [x] PyPI version
+  - [x] Python versions supported
+- [x] Set up branch protection rules (CODEOWNERS file added)
+- [x] Create release workflow
+  - [x] Set up automatic version detection
+  - [x] Configure automatic PyPI publishing on new release tags
+  - [x] Create GitHub release notes template from CHANGELOG.md
 
 ## Future Publishing Tasks
 - [ ] Publish to PyPI with Poetry
@@ -104,7 +103,7 @@
   - [ ] Update documentation with installation instructions from PyPI
 
 ## Features to Consider
-- [ ] Add a progress bar for downloads
+- [x] Add a progress bar for downloads
 - [ ] Support for custom HTML to Markdown converters
 - [ ] Support for authentication for accessing private web content
 - [ ] Markdown output styling options
@@ -120,4 +119,4 @@
 - [x] Option to compact output by removing excessive blank lines
 - [x] Remove zero-width spaces and other invisible characters
 - [ ] Post-processing option to clean and normalize generated Markdown
-- [ ] Add command-line option to set html2text body_width (currently hard-coded to 0)
+- [x] Add command-line option to set html2text body_width (currently hard-coded to 0)

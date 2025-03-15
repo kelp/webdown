@@ -13,12 +13,14 @@ The main entry point is the `convert_url_to_markdown` function, which handles
 the entire process from fetching a URL to producing clean Markdown output.
 """
 
+import io
 from typing import Optional
 from urllib.parse import urlparse
 
 import html2text
 import requests
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 
 class WebdownError(Exception):
@@ -81,11 +83,12 @@ def validate_url(url: str) -> bool:
     return bool(parsed.scheme and parsed.netloc)
 
 
-def fetch_url(url: str) -> str:
-    """Fetch HTML content from URL.
+def fetch_url(url: str, show_progress: bool = False) -> str:
+    """Fetch HTML content from URL with optional progress bar.
 
     Args:
         url: URL to fetch
+        show_progress: Whether to display a progress bar during download
 
     Returns:
         HTML content as string
@@ -98,9 +101,43 @@ def fetch_url(url: str) -> str:
         raise InvalidURLError(f"Invalid URL format: {url}")
 
     try:
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        return str(response.text)
+        # Stream the response to show download progress
+        if show_progress:
+            # First make a HEAD request to get the content length
+            head_response = requests.head(url, timeout=5)
+            head_response.raise_for_status()
+            total_size = int(head_response.headers.get("content-length", 0))
+
+            # Now make the GET request with stream=True
+            response = requests.get(url, timeout=10, stream=True)
+            response.raise_for_status()
+
+            # Create a buffer to store the content
+            content = io.StringIO()
+
+            # Create a progress bar
+            with tqdm(
+                total=total_size,
+                unit="B",
+                unit_scale=True,
+                unit_divisor=1024,
+                desc=f"Downloading {url.split('/')[-1] or 'webpage'}",
+                disable=not show_progress,
+            ) as progress_bar:
+                # Decode each chunk and update the progress bar
+                for chunk in response.iter_content(
+                    chunk_size=1024, decode_unicode=True
+                ):
+                    if chunk:
+                        progress_bar.update(len(chunk.encode("utf-8")))
+                        content.write(chunk)
+
+            return content.getvalue()
+        else:
+            # Regular request without progress bar
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            return str(response.text)
     except requests.exceptions.Timeout:
         raise NetworkError(f"Connection timed out while fetching {url}")
     except requests.exceptions.ConnectionError:
@@ -118,6 +155,7 @@ def html_to_markdown(
     include_toc: bool = False,
     css_selector: Optional[str] = None,
     compact_output: bool = False,
+    body_width: int = 0,
 ) -> str:
     """Convert HTML to Markdown with various formatting options.
 
@@ -137,6 +175,8 @@ def html_to_markdown(
                      (e.g., "main", "article"). If None, processes the entire HTML.
         compact_output: Whether to remove excessive blank lines in the output (True)
                        or preserve the original whitespace (False)
+        body_width: Maximum line length for text wrapping. Set to 0 for no wrapping.
+                  Common values are 0 (no wrapping), 72, or 80.
 
     Returns:
         A string containing the converted Markdown content
@@ -152,6 +192,11 @@ def html_to_markdown(
         # Title
 
         Content with link
+
+        >>> print(html_to_markdown(html, body_width=40))
+        # Title
+
+        Content with [link](#)
     """
     # Extract specific content by CSS selector if provided
     if css_selector:
@@ -164,7 +209,7 @@ def html_to_markdown(
     h = html2text.HTML2Text()
     h.ignore_links = not include_links
     h.ignore_images = not include_images
-    h.body_width = 0  # Don't wrap text
+    h.body_width = body_width  # User-defined line width
 
     markdown = h.handle(html)
 
@@ -206,6 +251,8 @@ def convert_url_to_markdown(
     include_toc: bool = False,
     css_selector: Optional[str] = None,
     compact_output: bool = False,
+    body_width: int = 0,
+    show_progress: bool = False,
 ) -> str:
     """Convert a web page to markdown.
 
@@ -216,6 +263,8 @@ def convert_url_to_markdown(
         include_toc: Whether to generate table of contents
         css_selector: CSS selector to extract specific content
         compact_output: Whether to remove excessive blank lines
+        body_width: Maximum line length for text wrapping (0 for no wrapping)
+        show_progress: Whether to display a progress bar during download
 
     Returns:
         Markdown content
@@ -224,7 +273,7 @@ def convert_url_to_markdown(
         InvalidURLError: If URL format is invalid
         NetworkError: If URL cannot be fetched
     """
-    html = fetch_url(url)
+    html = fetch_url(url, show_progress=show_progress)
     return html_to_markdown(
         html,
         include_links=include_links,
@@ -232,4 +281,5 @@ def convert_url_to_markdown(
         include_toc=include_toc,
         css_selector=css_selector,
         compact_output=compact_output,
+        body_width=body_width,
     )

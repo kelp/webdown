@@ -96,6 +96,16 @@ def function(param1: str, param2: int) -> bool:
     """
 ```
 
+### Updating Documentation
+
+After making changes to the codebase, especially when adding new features or modifying existing ones:
+
+1. Update the docstrings in the code with implementation details
+2. Update the README.md with any new command-line options or examples
+3. Update CHANGELOG.md with user-facing changes
+
+The CLI argument parser in `webdown/cli.py` is the source of truth for command-line options, and the README.md is the main user documentation.
+
 ### Error Handling
 
 - Use custom exception classes defined in `converter.py`

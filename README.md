@@ -1,5 +1,11 @@
 # Webdown
 
+[![Python Tests](https://github.com/kelp/webdown/actions/workflows/python-tests.yml/badge.svg)](https://github.com/kelp/webdown/actions/workflows/python-tests.yml)
+[![codecov](https://codecov.io/gh/kelp/webdown/branch/main/graph/badge.svg)](https://codecov.io/gh/kelp/webdown)
+[![PyPI version](https://badge.fury.io/py/webdown.svg)](https://badge.fury.io/py/webdown)
+[![Python Versions](https://img.shields.io/pypi/pyversions/webdown.svg)](https://pypi.org/project/webdown/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A Python CLI tool for converting web pages to Markdown.
 
 ## Installation
@@ -28,7 +34,10 @@ webdown https://example.com/page.html
 - `-t, --toc`: Generate table of contents
 - `-L, --no-links`: Strip hyperlinks
 - `-I, --no-images`: Exclude images
-- `-c, --css SELECTOR`: CSS selector to extract specific content
+- `-s, --css SELECTOR`: CSS selector to extract specific content
+- `-c, --compact`: Remove excessive blank lines from the output
+- `-w, --width N`: Set the line width for wrapped text (0 for no wrapping)
+- `-p, --progress`: Show download progress bar
 
 ## Examples
 
@@ -41,13 +50,25 @@ webdown https://example.com -t -o output.md
 Extract only main content:
 
 ```bash
-webdown https://example.com -c "main" -o output.md
+webdown https://example.com -s "main" -o output.md
 ```
 
 Strip links and images:
 
 ```bash
 webdown https://example.com -L -I -o output.md
+```
+
+Compact output with progress bar and line wrapping:
+
+```bash
+webdown https://example.com -c -p -w 80 -o output.md
+```
+
+For complete documentation, use the `--help` flag:
+
+```bash
+webdown --help
 ```
 
 ## Development

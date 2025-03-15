@@ -80,6 +80,8 @@ clean:
 	rm -rf .pytest_cache/
 	rm -rf .mypy_cache/
 
+# Simplified documentation approach - see README.md
+
 shell:
 	@echo "Starting Poetry shell..."
 	@$(POETRY) shell

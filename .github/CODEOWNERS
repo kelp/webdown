@@ -1,0 +1,13 @@
+# These owners will be the default owners for everything in the repo
+* @kelp
+
+# Workflows and GitHub configuration
+/.github/ @kelp
+
+# Python package configuration
+/pyproject.toml @kelp
+/setup.py @kelp
+
+# Core modules and test files
+/webdown/ @kelp
+/webdown/tests/ @kelp

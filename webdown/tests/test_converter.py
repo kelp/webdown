@@ -85,6 +85,43 @@ class TestFetchUrl:
         assert result == "<html><body>Test</body></html>"
         mock_get.assert_called_once_with("https://example.com", timeout=10)
 
+    @patch("webdown.converter.requests.get")
+    @patch("webdown.converter.requests.head")
+    @patch("webdown.converter.tqdm")
+    def test_fetch_url_with_progress_bar(
+        self, mock_tqdm: MagicMock, mock_head: MagicMock, mock_get: MagicMock
+    ) -> None:
+        """Test fetch_url with progress bar."""
+        # Mock HEAD response
+        mock_head_response = MagicMock()
+        mock_head_response.headers = {"content-length": "1000"}
+        mock_head.return_value = mock_head_response
+
+        # Mock GET response
+        mock_get_response = MagicMock()
+        mock_get_response.iter_content.return_value = ["chunk1", "chunk2", "chunk3"]
+        mock_get.return_value = mock_get_response
+
+        # Mock tqdm context manager
+        mock_progress = MagicMock()
+        mock_tqdm.return_value.__enter__.return_value = mock_progress
+
+        # Call the function with progress bar
+        _ = fetch_url("https://example.com", show_progress=True)
+
+        # Verify the HEAD request was made
+        mock_head.assert_called_once_with("https://example.com", timeout=5)
+
+        # Verify the GET request was made with stream=True
+        mock_get.assert_called_once_with("https://example.com", timeout=10, stream=True)
+
+        # Verify tqdm was initialized with the correct total size
+        mock_tqdm.assert_called_once()
+        assert mock_tqdm.call_args[1]["total"] == 1000
+
+        # Verify progress bar was updated for each chunk
+        assert mock_progress.update.call_count == 3
+
 
 class TestHtmlToMarkdown:
     """Tests for html_to_markdown function."""
@@ -125,6 +162,25 @@ class TestHtmlToMarkdown:
         # Test images excluded
         html_to_markdown("<html><body>Test</body></html>", include_images=False)
         assert mock_html2text.ignore_images is True
+
+    @patch("webdown.converter.html2text.HTML2Text")
+    def test_body_width(self, mock_html2text_class: MagicMock) -> None:
+        """Test body_width parameter."""
+        mock_html2text = MagicMock()
+        mock_html2text_class.return_value = mock_html2text
+        mock_html2text.handle.return_value = "Markdown content"
+
+        # Test default body_width (0)
+        html_to_markdown("<html><body>Test</body></html>")
+        assert mock_html2text.body_width == 0
+
+        # Test custom body_width
+        html_to_markdown("<html><body>Test</body></html>", body_width=80)
+        assert mock_html2text.body_width == 80
+
+        # Test another custom body_width
+        html_to_markdown("<html><body>Test</body></html>", body_width=72)
+        assert mock_html2text.body_width == 72
 
     @patch("webdown.converter.BeautifulSoup")
     @patch("webdown.converter.html2text.HTML2Text")
@@ -191,27 +247,27 @@ class TestHtmlToMarkdown:
 
     def test_removes_zero_width_spaces(self) -> None:
         """Test that zero-width spaces are removed from markdown output."""
-        html = "<p>Before\u200BAfter</p>"
+        html = "<p>Before\u200bAfter</p>"
 
         with patch("webdown.converter.html2text.HTML2Text") as mock_html2text_class:
             mock_html2text = MagicMock()
             mock_html2text_class.return_value = mock_html2text
             # Simulate output with zero-width spaces
-            mock_html2text.handle.return_value = "Before\u200BAfter"
+            mock_html2text.handle.return_value = "Before\u200bAfter"
 
             result = html_to_markdown(html)
-            assert "\u200B" not in result
+            assert "\u200b" not in result
             assert "BeforeAfter" in result
 
             # Test multiple invisible characters
             mock_html2text.handle.return_value = (
-                "Text with\u200B zero\u200C width\u200D spaces\uFEFF!"
+                "Text with\u200b zero\u200c width\u200d spaces\ufeff!"
             )
             result = html_to_markdown(html)
-            assert "\u200B" not in result
-            assert "\u200C" not in result
-            assert "\u200D" not in result
-            assert "\uFEFF" not in result
+            assert "\u200b" not in result
+            assert "\u200c" not in result
+            assert "\u200d" not in result
+            assert "\ufeff" not in result
             assert "Text with zero width spaces!" in result
 
 
@@ -235,8 +291,10 @@ class TestConvertUrlToMarkdown:
             css_selector="main",
         )
 
-        # Verify fetch_url was called with correct URL
-        mock_fetch_url.assert_called_once_with("https://example.com")
+        # Verify fetch_url was called correctly
+        mock_fetch_url.assert_called_once_with(
+            "https://example.com", show_progress=False
+        )
 
         # Verify html_to_markdown was called with correct parameters
         mock_html_to_markdown.assert_called_once_with(
@@ -246,6 +304,68 @@ class TestConvertUrlToMarkdown:
             include_toc=True,
             css_selector="main",
             compact_output=False,
+            body_width=0,
+        )
+
+        # Verify result is returned from html_to_markdown
+        assert result == "# Test\n\nContent"
+
+    @patch("webdown.converter.fetch_url")
+    @patch("webdown.converter.html_to_markdown")
+    def test_conversion_with_progress_bar(
+        self, mock_html_to_markdown: MagicMock, mock_fetch_url: MagicMock
+    ) -> None:
+        """Test that conversion pipeline works correctly with progress bar."""
+        mock_fetch_url.return_value = "<html><body>Test</body></html>"
+        mock_html_to_markdown.return_value = "# Test\n\nContent"
+
+        result = convert_url_to_markdown(
+            "https://example.com",
+            show_progress=True,
+        )
+
+        # Verify fetch_url was called with show_progress=True
+        mock_fetch_url.assert_called_once_with(
+            "https://example.com", show_progress=True
+        )
+
+        # Verify html_to_markdown was called with correct parameters
+        mock_html_to_markdown.assert_called_once_with(
+            "<html><body>Test</body></html>",
+            include_links=True,
+            include_images=True,
+            include_toc=False,
+            css_selector=None,
+            compact_output=False,
+            body_width=0,
+        )
+
+        # Verify result is returned from html_to_markdown
+        assert result == "# Test\n\nContent"
+
+    @patch("webdown.converter.fetch_url")
+    @patch("webdown.converter.html_to_markdown")
+    def test_conversion_with_custom_body_width(
+        self, mock_html_to_markdown: MagicMock, mock_fetch_url: MagicMock
+    ) -> None:
+        """Test that custom body_width is passed to html_to_markdown."""
+        mock_fetch_url.return_value = "<html><body>Test</body></html>"
+        mock_html_to_markdown.return_value = "# Test\n\nContent"
+
+        result = convert_url_to_markdown(
+            "https://example.com",
+            body_width=80,
+        )
+
+        # Verify html_to_markdown was called with correct body_width
+        mock_html_to_markdown.assert_called_once_with(
+            "<html><body>Test</body></html>",
+            include_links=True,
+            include_images=True,
+            include_toc=False,
+            css_selector=None,
+            compact_output=False,
+            body_width=80,
         )
 
         # Verify result is returned from html_to_markdown

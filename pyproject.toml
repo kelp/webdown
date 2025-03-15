@@ -4,13 +4,13 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "webdown"
-version = "0.2.0"
+version = "0.3.0"
 description = "Convert web pages to markdown"
 authors = ["Travis Cole <your-email@example.com>"]
 readme = "README.md"
 repository = "https://github.com/kelp/webdown"
 homepage = "https://github.com/kelp/webdown"
-documentation = "https://github.com/kelp/webdown/tree/main/docs/api"
+documentation = "https://github.com/kelp/webdown#readme"
 keywords = ["web", "markdown", "html", "converter"]
 license = "MIT"
 classifiers = [
@@ -30,6 +30,7 @@ python = ">=3.10,<4.0"
 requests = ">=2.25.0"
 html2text = ">=2020.1.16"
 beautifulsoup4 = ">=4.9.0"
+tqdm = ">=4.62.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.0.0"
@@ -41,6 +42,7 @@ requests-mock = ">=1.12.0"
 pre-commit = "^4.1.0"
 types-requests = "^2.32.0"
 isort = ">=5.13.0"
+types-tqdm = "^4.67.0.20250301"
 
 [tool.poetry.scripts]
 webdown = "webdown.cli:main"

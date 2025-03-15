@@ -13,11 +13,13 @@ The entry point is the `main()` function, which is called when the command
   -I, --no-images       Exclude images from the output
   -s, --css SELECTOR    Extract only content matching the CSS selector
   -c, --compact         Remove excessive blank lines from the output
+  -w, --width N         Set the line width for wrapped text (0 for no wrapping)
+  -p, --progress        Show download progress bar
   -V, --version         Show version information and exit
   -h, --help            Show help message and exit
 
 Example usage:
-  webdown https://example.com -o output.md -c -t
+  webdown https://example.com -o output.md -c -t -w 80 -p
 """
 
 import argparse
@@ -50,6 +52,19 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
     parser.add_argument("-s", "--css", help="CSS selector to extract specific content")
     parser.add_argument(
         "-c", "--compact", action="store_true", help="Remove excessive blank lines"
+    )
+    parser.add_argument(
+        "-w",
+        "--width",
+        type=int,
+        default=0,
+        help="Set line width for wrapped text (0 for no wrapping)",
+    )
+    parser.add_argument(
+        "-p",
+        "--progress",
+        action="store_true",
+        help="Show download progress bar",
     )
     parser.add_argument(
         "-V",
@@ -105,6 +120,8 @@ def main(args: Optional[List[str]] = None) -> int:
             include_images=not parsed_args.no_images,
             css_selector=parsed_args.css,
             compact_output=parsed_args.compact,
+            body_width=parsed_args.width,
+            show_progress=parsed_args.progress,
         )
 
         if parsed_args.output:

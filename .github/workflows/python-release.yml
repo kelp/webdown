@@ -1,0 +1,82 @@
+name: Python Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Extract version from tag
+        id: get_version
+        run: |
+          # Remove 'v' prefix from tag name
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          # Extract content from CHANGELOG.md for this version
+          CHANGELOG_CONTENT=$(awk -v ver="## [$VERSION]" 'BEGIN{flag=0} /^'"$ver"'/{flag=1;next} /^## \[[0-9]+\.[0-9]+\.[0-9]+\]/{flag=0} flag' CHANGELOG.md)
+          # Handle empty changelog case
+          if [ -z "$CHANGELOG_CONTENT" ]; then
+            CHANGELOG_CONTENT="Release version $VERSION"
+          fi
+          # Set the changelog content for GitHub release
+          echo "CHANGELOG_CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG_CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Verify versions match
+        run: |
+          # Check version in pyproject.toml
+          PYPROJECT_VERSION=$(grep -oP '^version = "\K[^"]+' pyproject.toml)
+          # Check version in __init__.py
+          INIT_VERSION=$(grep -oP '__version__ = "\K[^"]+' webdown/__init__.py)
+
+          if [ "$PYPROJECT_VERSION" != "$VERSION" ] || [ "$INIT_VERSION" != "$VERSION" ]; then
+            echo "Version mismatch detected:"
+            echo "Tag version: $VERSION"
+            echo "pyproject.toml version: $PYPROJECT_VERSION"
+            echo "__init__.py version: $INIT_VERSION"
+            exit 1
+          fi
+
+          echo "All versions match: $VERSION"
+
+      - name: Build package
+        run: |
+          poetry build
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Version ${{ env.VERSION }}
+          body: ${{ env.CHANGELOG_CONTENT }}
+          draft: false
+          prerelease: false
+          files: |
+            dist/*.whl
+            dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
+          poetry publish --no-interaction

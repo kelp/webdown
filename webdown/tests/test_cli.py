@@ -105,6 +105,34 @@ class TestParseArgs:
         args = parse_args(["https://example.com", "-c"])
         assert args.compact is True
 
+    def test_width_option(self) -> None:
+        """Test parsing width option."""
+        # Default
+        args = parse_args(["https://example.com"])
+        assert args.width == 0
+
+        # With long width flag
+        args = parse_args(["https://example.com", "--width", "80"])
+        assert args.width == 80
+
+        # With short width flag
+        args = parse_args(["https://example.com", "-w", "72"])
+        assert args.width == 72
+
+    def test_progress_option(self) -> None:
+        """Test parsing progress option."""
+        # Default
+        args = parse_args(["https://example.com"])
+        assert args.progress is False
+
+        # With long progress flag
+        args = parse_args(["https://example.com", "--progress"])
+        assert args.progress is True
+
+        # With short progress flag
+        args = parse_args(["https://example.com", "-p"])
+        assert args.progress is True
+
     def test_version_flag(self) -> None:
         """Test version flag is recognized."""
         # Testing that the flag is recognized correctly
@@ -148,6 +176,8 @@ class TestMain:
             include_images=True,
             css_selector=None,
             compact_output=False,
+            body_width=0,
+            show_progress=False,
         )
 
     @patch("webdown.cli.parse_args")
