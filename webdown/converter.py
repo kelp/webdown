@@ -110,17 +110,19 @@ def html_to_markdown(
 
     markdown = h.handle(html)
 
+    # Post-process the markdown
+    import re
+
+    # Remove zero-width spaces and other invisible characters
+    markdown = re.sub(r"[\u200B\u200C\u200D\uFEFF]", "", markdown)
+
     # Post-process to remove excessive blank lines if requested
     if compact_output:
-        import re
-
         # Replace 3 or more consecutive newlines with just 2
         markdown = re.sub(r"\n{3,}", "\n\n", markdown)
 
     # Add table of contents if requested
     if include_toc:
-        import re
-
         headings = re.findall(r"^(#{1,6})\s+(.+)$", markdown, re.MULTILINE)
 
         if headings:

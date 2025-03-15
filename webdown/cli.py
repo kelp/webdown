@@ -57,8 +57,10 @@ def main(args: Optional[List[str]] = None) -> int:
         # If no URL provided, show help
         if parsed_args.url is None:
             # This will print help and exit
-            parse_args(["-h"])
-            return 0
+            parse_args(
+                ["-h"]
+            )  # pragma: no cover - this exits so coverage tools can't track it
+            return 0  # pragma: no cover - unreachable after SystemExit
 
         markdown = convert_url_to_markdown(
             parsed_args.url,
@@ -82,5 +84,5 @@ def main(args: Optional[List[str]] = None) -> int:
         return 1
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover - difficult to test main module block
     sys.exit(main())

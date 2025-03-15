@@ -189,6 +189,31 @@ class TestHtmlToMarkdown:
             result = html_to_markdown(html, compact_output=True)
             assert "Test\n\nParagraph\n\nEnd" in result
 
+    def test_removes_zero_width_spaces(self) -> None:
+        """Test that zero-width spaces are removed from markdown output."""
+        html = "<p>Before\u200BAfter</p>"
+
+        with patch("webdown.converter.html2text.HTML2Text") as mock_html2text_class:
+            mock_html2text = MagicMock()
+            mock_html2text_class.return_value = mock_html2text
+            # Simulate output with zero-width spaces
+            mock_html2text.handle.return_value = "Before\u200BAfter"
+
+            result = html_to_markdown(html)
+            assert "\u200B" not in result
+            assert "BeforeAfter" in result
+
+            # Test multiple invisible characters
+            mock_html2text.handle.return_value = (
+                "Text with\u200B zero\u200C width\u200D spaces\uFEFF!"
+            )
+            result = html_to_markdown(html)
+            assert "\u200B" not in result
+            assert "\u200C" not in result
+            assert "\u200D" not in result
+            assert "\uFEFF" not in result
+            assert "Text with zero width spaces!" in result
+
 
 class TestConvertUrlToMarkdown:
     """Tests for convert_url_to_markdown function."""

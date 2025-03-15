@@ -1,4 +1,4 @@
-.PHONY: install test lint type-check clean all-checks integration-test test-coverage format lock update
+.PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update
 
 # Use Poetry for all commands
 POETRY := poetry
@@ -8,6 +8,13 @@ install:
 	@echo "Installing package and dependencies with Poetry..."
 	@$(POETRY) install
 	@$(POETRY_RUN) pre-commit install
+
+install-dev:
+	@echo "Installing package for current user in development mode..."
+	@$(POETRY) install
+	@$(POETRY) build
+	@pip install --user -e .
+	@echo "✓ Installed webdown in development mode for current user"
 
 test:
 	@echo "Running tests..."
@@ -94,4 +101,5 @@ help:
 	@echo "  update          Update dependencies"
 	@echo "  clean           Remove build artifacts and caches"
 	@echo "  shell           Start Poetry shell (interactive environment)"
+	@echo "  install-dev     Install package for current user in development mode"
 	@echo "  help            Show this help message"
