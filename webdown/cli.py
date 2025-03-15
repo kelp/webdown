@@ -1,4 +1,24 @@
-"""Command-line interface for webdown."""
+"""Command-line interface for webdown.
+
+This module provides the command-line interface (CLI) for webdown, allowing users
+to convert web pages to Markdown from the terminal. It parses command-line arguments,
+handles error reporting, and manages input/output operations.
+
+The entry point is the `main()` function, which is called when the command
+`webdown` is executed. The available options include:
+
+  -o, --output FILE     Write output to FILE instead of stdout
+  -t, --toc             Generate a table of contents based on headings
+  -L, --no-links        Strip hyperlinks, converting them to plain text
+  -I, --no-images       Exclude images from the output
+  -s, --css SELECTOR    Extract only content matching the CSS selector
+  -c, --compact         Remove excessive blank lines from the output
+  -V, --version         Show version information and exit
+  -h, --help            Show help message and exit
+
+Example usage:
+  webdown https://example.com -o output.md -c -t
+"""
 
 import argparse
 import sys
@@ -45,11 +65,27 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
 def main(args: Optional[List[str]] = None) -> int:
     """Execute the webdown command-line interface.
 
+    This function is the main entry point for the webdown command-line tool.
+    It handles the entire workflow:
+    1. Parsing command-line arguments
+    2. Converting the URL to Markdown with the specified options
+    3. Writing the output to a file or stdout
+    4. Error handling and reporting
+
     Args:
-        args: Command line arguments (defaults to sys.argv[1:] if None)
+        args: Command line arguments as a list of strings. If None, defaults to
+              sys.argv[1:] (the command-line arguments passed to the script).
 
     Returns:
-        Exit code
+        Exit code: 0 for success, 1 for errors
+
+    Examples:
+        >>> main(['https://example.com'])  # Convert and print to stdout
+        0
+        >>> main(['https://example.com', '-o', 'output.md'])  # Write to file
+        0
+        >>> main(['invalid-url'])  # Handle error
+        1
     """
     try:
         parsed_args = parse_args(args)

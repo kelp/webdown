@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webdown API Documentation</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #1a73e8;
+            margin-top: 30px;
+        }
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .module {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-left: 4px solid #1a73e8;
+            background: #f5f7fa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Webdown API Documentation</h1>
+
+    <p>
+        Welcome to the Webdown API documentation. Webdown is a Python tool for converting web pages to markdown.
+        This documentation provides details about the modules, classes, and functions available in the Webdown package.
+    </p>
+
+    <h2>Modules</h2>
+
+    <div class="module">
+        <h3><a href="webdown.html">webdown</a></h3>
+        <p>The main package module with version information.</p>
+    </div>
+
+    <div class="module">
+        <h3><a href="webdown.cli.html">webdown.cli</a></h3>
+        <p>Command-line interface for webdown. Provides the entry point for the command-line tool.</p>
+        <p>Key functions:</p>
+        <ul>
+            <li><code>parse_args()</code> - Parse command line arguments</li>
+            <li><code>main()</code> - Main entry point for the CLI</li>
+        </ul>
+    </div>
+
+    <div class="module">
+        <h3><a href="webdown.converter.html">webdown.converter</a></h3>
+        <p>Core functionality for HTML to Markdown conversion.</p>
+        <p>Key functions:</p>
+        <ul>
+            <li><code>validate_url()</code> - Validate URL format</li>
+            <li><code>fetch_url()</code> - Fetch HTML content from URL</li>
+            <li><code>html_to_markdown()</code> - Convert HTML to Markdown</li>
+            <li><code>convert_url_to_markdown()</code> - End-to-end conversion from URL to Markdown</li>
+        </ul>
+        <p>Exceptions:</p>
+        <ul>
+            <li><code>WebdownError</code> - Base exception class</li>
+            <li><code>NetworkError</code> - Exception raised for network-related errors</li>
+            <li><code>InvalidURLError</code> - Exception raised for invalid URL format</li>
+        </ul>
+    </div>
+
+    <h2>Usage Examples</h2>
+
+    <p>Basic usage as a command-line tool:</p>
+    <pre><code>webdown https://example.com
+webdown https://example.com -o output.md
+webdown https://example.com -c -t</code></pre>
+
+    <p>Basic usage as a Python library:</p>
+    <pre><code>from webdown.converter import convert_url_to_markdown
+
+# Simple conversion
+markdown = convert_url_to_markdown('https://example.com')
+
+# With options
+markdown = convert_url_to_markdown(
+    'https://example.com',
+    include_toc=True,
+    include_links=True,
+    include_images=False,
+    css_selector='main',
+    compact_output=True
+)
+</code></pre>
+
+    <footer>
+        <p><small>&copy; Webdown Project. Generated with pydoc.</small></p>
+    </footer>
+</body>
+</html>

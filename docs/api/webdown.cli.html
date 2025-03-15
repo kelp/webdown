@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module webdown.cli</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="webdown.html" class="white">webdown</a>.cli</strong> (version 0.2.0)</td>
+<td class="extra"><a href=".">index</a><br><a href="file:/Users/tcole/code/webdown/webdown/cli.py">/Users/tcole/code/webdown/webdown/cli.py</a></td></tr></table>
+    <p><span class="code">Command-line&nbsp;interface&nbsp;for&nbsp;webdown.<br>
+&nbsp;<br>
+This&nbsp;module&nbsp;provides&nbsp;the&nbsp;command-line&nbsp;interface&nbsp;(CLI)&nbsp;for&nbsp;webdown,&nbsp;allowing&nbsp;users<br>
+to&nbsp;convert&nbsp;web&nbsp;pages&nbsp;to&nbsp;Markdown&nbsp;from&nbsp;the&nbsp;terminal.&nbsp;It&nbsp;parses&nbsp;command-line&nbsp;arguments,<br>
+handles&nbsp;error&nbsp;reporting,&nbsp;and&nbsp;manages&nbsp;input/output&nbsp;operations.<br>
+&nbsp;<br>
+The&nbsp;entry&nbsp;point&nbsp;is&nbsp;the&nbsp;`<a href="#-main">main</a>()`&nbsp;function,&nbsp;which&nbsp;is&nbsp;called&nbsp;when&nbsp;the&nbsp;command<br>
+`webdown`&nbsp;is&nbsp;executed.&nbsp;The&nbsp;available&nbsp;options&nbsp;include:<br>
+&nbsp;<br>
+&nbsp;&nbsp;-o,&nbsp;--output&nbsp;FILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write&nbsp;output&nbsp;to&nbsp;FILE&nbsp;instead&nbsp;of&nbsp;stdout<br>
+&nbsp;&nbsp;-t,&nbsp;--toc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generate&nbsp;a&nbsp;table&nbsp;of&nbsp;contents&nbsp;based&nbsp;on&nbsp;headings<br>
+&nbsp;&nbsp;-L,&nbsp;--no-links&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Strip&nbsp;hyperlinks,&nbsp;converting&nbsp;them&nbsp;to&nbsp;plain&nbsp;text<br>
+&nbsp;&nbsp;-I,&nbsp;--no-images&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exclude&nbsp;images&nbsp;from&nbsp;the&nbsp;output<br>
+&nbsp;&nbsp;-s,&nbsp;--css&nbsp;SELECTOR&nbsp;&nbsp;&nbsp;&nbsp;Extract&nbsp;only&nbsp;content&nbsp;matching&nbsp;the&nbsp;CSS&nbsp;selector<br>
+&nbsp;&nbsp;-c,&nbsp;--compact&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remove&nbsp;excessive&nbsp;blank&nbsp;lines&nbsp;from&nbsp;the&nbsp;output<br>
+&nbsp;&nbsp;-V,&nbsp;--version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Show&nbsp;version&nbsp;information&nbsp;and&nbsp;exit<br>
+&nbsp;&nbsp;-h,&nbsp;--help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Show&nbsp;help&nbsp;message&nbsp;and&nbsp;exit<br>
+&nbsp;<br>
+Example&nbsp;usage:<br>
+&nbsp;&nbsp;webdown&nbsp;<a href="https://example.com">https://example.com</a>&nbsp;-o&nbsp;output.md&nbsp;-c&nbsp;-t</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="argparse.html">argparse</a><br>
+</td><td class="multicolumn"><a href="sys.html">sys</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-main"><strong>main</strong></a>(args: Optional[List[str]] = None) -&gt; int</dt><dd><span class="code">Execute&nbsp;the&nbsp;webdown&nbsp;command-line&nbsp;interface.<br>
+&nbsp;<br>
+This&nbsp;function&nbsp;is&nbsp;the&nbsp;main&nbsp;entry&nbsp;point&nbsp;for&nbsp;the&nbsp;webdown&nbsp;command-line&nbsp;tool.<br>
+It&nbsp;handles&nbsp;the&nbsp;entire&nbsp;workflow:<br>
+1.&nbsp;Parsing&nbsp;command-line&nbsp;arguments<br>
+2.&nbsp;Converting&nbsp;the&nbsp;URL&nbsp;to&nbsp;Markdown&nbsp;with&nbsp;the&nbsp;specified&nbsp;options<br>
+3.&nbsp;Writing&nbsp;the&nbsp;output&nbsp;to&nbsp;a&nbsp;file&nbsp;or&nbsp;stdout<br>
+4.&nbsp;Error&nbsp;handling&nbsp;and&nbsp;reporting<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;args:&nbsp;Command&nbsp;line&nbsp;arguments&nbsp;as&nbsp;a&nbsp;list&nbsp;of&nbsp;strings.&nbsp;If&nbsp;None,&nbsp;defaults&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sys.argv[1:]&nbsp;(the&nbsp;command-line&nbsp;arguments&nbsp;passed&nbsp;to&nbsp;the&nbsp;script).<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Exit&nbsp;code:&nbsp;0&nbsp;for&nbsp;success,&nbsp;1&nbsp;for&nbsp;errors<br>
+&nbsp;<br>
+Examples:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;<a href="#-main">main</a>(['<a href="https://example.com">https://example.com</a>'])&nbsp;&nbsp;#&nbsp;Convert&nbsp;and&nbsp;print&nbsp;to&nbsp;stdout<br>
+&nbsp;&nbsp;&nbsp;&nbsp;0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;<a href="#-main">main</a>(['<a href="https://example.com">https://example.com</a>',&nbsp;'-o',&nbsp;'output.md'])&nbsp;&nbsp;#&nbsp;Write&nbsp;to&nbsp;file<br>
+&nbsp;&nbsp;&nbsp;&nbsp;0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;&nbsp;<a href="#-main">main</a>(['invalid-url'])&nbsp;&nbsp;#&nbsp;Handle&nbsp;error<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1</span></dd></dl>
+ <dl><dt><a name="-parse_args"><strong>parse_args</strong></a>(args: Optional[List[str]] = None) -&gt; argparse.Namespace</dt><dd><span class="code">Parse&nbsp;command&nbsp;line&nbsp;arguments.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;args:&nbsp;Command&nbsp;line&nbsp;arguments&nbsp;(defaults&nbsp;to&nbsp;sys.argv[1:]&nbsp;if&nbsp;None)<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Parsed&nbsp;arguments</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional</td></tr></table>
+</body></html>

@@ -1,4 +1,17 @@
-"""HTML to Markdown conversion functionality."""
+"""HTML to Markdown conversion functionality.
+
+This module provides functions for fetching web content and converting it to Markdown.
+Key features include:
+- URL validation and HTML fetching with proper error handling
+- HTML to Markdown conversion using html2text
+- Support for content filtering with CSS selectors
+- Table of contents generation
+- Removal of excessive blank lines (compact mode)
+- Removal of zero-width spaces and other invisible characters
+
+The main entry point is the `convert_url_to_markdown` function, which handles
+the entire process from fetching a URL to producing clean Markdown output.
+"""
 
 from typing import Optional
 from urllib.parse import urlparse
@@ -9,19 +22,43 @@ from bs4 import BeautifulSoup
 
 
 class WebdownError(Exception):
-    """Base exception for webdown errors."""
+    """Base exception for webdown errors.
+
+    This is the parent class for all custom exceptions raised by the webdown package.
+    It inherits from the standard Exception class and serves as a way to catch
+    all webdown-specific errors.
+    """
 
     pass
 
 
 class NetworkError(WebdownError):
-    """Exception raised for network-related errors."""
+    """Exception raised for network-related errors.
+
+    This exception is raised when there are problems with the network connection
+    or HTTP request, such as timeouts, connection errors, or HTTP error status codes.
+
+    Examples:
+        - Connection timeout
+        - DNS resolution failure
+        - Server returned 404, 500, etc.
+        - SSL certificate errors
+    """
 
     pass
 
 
 class InvalidURLError(WebdownError):
-    """Exception raised for invalid URL format."""
+    """Exception raised for invalid URL format.
+
+    This exception is raised when the provided URL is not properly formatted
+    according to URL standards (scheme://netloc/path?query#fragment).
+
+    Examples:
+        - Missing scheme (http://, https://)
+        - Missing domain
+        - Malformed URL structure
+    """
 
     pass
 
@@ -82,18 +119,39 @@ def html_to_markdown(
     css_selector: Optional[str] = None,
     compact_output: bool = False,
 ) -> str:
-    """Convert HTML to Markdown.
+    """Convert HTML to Markdown with various formatting options.
+
+    This function takes HTML content and converts it to Markdown format.
+    It provides several options to customize the output, including link/image
+    handling, table of contents generation, content filtering, and whitespace
+    management.
 
     Args:
-        html: HTML content to convert
-        include_links: Whether to include hyperlinks
-        include_images: Whether to include images
-        include_toc: Whether to generate table of contents
-        css_selector: CSS selector to extract specific content
-        compact_output: Whether to remove excessive blank lines
+        html: HTML content to convert as a string
+        include_links: Whether to include hyperlinks (True) or convert them to
+                     plain text (False)
+        include_images: Whether to include images (True) or exclude them (False)
+        include_toc: Whether to generate table of contents based on headings (True)
+                    or not (False)
+        css_selector: CSS selector to extract specific content from the HTML
+                     (e.g., "main", "article"). If None, processes the entire HTML.
+        compact_output: Whether to remove excessive blank lines in the output (True)
+                       or preserve the original whitespace (False)
 
     Returns:
-        Markdown content
+        A string containing the converted Markdown content
+
+    Examples:
+        >>> html = "<h1>Title</h1><p>Content with <a href='#'>link</a></p>"
+        >>> print(html_to_markdown(html))
+        # Title
+
+        Content with [link](#)
+
+        >>> print(html_to_markdown(html, include_links=False))
+        # Title
+
+        Content with link
     """
     # Extract specific content by CSS selector if provided
     if css_selector:
