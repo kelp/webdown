@@ -82,7 +82,7 @@ class TestParseArgs:
     def test_css_option(self) -> None:
         """Test parsing CSS selector option."""
         # Short option
-        args = parse_args(["https://example.com", "-c", "main"])
+        args = parse_args(["https://example.com", "-s", "main"])
         assert args.css == "main"
 
         # Long option
@@ -95,8 +95,12 @@ class TestParseArgs:
         args = parse_args(["https://example.com"])
         assert args.compact is False
 
-        # With compact flag
+        # With long compact flag
         args = parse_args(["https://example.com", "--compact"])
+        assert args.compact is True
+
+        # With short compact flag
+        args = parse_args(["https://example.com", "-c"])
         assert args.compact is True
 
     def test_version_flag(self) -> None:

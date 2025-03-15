@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "webdown"
-version = "0.1.0"
+version = "0.2.0"
 description = "Convert web pages to markdown"
 authors = ["Tyler Cole <example@example.com>"]
 readme = "README.md"
