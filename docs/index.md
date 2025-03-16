@@ -1,5 +1,3 @@
-# Webdown
-
 --8<-- "README.md"
 
 !!! note "Documentation Links"
