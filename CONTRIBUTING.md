@@ -149,16 +149,18 @@ We follow [Semantic Versioning](https://semver.org/):
 
 Webdown uses GitHub Actions to automate the release process:
 
-1. Ensure all tests pass and code quality checks succeed: `make all-checks`
-2. Update version number in:
+1. Update version number in:
    - `pyproject.toml`
    - `webdown/__init__.py`
-3. Update `CHANGELOG.md` with the new version and changes
-4. Commit the version bump changes
-5. Create and push a new tag with the version number (prefixed with 'v'):
+2. Update `CHANGELOG.md` with the new version and changes
+3. Commit the version bump changes
+4. Run the release target to verify everything and create the tag:
    ```bash
-   git tag -a v0.4.1 -m "Release version 0.4.1"
-   git push origin v0.4.1
+   make release
+   ```
+5. If the release target succeeds, push the tag to trigger the release:
+   ```bash
+   git push origin v0.4.x
    ```
 6. The GitHub Actions workflow will:
    - Verify the version numbers match

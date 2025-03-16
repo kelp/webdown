@@ -1,4 +1,4 @@
-.PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update docs docs-serve publish publish-test
+.PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update docs docs-serve publish publish-test release
 
 # Use Poetry for all commands
 POETRY := poetry
@@ -110,6 +110,40 @@ publish: clean all-checks build
 		echo "Publishing aborted."; \
 	fi
 
+release: all-checks build
+	@echo "Preparing release process..."
+
+	@echo "Verifying version consistency..."
+	@VERSION=$$(grep -oP '^version = "\K[^"]+' pyproject.toml); \
+	INIT_VERSION=$$(grep -oP '__version__ = "\K[^"]+' webdown/__init__.py); \
+	if [ "$$VERSION" != "$$INIT_VERSION" ]; then \
+		echo "Error: Version mismatch! pyproject.toml ($$VERSION) vs __init__.py ($$INIT_VERSION)"; \
+		exit 1; \
+	fi; \
+	echo "Version $$VERSION is consistent across files."
+
+	@echo "Checking for CHANGELOG.md entry..."
+	@VERSION=$$(grep -oP '^version = "\K[^"]+' pyproject.toml); \
+	if ! grep -q "## \[$$VERSION\]" CHANGELOG.md; then \
+		echo "Error: No entry for version $$VERSION found in CHANGELOG.md"; \
+		exit 1; \
+	fi; \
+	echo "CHANGELOG.md entry found."
+
+	@echo "Creating release tag..."
+	@VERSION=$$(grep -oP '^version = "\K[^"]+' pyproject.toml); \
+	echo "Ready to tag release v$$VERSION and trigger GitHub Actions release workflow."; \
+	echo "Are you sure you want to continue? [y/N] "; \
+	read -r response; \
+	if [ "$$response" = "y" ] || [ "$$response" = "Y" ]; then \
+		git tag -a "v$$VERSION" -m "Release version $$VERSION"; \
+		echo "Tag v$$VERSION created locally."; \
+		echo "To finish the release, run: git push origin v$$VERSION"; \
+		echo "This will trigger the GitHub Actions workflow to publish to PyPI."; \
+	else \
+		echo "Release tagging aborted."; \
+	fi
+
 help:
 	@echo "Available targets:"
 	@echo "  install         Install package and dependencies with Poetry"
@@ -132,4 +166,5 @@ help:
 	@echo "  docs-serve      Start a local documentation server at http://localhost:8080"
 	@echo "  publish-test    Publish package to TestPyPI (test.pypi.org)"
 	@echo "  publish         Emergency manual publishing to PyPI (normally done via GitHub Actions)"
+	@echo "  release         Prepare and tag a new release (runs checks, verifies versions, creates git tag)"
 	@echo "  help            Show this help message"
