@@ -1,5 +1,7 @@
 # Contributing Guide
 
-<div class="md-content" markdown="1">
+<!-- Included content from CONTRIBUTING.md -->
+
+```markdown
 --8<-- "CONTRIBUTING.md"
-</div>
+```

@@ -1,8 +1,10 @@
 # Webdown
 
-<div class="md-content" markdown="1">
+<!-- Included content from README.md -->
+
+```markdown
 --8<-- "README.md"
-</div>
+```
 
 !!! note "Documentation Links"
     For full documentation, check out these additional resources:

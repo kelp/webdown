@@ -1,5 +1,7 @@
 # Changelog
 
-<div class="md-content" markdown="1">
+<!-- Included content from CHANGELOG.md -->
+
+```markdown
 --8<-- "CHANGELOG.md"
-</div>
+```
