@@ -126,7 +126,7 @@ webdown --help
 
 ## Documentation
 
-API documentation is available online at [kelp.github.io/webdown](https://kelp.github.io/webdown/).
+API documentation is available online at [tcole.net/webdown](https://tcole.net/webdown/).
 
 You can also generate the documentation locally with:
 
