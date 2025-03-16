@@ -82,3 +82,4 @@ nav:
     - CLI: api/cli.md
   - Changelog: changelog.md
   - Contributing: contributing.md
+  - Cache Buster: dummy.md
