@@ -303,7 +303,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 Please make sure your code passes all tests, type checks, and follows our coding style (enforced by pre-commit hooks). We aim to maintain high code coverage (currently at 93%). When adding features, please include tests.
 
-For more details, see [CONTRIBUTING.md](CONTRIBUTING.md).
+For more details, see [our Contributing Guide](https://tcole.net/webdown/contributing/).
 
 ## Support
 

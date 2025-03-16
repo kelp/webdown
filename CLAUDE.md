@@ -1,5 +1,15 @@
 # Webdown Development Guide
 
+## Version Management (Semantic Versioning)
+
+We follow [Semantic Versioning](https://semver.org/) for version numbering (MAJOR.MINOR.PATCH):
+
+- **Patch version (0.4.1 → 0.4.2)**: Documentation updates, bug fixes, and other changes that don't modify the API
+- **Minor version (0.4.2 → 0.5.0)**: New features or enhancements that maintain backward compatibility
+- **Major version (0.9.0 → 1.0.0)**: Breaking changes, significant rewrites, or major feature overhauls
+
+When making changes, choose the appropriate version increment based on the impact of your changes.
+
 ## Modern Python Development Setup (Python 3.10+)
 
 ### Build & Testing Commands
