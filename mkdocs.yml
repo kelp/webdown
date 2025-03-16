@@ -40,6 +40,13 @@ plugins:
             show_category_heading: true
             show_if_no_docstring: false
             heading_level: 2
+            show_docstring_description: true
+            show_docstring_examples: true
+            show_docstring_attributes: true
+            show_signature: true
+            show_signature_annotations: true
+            extra:
+              show_docstring_other_sections: true
 
 # Markdown extensions
 markdown_extensions:
@@ -51,7 +58,9 @@ markdown_extensions:
       alternate_style: true
   # Includes
   - md_in_html
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
   # UI elements
   - admonition
   - pymdownx.details

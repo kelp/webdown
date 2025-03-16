@@ -1,5 +1,5 @@
 # Changelog
 
 <div class="md-content" markdown="1">
-{% include "CHANGELOG.md" %}
+--8<-- "CHANGELOG.md"
 </div>

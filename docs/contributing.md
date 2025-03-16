@@ -1,5 +1,5 @@
 # Contributing Guide
 
 <div class="md-content" markdown="1">
-{% include "CONTRIBUTING.md" %}
+--8<-- "CONTRIBUTING.md"
 </div>

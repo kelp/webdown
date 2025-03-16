@@ -1,7 +1,17 @@
 # Core API Reference
 
-This page documents the core API for Webdown, including the `WebdownConfig` class
-and functions for converting HTML to Markdown.
+::: webdown.converter
+    options:
+      show_root_heading: false
+      show_root_toc_entry: false
+      show_root_full_path: false
+      show_object_full_path: false
+      members: []
+      show_docstring_attributes: true
+      show_docstring_description: true
+      show_docstring_examples: true
+      extra:
+        show_docstring_other_sections: true
 
 ## Main Functions
 

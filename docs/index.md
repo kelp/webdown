@@ -1,13 +1,12 @@
 # Webdown
 
 <div class="md-content" markdown="1">
-{% include "README.md" %}
+--8<-- "README.md"
 </div>
 
-## Documentation
-
-This documentation includes:
-
-- [API Reference](api/index.md) - Detailed documentation for Python API
-- [Changelog](changelog.md) - Version history and changes
-- [Contributing Guide](contributing.md) - How to contribute to the project
+!!! note "Documentation Links"
+    For full documentation, check out these additional resources:
+    - [API Reference](api/index.md) - Detailed documentation for Python API
+    - [Changelog](changelog.md) - Version history and changes
+    - [Contributing Guide](contributing.md) - How to contribute to the project
+    - [License](https://github.com/kelp/webdown/blob/main/LICENSE) - MIT License details

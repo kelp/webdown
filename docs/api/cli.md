@@ -1,18 +1,25 @@
 # Command-Line Interface
 
-This page documents the Command-Line Interface (CLI) for Webdown,
-which allows you to convert web pages to Markdown from the terminal.
-
-## Main Entry Point
-
-::: webdown.cli.main
+::: webdown.cli
     options:
-      show_signature: true
-      show_source: true
+      show_root_heading: false
+      show_root_toc_entry: false
+      show_root_full_path: false
+      show_object_full_path: false
+      members: []
+      show_docstring_attributes: true
+      show_docstring_description: true
+      show_docstring_examples: true
+      extra:
+        show_docstring_other_sections: true
 
-## CLI Argument Parsing
+## Functions Reference
 
-::: webdown.cli.parse_args
+::: webdown.cli
     options:
+      members:
+        - main
+        - parse_args
+      show_root_heading: false
       show_signature: true
       show_source: true
