@@ -135,17 +135,35 @@ release: all-checks build
 
 	@echo "Creating release tag..."
 	@VERSION=$$(grep '^version =' pyproject.toml | sed 's/version = "//;s/"//'); \
-	echo "Ready to tag release v$$VERSION and trigger GitHub Actions release workflow."; \
-	echo "Are you sure you want to continue? [y/N] "; \
-	read -r response; \
-	if [ "$$response" = "y" ] || [ "$$response" = "Y" ]; then \
+	if [ "$(CONFIRM)" = "yes" ]; then \
 		git tag -a "v$$VERSION" -m "Release version $$VERSION"; \
 		echo "Tag v$$VERSION created locally."; \
 		echo "To finish the release, run: git push origin v$$VERSION"; \
 		echo "This will trigger the GitHub Actions workflow to publish to PyPI."; \
 	else \
-		echo "Release tagging aborted."; \
+		echo "Ready to tag release v$$VERSION and trigger GitHub Actions release workflow."; \
+		echo "To create the release tag, run: make release CONFIRM=yes"; \
+		echo "To finish the release, run: git push origin v$$VERSION"; \
 	fi
+
+# This is a variant that skips the confirmation prompt
+release-auto: all-checks build
+	@echo "Preparing release process..."
+	@VERSION=$$(grep '^version =' pyproject.toml | sed 's/version = "//;s/"//'); \
+	INIT_VERSION=$$(grep '__version__ =' webdown/__init__.py | sed 's/__version__ = "//;s/"//'); \
+	if [ "$$VERSION" != "$$INIT_VERSION" ]; then \
+		echo "Error: Version mismatch! pyproject.toml ($$VERSION) vs __init__.py ($$INIT_VERSION)"; \
+		exit 1; \
+	fi; \
+	echo "Version $$VERSION is consistent across files."; \
+	if ! grep -q "## \[$$VERSION\]" CHANGELOG.md; then \
+		echo "Error: No entry for version $$VERSION found in CHANGELOG.md"; \
+		exit 1; \
+	fi; \
+	echo "CHANGELOG.md entry found."; \
+	git tag -a "v$$VERSION" -m "Release version $$VERSION"; \
+	echo "Tag v$$VERSION created successfully."; \
+	echo "To finish the release, run: git push origin v$$VERSION";
 
 help:
 	@echo "Available targets:"
@@ -170,5 +188,7 @@ help:
 	@echo "  docs-deploy     Deploy documentation to GitHub Pages"
 	@echo "  publish-test    Publish package to TestPyPI (test.pypi.org)"
 	@echo "  publish         Emergency manual publishing to PyPI (normally done via GitHub Actions)"
-	@echo "  release         Prepare and tag a new release (runs checks, verifies versions, creates git tag)"
+	@echo "  release         Prepare for a new release (runs checks, verifies versions)"
+	@echo "  release CONFIRM=yes  Create a release tag without prompting"
+	@echo "  release-auto    Non-interactive version that creates the release tag automatically"
 	@echo "  help            Show this help message"
