@@ -126,9 +126,9 @@ webdown --help
 
 ## Documentation
 
-API documentation is available in the [docs](https://github.com/kelp/webdown/tree/main/docs) directory.
+API documentation is available online at [kelp.github.io/webdown](https://kelp.github.io/webdown/).
 
-You can generate the documentation locally with:
+You can also generate the documentation locally with:
 
 ```bash
 make docs        # Generate HTML docs in the docs/ directory
