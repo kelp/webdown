@@ -442,76 +442,74 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<!-- Included content from CHANGELOG.md -->
-
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gh"># Changelog</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>All notable changes to this project will be documented in this file.
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>The format is based on [<span class="nt">Keep a Changelog</span>](<span class="na">https://keepachangelog.com/en/1.0.0/</span>),
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>and this project adheres to [<span class="nt">Semantic Versioning</span>](<span class="na">https://semver.org/spec/v2.0.0.html</span>).
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gu">## [0.4.1] - 2025-03-15</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="gu">### Added</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">-</span><span class="w"> </span>Added pdoc documentation generation with <span class="sb">`make docs`</span> and <span class="sb">`make docs-serve`</span> commands
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">-</span><span class="w"> </span>Generated documentation now available in the <span class="sb">`docs/`</span> directory
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="gu">### Improved</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="k">-</span><span class="w"> </span>Enhanced CLI documentation with detailed explanations and practical examples
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="k">-</span><span class="w"> </span>Improved command-line help with logically organized option groups and better descriptions
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="k">-</span><span class="w"> </span>Added epilog with link to project repository
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="gu">## [0.4.0] - 2025-03-15</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="gu">### Added</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="k">-</span><span class="w"> </span>Introduced WebdownConfig class for better parameter organization and configuration
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="k">-</span><span class="w"> </span>Added comprehensive support for advanced HTML2Text options in both CLI and API:
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">  </span><span class="k">-</span><span class="w"> </span>Single line break mode (<span class="sb">`--single-line-break`</span>)
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="k">-</span><span class="w"> </span>Unicode character support (<span class="sb">`--unicode`</span>)
-<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span><span class="k">-</span><span class="w"> </span>HTML tables preservation (<span class="sb">`--tables-as-html`</span>)
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">  </span><span class="k">-</span><span class="w"> </span>Custom emphasis and strong emphasis markers (<span class="sb">`--emphasis-mark`</span>, <span class="sb">`--strong-mark`</span>)
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">  </span><span class="k">-</span><span class="w"> </span>Link protection, image handling options, and more in the API
-<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="k">-</span><span class="w"> </span>Improved CLI with advanced options group for better help display
-<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
-<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="gu">### Changed</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="k">-</span><span class="w"> </span>Simplified the exception hierarchy to a single WebdownError class
-<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="k">-</span><span class="w"> </span>Updated API to support both parameter-based and config-based approaches
-<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="k">-</span><span class="w"> </span>Improved documentation with detailed examples for new features
-<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="k">-</span><span class="w"> </span>Updated all dependencies to latest versions
-<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="k">-</span><span class="w"> </span>html2text updated from 2020.1.16 to 2024.2.26
-<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="k">-</span><span class="w"> </span>beautifulsoup4, requests, tqdm and all dev dependencies updated to latest versions
-<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>
-<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="gu">## [0.3.1] - 2025-03-15</span>
-<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>
-<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="gu">### Changed</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="k">-</span><span class="w"> </span>Updated all dependencies to latest versions
-<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="k">-</span><span class="w"> </span>html2text updated from 2020.1.16 to 2024.2.26
-<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="k">-</span><span class="w"> </span>beautifulsoup4, requests, tqdm and all dev dependencies updated to latest versions
-<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>
-<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="gu">## [0.3.0] - 2025-03-15</span>
-<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>
-<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="gu">### Added</span>
-<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="k">-</span><span class="w"> </span>Command-line option <span class="sb">`-w/--width`</span> to set html2text body_width for text wrapping
-<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="k">-</span><span class="w"> </span>Progress bar for downloads with new <span class="sb">`-p/--progress`</span> flag
-<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="k">-</span><span class="w"> </span>Support for CSS selectors with <span class="sb">`-s/--css`</span> to extract specific page sections
-<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="k">-</span><span class="w"> </span>Compact output option with <span class="sb">`-c/--compact`</span> to remove excessive blank lines
-<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="k">-</span><span class="w"> </span>Automatic removal of zero-width spaces and other invisible characters
-<a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a>
-<a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="gu">### Changed</span>
-<a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="k">-</span><span class="w"> </span>Migrated to modern Python packaging using Poetry
-<a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="k">-</span><span class="w"> </span>Updated Python requirements to 3.10+
-<a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="k">-</span><span class="w"> </span>Changed CSS selector flag from <span class="sb">`-c`</span> to <span class="sb">`-s`</span> to avoid conflict with compact flag
-<a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="k">-</span><span class="w"> </span>Improved documentation with comprehensive docstrings
-<a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="k">-</span><span class="w"> </span>Enhanced test coverage to 100% (excluding integration tests)
-<a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a>
-<a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="gu">## [0.2.0] - 2025-03-12</span>
-<a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a>
-<a id="__codelineno-0-64" name="__codelineno-0-64" href="#__codelineno-0-64"></a><span class="gu">### Added</span>
-<a id="__codelineno-0-65" name="__codelineno-0-65" href="#__codelineno-0-65"></a><span class="k">-</span><span class="w"> </span>Initial release with basic web to markdown conversion
-<a id="__codelineno-0-66" name="__codelineno-0-66" href="#__codelineno-0-66"></a><span class="k">-</span><span class="w"> </span>Support for table of contents generation
-<a id="__codelineno-0-67" name="__codelineno-0-67" href="#__codelineno-0-67"></a><span class="k">-</span><span class="w"> </span>Link and image handling options
-</code></pre></div>
+<h1 id="changelog_1">Changelog<a class="headerlink" href="#changelog_1" title="Permanent link">&para;</a></h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
+and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="041-2025-03-15">[0.4.1] - 2025-03-15<a class="headerlink" href="#041-2025-03-15" title="Permanent link">&para;</a></h2>
+<h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Added pdoc documentation generation with <code>make docs</code> and <code>make docs-serve</code> commands</li>
+<li>Generated documentation now available in the <code>docs/</code> directory</li>
+</ul>
+<h3 id="improved">Improved<a class="headerlink" href="#improved" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Enhanced CLI documentation with detailed explanations and practical examples</li>
+<li>Improved command-line help with logically organized option groups and better descriptions</li>
+<li>Added epilog with link to project repository</li>
+</ul>
+<h2 id="040-2025-03-15">[0.4.0] - 2025-03-15<a class="headerlink" href="#040-2025-03-15" title="Permanent link">&para;</a></h2>
+<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Introduced WebdownConfig class for better parameter organization and configuration</li>
+<li>Added comprehensive support for advanced HTML2Text options in both CLI and API:</li>
+<li>Single line break mode (<code>--single-line-break</code>)</li>
+<li>Unicode character support (<code>--unicode</code>)</li>
+<li>HTML tables preservation (<code>--tables-as-html</code>)</li>
+<li>Custom emphasis and strong emphasis markers (<code>--emphasis-mark</code>, <code>--strong-mark</code>)</li>
+<li>Link protection, image handling options, and more in the API</li>
+<li>Improved CLI with advanced options group for better help display</li>
+</ul>
+<h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Simplified the exception hierarchy to a single WebdownError class</li>
+<li>Updated API to support both parameter-based and config-based approaches</li>
+<li>Improved documentation with detailed examples for new features</li>
+<li>Updated all dependencies to latest versions</li>
+<li>html2text updated from 2020.1.16 to 2024.2.26</li>
+<li>beautifulsoup4, requests, tqdm and all dev dependencies updated to latest versions</li>
+</ul>
+<h2 id="031-2025-03-15">[0.3.1] - 2025-03-15<a class="headerlink" href="#031-2025-03-15" title="Permanent link">&para;</a></h2>
+<h3 id="changed_1">Changed<a class="headerlink" href="#changed_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Updated all dependencies to latest versions</li>
+<li>html2text updated from 2020.1.16 to 2024.2.26</li>
+<li>beautifulsoup4, requests, tqdm and all dev dependencies updated to latest versions</li>
+</ul>
+<h2 id="030-2025-03-15">[0.3.0] - 2025-03-15<a class="headerlink" href="#030-2025-03-15" title="Permanent link">&para;</a></h2>
+<h3 id="added_2">Added<a class="headerlink" href="#added_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Command-line option <code>-w/--width</code> to set html2text body_width for text wrapping</li>
+<li>Progress bar for downloads with new <code>-p/--progress</code> flag</li>
+<li>Support for CSS selectors with <code>-s/--css</code> to extract specific page sections</li>
+<li>Compact output option with <code>-c/--compact</code> to remove excessive blank lines</li>
+<li>Automatic removal of zero-width spaces and other invisible characters</li>
+</ul>
+<h3 id="changed_2">Changed<a class="headerlink" href="#changed_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Migrated to modern Python packaging using Poetry</li>
+<li>Updated Python requirements to 3.10+</li>
+<li>Changed CSS selector flag from <code>-c</code> to <code>-s</code> to avoid conflict with compact flag</li>
+<li>Improved documentation with comprehensive docstrings</li>
+<li>Enhanced test coverage to 100% (excluding integration tests)</li>
+</ul>
+<h2 id="020-2025-03-12">[0.2.0] - 2025-03-12<a class="headerlink" href="#020-2025-03-12" title="Permanent link">&para;</a></h2>
+<h3 id="added_3">Added<a class="headerlink" href="#added_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Initial release with basic web to markdown conversion</li>
+<li>Support for table of contents generation</li>
+<li>Link and image handling options</li>
+</ul>
 
 
 
