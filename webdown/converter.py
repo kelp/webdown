@@ -40,8 +40,21 @@ class WebdownConfig:
         compact_output: Whether to remove excessive blank lines
         body_width: Maximum line length for wrapping (0 for no wrapping)
         show_progress: Whether to display a progress bar during download
+
+        # Advanced HTML2Text options
+        single_line_break: Whether to use single line breaks (True) or double (False)
+        protect_links: Whether to protect links from line wrapping with brackets
+        images_as_html: Whether to keep images as HTML rather than Markdown syntax
+        unicode_snob: Whether to use Unicode characters instead of ASCII equivalents
+        tables_as_html: Whether to keep tables as HTML rather than Markdown syntax
+        emphasis_mark: Character to use for emphasis (usually underscore '_')
+        strong_mark: Character to use for strong emphasis (usually asterisks '**')
+        default_image_alt: Default alt text to use when images don't have any
+        pad_tables: Whether to add padding spaces for table alignment
+        wrap_list_items: Whether to wrap list items to the body_width
     """
 
+    # Basic options
     url: Optional[str] = None
     include_links: bool = True
     include_images: bool = True
@@ -50,6 +63,18 @@ class WebdownConfig:
     compact_output: bool = False
     body_width: int = 0
     show_progress: bool = False
+
+    # Advanced HTML2Text options
+    single_line_break: bool = False
+    protect_links: bool = False
+    images_as_html: bool = False
+    unicode_snob: bool = False
+    tables_as_html: bool = False  # Equivalent to bypass_tables in html2text
+    emphasis_mark: str = "_"
+    strong_mark: str = "**"
+    default_image_alt: str = ""
+    pad_tables: bool = False
+    wrap_list_items: bool = False
 
 
 class WebdownError(Exception):
@@ -158,27 +183,53 @@ def html_to_markdown(
     css_selector: Optional[str] = None,
     compact_output: bool = False,
     body_width: int = 0,
+    # Advanced HTML2Text options
+    single_line_break: bool = False,
+    protect_links: bool = False,
+    images_as_html: bool = False,
+    unicode_snob: bool = False,
+    tables_as_html: bool = False,
+    emphasis_mark: str = "_",
+    strong_mark: str = "**",
+    default_image_alt: str = "",
+    pad_tables: bool = False,
+    wrap_list_items: bool = False,
+    # Config object support
+    config: Optional[WebdownConfig] = None,
 ) -> str:
     """Convert HTML to Markdown with various formatting options.
 
     This function takes HTML content and converts it to Markdown format.
-    It provides several options to customize the output, including link/image
-    handling, table of contents generation, content filtering, and whitespace
-    management.
+    It provides many options to customize the output, from basic features like
+    link/image handling to advanced formatting options.
+
+    You can provide individual parameters or use a WebdownConfig object.
+    If a config object is provided, it takes precedence over individual parameters.
 
     Args:
         html: HTML content to convert as a string
-        include_links: Whether to include hyperlinks (True) or convert them to
-                     plain text (False)
+        include_links: Whether to include hyperlinks (True) or convert to plain text
         include_images: Whether to include images (True) or exclude them (False)
-        include_toc: Whether to generate table of contents based on headings (True)
-                    or not (False)
-        css_selector: CSS selector to extract specific content from the HTML
-                     (e.g., "main", "article"). If None, processes the entire HTML.
-        compact_output: Whether to remove excessive blank lines in the output (True)
-                       or preserve the original whitespace (False)
-        body_width: Maximum line length for text wrapping. Set to 0 for no wrapping.
-                  Common values are 0 (no wrapping), 72, or 80.
+        include_toc: Whether to generate table of contents based on headings
+        css_selector: CSS selector to extract specific content (e.g., "main")
+        compact_output: Whether to remove excessive blank lines in the output
+        body_width: Maximum line length for text wrapping (0 for no wrapping)
+
+        # Advanced HTML2Text options
+        single_line_break: Whether to use single line breaks instead of double
+        protect_links: Whether to protect links from line wrapping with brackets
+        images_as_html: Whether to keep images as HTML rather than Markdown syntax
+        unicode_snob: Whether to use Unicode characters instead of ASCII equivalents
+        tables_as_html: Whether to keep tables as HTML rather than Markdown format
+        emphasis_mark: Character to use for emphasis (default: "_")
+        strong_mark: Character to use for strong emphasis (default: "**")
+        default_image_alt: Default alt text for images without alt attributes
+        pad_tables: Whether to add padding spaces for table alignment
+        wrap_list_items: Whether to wrap list items to the body_width
+
+        # Config object support
+        config: A WebdownConfig object containing all configuration options.
+               If provided, all other parameters are ignored.
 
     Returns:
         A string containing the converted Markdown content
@@ -207,11 +258,45 @@ def html_to_markdown(
         if selected:
             html = "".join(str(element) for element in selected)
 
+    # Use config object if provided, otherwise use individual parameters
+    if config is not None:
+        # Override parameters with config values
+        include_links = config.include_links
+        include_images = config.include_images
+        include_toc = config.include_toc
+        css_selector = config.css_selector
+        compact_output = config.compact_output
+        body_width = config.body_width
+        single_line_break = config.single_line_break
+        protect_links = config.protect_links
+        images_as_html = config.images_as_html
+        unicode_snob = config.unicode_snob
+        tables_as_html = config.tables_as_html
+        emphasis_mark = config.emphasis_mark
+        strong_mark = config.strong_mark
+        default_image_alt = config.default_image_alt
+        pad_tables = config.pad_tables
+        wrap_list_items = config.wrap_list_items
+
     # Configure html2text
     h = html2text.HTML2Text()
+
+    # Basic options
     h.ignore_links = not include_links
     h.ignore_images = not include_images
     h.body_width = body_width  # User-defined line width
+
+    # Advanced options
+    h.single_line_break = single_line_break
+    h.protect_links = protect_links
+    h.images_as_html = images_as_html
+    h.unicode_snob = unicode_snob
+    h.bypass_tables = tables_as_html  # Note: bypass_tables is the opposite of md tables
+    h.emphasis_mark = emphasis_mark
+    h.strong_mark = strong_mark
+    h.default_image_alt = default_image_alt
+    h.pad_tables = pad_tables
+    h.wrap_list_items = wrap_list_items
 
     markdown = h.handle(html)
 
@@ -312,12 +397,18 @@ def convert_url_to_markdown(
         url = url_or_config
 
     html = fetch_url(url, show_progress=show_progress)
-    return html_to_markdown(
-        html,
-        include_links=include_links,
-        include_images=include_images,
-        include_toc=include_toc,
-        css_selector=css_selector,
-        compact_output=compact_output,
-        body_width=body_width,
-    )
+
+    if isinstance(url_or_config, WebdownConfig):
+        # Pass the config object to html_to_markdown
+        return html_to_markdown(html, config=config)
+    else:
+        # Use individual parameters
+        return html_to_markdown(
+            html,
+            include_links=include_links,
+            include_images=include_images,
+            include_toc=include_toc,
+            css_selector=css_selector,
+            compact_output=compact_output,
+            body_width=body_width,
+        )

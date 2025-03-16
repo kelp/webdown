@@ -66,6 +66,35 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         action="store_true",
         help="Show download progress bar",
     )
+
+    # Add advanced HTML2Text options
+    advanced_group = parser.add_argument_group("Advanced Options")
+    advanced_group.add_argument(
+        "--single-line-break",
+        action="store_true",
+        help="Use single line breaks instead of two line breaks",
+    )
+    advanced_group.add_argument(
+        "--unicode",
+        action="store_true",
+        help="Use Unicode characters instead of ASCII equivalents",
+    )
+    advanced_group.add_argument(
+        "--tables-as-html",
+        action="store_true",
+        help="Keep tables as HTML instead of converting to Markdown",
+    )
+    advanced_group.add_argument(
+        "--emphasis-mark",
+        default="_",
+        help="Character(s) to use for emphasis (default: '_')",
+    )
+    advanced_group.add_argument(
+        "--strong-mark",
+        default="**",
+        help="Character(s) to use for strong emphasis (default: '**')",
+    )
+
     parser.add_argument(
         "-V",
         "--version",
@@ -115,6 +144,7 @@ def main(args: Optional[List[str]] = None) -> int:
 
         # Create a config object from command-line arguments
         config = WebdownConfig(
+            # Basic options
             url=parsed_args.url,
             include_toc=parsed_args.toc,
             include_links=not parsed_args.no_links,
@@ -123,6 +153,12 @@ def main(args: Optional[List[str]] = None) -> int:
             compact_output=parsed_args.compact,
             body_width=parsed_args.width,
             show_progress=parsed_args.progress,
+            # Advanced options
+            single_line_break=parsed_args.single_line_break,
+            unicode_snob=parsed_args.unicode,
+            tables_as_html=parsed_args.tables_as_html,
+            emphasis_mark=parsed_args.emphasis_mark,
+            strong_mark=parsed_args.strong_mark,
         )
 
         # Convert using the config object

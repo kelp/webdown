@@ -68,6 +68,14 @@ webdown https://example.com/page.html
 - `-w, --width N`: Set the line width for wrapped text (0 for no wrapping)
 - `-p, --progress`: Show download progress bar
 
+**Advanced Options:**
+
+- `--single-line-break`: Use single line breaks instead of two line breaks
+- `--unicode`: Use Unicode characters instead of ASCII equivalents
+- `--tables-as-html`: Keep tables as HTML instead of converting to Markdown
+- `--emphasis-mark CHAR`: Character(s) to use for emphasis (default: '_')
+- `--strong-mark CHARS`: Character(s) to use for strong emphasis (default: '**')
+
 ## Examples
 
 Generate markdown with a table of contents:
@@ -212,12 +220,20 @@ markdown = convert_url_to_markdown(
 
 # Method 2: Using the Config object (new in 0.3.1)
 config = WebdownConfig(
+    # Basic options
     url="https://example.com",
     include_toc=True,
     css_selector="main",
     compact_output=True,
     body_width=80,
-    show_progress=True
+    show_progress=True,
+
+    # Advanced options (all optional)
+    single_line_break=False,
+    unicode_snob=True,  # Use Unicode characters
+    tables_as_html=False,
+    emphasis_mark="_",
+    strong_mark="**"
 )
 markdown = convert_url_to_markdown(config)
 

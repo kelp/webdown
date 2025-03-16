@@ -108,7 +108,7 @@
   - [x] Evaluate necessity of the custom exception hierarchy (WebdownError, NetworkError, etc.) - IMPLEMENTED: Simplified to single WebdownError class
   - [x] Simplify parameter interface of `convert_url_to_markdown()` (consider Config object) - IMPLEMENTED: Added WebdownConfig class while preserving backward compatibility
 - [ ] Optimize html2text usage
-  - [ ] Ensure all html2text options are exposed where useful
+  - [x] Ensure all html2text options are exposed where useful - IMPLEMENTED: Added advanced options to WebdownConfig and CLI
   - [ ] Benchmark and optimize performance for large documents
 
 ## Documentation Enhancements

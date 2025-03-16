@@ -133,6 +133,35 @@ class TestParseArgs:
         args = parse_args(["https://example.com", "-p"])
         assert args.progress is True
 
+    def test_advanced_options(self) -> None:
+        """Test parsing advanced HTML2Text options."""
+        # Default values
+        args = parse_args(["https://example.com"])
+        assert args.single_line_break is False
+        assert args.unicode is False
+        assert args.tables_as_html is False
+        assert args.emphasis_mark == "_"
+        assert args.strong_mark == "**"
+
+        # With custom values
+        args = parse_args(
+            [
+                "https://example.com",
+                "--single-line-break",
+                "--unicode",
+                "--tables-as-html",
+                "--emphasis-mark",
+                "*",
+                "--strong-mark",
+                "__",
+            ]
+        )
+        assert args.single_line_break is True
+        assert args.unicode is True
+        assert args.tables_as_html is True
+        assert args.emphasis_mark == "*"
+        assert args.strong_mark == "__"
+
     def test_version_flag(self) -> None:
         """Test version flag is recognized."""
         # Testing that the flag is recognized correctly

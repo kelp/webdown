@@ -397,15 +397,9 @@ class TestConvertUrlToMarkdown:
             "https://example.com", show_progress=True
         )
 
-        # Verify html_to_markdown was called with parameters from config
+        # Verify html_to_markdown was called with config object
         mock_html_to_markdown.assert_called_once_with(
-            "<html><body>Test</body></html>",
-            include_links=True,  # Default value
-            include_images=False,  # From config
-            include_toc=True,  # From config
-            css_selector=None,  # Default value
-            compact_output=False,  # Default value
-            body_width=72,  # From config
+            "<html><body>Test</body></html>", config=config
         )
 
         # Verify result is returned from html_to_markdown
