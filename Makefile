@@ -117,8 +117,8 @@ release: all-checks build
 	@echo "Preparing release process..."
 
 	@echo "Verifying version consistency..."
-	@VERSION=$$(grep -oP '^version = "\K[^"]+' pyproject.toml); \
-	INIT_VERSION=$$(grep -oP '__version__ = "\K[^"]+' webdown/__init__.py); \
+	@VERSION=$$(grep '^version =' pyproject.toml | sed 's/version = "//;s/"//'); \
+	INIT_VERSION=$$(grep '__version__ =' webdown/__init__.py | sed 's/__version__ = "//;s/"//'); \
 	if [ "$$VERSION" != "$$INIT_VERSION" ]; then \
 		echo "Error: Version mismatch! pyproject.toml ($$VERSION) vs __init__.py ($$INIT_VERSION)"; \
 		exit 1; \
@@ -126,7 +126,7 @@ release: all-checks build
 	echo "Version $$VERSION is consistent across files."
 
 	@echo "Checking for CHANGELOG.md entry..."
-	@VERSION=$$(grep -oP '^version = "\K[^"]+' pyproject.toml); \
+	@VERSION=$$(grep '^version =' pyproject.toml | sed 's/version = "//;s/"//'); \
 	if ! grep -q "## \[$$VERSION\]" CHANGELOG.md; then \
 		echo "Error: No entry for version $$VERSION found in CHANGELOG.md"; \
 		exit 1; \
@@ -134,7 +134,7 @@ release: all-checks build
 	echo "CHANGELOG.md entry found."
 
 	@echo "Creating release tag..."
-	@VERSION=$$(grep -oP '^version = "\K[^"]+' pyproject.toml); \
+	@VERSION=$$(grep '^version =' pyproject.toml | sed 's/version = "//;s/"//'); \
 	echo "Ready to tag release v$$VERSION and trigger GitHub Actions release workflow."; \
 	echo "Are you sure you want to continue? [y/N] "; \
 	read -r response; \
