@@ -27,7 +27,7 @@ import sys
 from typing import List, Optional
 
 from webdown import __version__
-from webdown.converter import convert_url_to_markdown
+from webdown.converter import WebdownConfig, convert_url_to_markdown
 
 
 def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
@@ -113,8 +113,9 @@ def main(args: Optional[List[str]] = None) -> int:
             )  # pragma: no cover - this exits so coverage tools can't track it
             return 0  # pragma: no cover - unreachable after SystemExit
 
-        markdown = convert_url_to_markdown(
-            parsed_args.url,
+        # Create a config object from command-line arguments
+        config = WebdownConfig(
+            url=parsed_args.url,
             include_toc=parsed_args.toc,
             include_links=not parsed_args.no_links,
             include_images=not parsed_args.no_images,
@@ -123,6 +124,9 @@ def main(args: Optional[List[str]] = None) -> int:
             body_width=parsed_args.width,
             show_progress=parsed_args.progress,
         )
+
+        # Convert using the config object
+        markdown = convert_url_to_markdown(config)
 
         if parsed_args.output:
             with open(parsed_args.output, "w", encoding="utf-8") as f:

@@ -168,17 +168,20 @@ class TestMain:
         finally:
             sys.stdout = stdout_backup
 
-        # Verify convert_url_to_markdown was called with correct parameters
-        mock_convert.assert_called_once_with(
-            "https://example.com",
-            include_toc=False,
-            include_links=True,
-            include_images=True,
-            css_selector=None,
-            compact_output=False,
-            body_width=0,
-            show_progress=False,
-        )
+        # Verify convert_url_to_markdown was called with a WebdownConfig
+        # We only check that it was called once
+        assert mock_convert.call_count == 1
+        # Get the first argument (should be a WebdownConfig object)
+        config = mock_convert.call_args[0][0]
+        # Verify the config has the expected values
+        assert config.url == "https://example.com"
+        assert config.include_toc is False
+        assert config.include_links is True
+        assert config.include_images is True
+        assert config.css_selector is None
+        assert config.compact_output is False
+        assert config.body_width == 0
+        assert config.show_progress is False
 
     @patch("webdown.cli.parse_args")
     def test_main_with_no_args(self, mock_parse_args: MagicMock) -> None:

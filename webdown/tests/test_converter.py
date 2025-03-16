@@ -5,6 +5,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from webdown.converter import (
+    WebdownConfig,
     WebdownError,
     convert_url_to_markdown,
     fetch_url,
@@ -370,3 +371,52 @@ class TestConvertUrlToMarkdown:
 
         # Verify result is returned from html_to_markdown
         assert result == "# Test\n\nContent"
+
+    @patch("webdown.converter.fetch_url")
+    @patch("webdown.converter.html_to_markdown")
+    def test_conversion_with_config_object(
+        self, mock_html_to_markdown: MagicMock, mock_fetch_url: MagicMock
+    ) -> None:
+        """Test conversion using the WebdownConfig object."""
+        mock_fetch_url.return_value = "<html><body>Test</body></html>"
+        mock_html_to_markdown.return_value = "# Test\n\nContent"
+
+        # Create config object with custom settings
+        config = WebdownConfig(
+            url="https://example.com",
+            include_toc=True,
+            include_images=False,
+            body_width=72,
+            show_progress=True,
+        )
+
+        result = convert_url_to_markdown(config)
+
+        # Verify fetch_url was called with show_progress=True from config
+        mock_fetch_url.assert_called_once_with(
+            "https://example.com", show_progress=True
+        )
+
+        # Verify html_to_markdown was called with parameters from config
+        mock_html_to_markdown.assert_called_once_with(
+            "<html><body>Test</body></html>",
+            include_links=True,  # Default value
+            include_images=False,  # From config
+            include_toc=True,  # From config
+            css_selector=None,  # Default value
+            compact_output=False,  # Default value
+            body_width=72,  # From config
+        )
+
+        # Verify result is returned from html_to_markdown
+        assert result == "# Test\n\nContent"
+
+    def test_config_missing_url(self) -> None:
+        """Test that WebdownConfig without URL raises an error."""
+        # Create config without URL
+        config = WebdownConfig(include_toc=True, body_width=80)
+
+        with pytest.raises(WebdownError) as exc_info:
+            convert_url_to_markdown(config)
+
+        assert "URL must be provided" in str(exc_info.value)

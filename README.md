@@ -20,6 +20,23 @@ it into an LLM coding tool.
 - **Progress Tracking**: Visual download progress for large pages with `-p` flag
 - **Python Integration**: Use as a CLI tool or integrate into your Python projects
 
+## Use Cases
+
+### Documentation for AI Coding Assistants
+
+Webdown is particularly useful for preparing documentation to use with AI-assisted coding tools like Claude Code, GitHub Copilot, or ChatGPT:
+
+- Convert technical documentation into clean Markdown for AI context
+- Extract only the relevant parts of large documentation pages using CSS selectors
+- Strip out images and formatting that might consume token context
+- Generate well-structured tables of contents for better navigation
+- Batch process API documentation for library-specific assistance
+
+```bash
+# Example: Convert API docs and store for AI coding context
+webdown https://api.example.com/docs -s "main" -I -c -w 80 -o api_context.md
+```
+
 ## Installation
 
 ```bash
@@ -176,12 +193,12 @@ poetry build
 Webdown can also be used as a Python library in your own projects:
 
 ```python
-from webdown.converter import convert_url_to_markdown
+from webdown.converter import convert_url_to_markdown, WebdownConfig
 
-# Basic conversion
+# Method 1: Basic conversion with individual parameters
 markdown = convert_url_to_markdown("https://example.com")
 
-# With all options
+# Method 1: With all options as parameters (original style)
 markdown = convert_url_to_markdown(
     url="https://example.com",
     include_links=True,
@@ -192,6 +209,17 @@ markdown = convert_url_to_markdown(
     body_width=80,        # Wrap text at 80 characters
     show_progress=True    # Show download progress bar
 )
+
+# Method 2: Using the Config object (new in 0.3.1)
+config = WebdownConfig(
+    url="https://example.com",
+    include_toc=True,
+    css_selector="main",
+    compact_output=True,
+    body_width=80,
+    show_progress=True
+)
+markdown = convert_url_to_markdown(config)
 
 # Save to file
 with open("output.md", "w") as f:

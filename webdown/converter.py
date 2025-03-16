@@ -14,6 +14,7 @@ the entire process from fetching a URL to producing clean Markdown output.
 """
 
 import io
+from dataclasses import dataclass
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -21,6 +22,34 @@ import html2text
 import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
+
+
+@dataclass
+class WebdownConfig:
+    """Configuration options for HTML to Markdown conversion.
+
+    This class centralizes all configuration options for the conversion process,
+    making it easier to manage and extend the functionality.
+
+    Attributes:
+        url: URL of the web page to convert (required for URL-based conversion)
+        include_links: Whether to include hyperlinks (True) or plain text (False)
+        include_images: Whether to include images (True) or exclude them (False)
+        include_toc: Whether to generate table of contents
+        css_selector: CSS selector to extract specific content (e.g., "main")
+        compact_output: Whether to remove excessive blank lines
+        body_width: Maximum line length for wrapping (0 for no wrapping)
+        show_progress: Whether to display a progress bar during download
+    """
+
+    url: Optional[str] = None
+    include_links: bool = True
+    include_images: bool = True
+    include_toc: bool = False
+    css_selector: Optional[str] = None
+    compact_output: bool = False
+    body_width: int = 0
+    show_progress: bool = False
 
 
 class WebdownError(Exception):
@@ -218,7 +247,7 @@ def html_to_markdown(
 
 
 def convert_url_to_markdown(
-    url: str,
+    url_or_config: str | WebdownConfig,
     include_links: bool = True,
     include_images: bool = True,
     include_toc: bool = False,
@@ -229,22 +258,59 @@ def convert_url_to_markdown(
 ) -> str:
     """Convert a web page to markdown.
 
+    This function accepts either a URL string or a WebdownConfig object.
+    If a URL string is provided, the remaining parameters are used for configuration.
+    If a WebdownConfig object is provided, all other parameters are ignored.
+
     Args:
-        url: URL of the web page
-        include_links: Whether to include hyperlinks
-        include_images: Whether to include images
-        include_toc: Whether to generate table of contents
-        css_selector: CSS selector to extract specific content
-        compact_output: Whether to remove excessive blank lines
-        body_width: Maximum line length for text wrapping (0 for no wrapping)
-        show_progress: Whether to display a progress bar during download
+        url_or_config: URL of the web page or a WebdownConfig object
+        include_links: Whether to include hyperlinks (ignored if config provided)
+        include_images: Whether to include images (ignored if config provided)
+        include_toc: Whether to generate table of contents (ignored if config provided)
+        css_selector: CSS selector for content extraction (ignored if config provided)
+        compact_output: Whether to remove blank lines (ignored if config provided)
+        body_width: Maximum line length for text wrapping (ignored if config provided)
+        show_progress: Whether to display a progress bar (ignored if config provided)
 
     Returns:
         Markdown content
 
     Raises:
         WebdownError: If URL is invalid or cannot be fetched
+
+    Examples:
+        # Using individual parameters (backward compatible)
+        markdown = convert_url_to_markdown(
+            "https://example.com",
+            include_toc=True,
+            show_progress=True
+        )
+
+        # Using config object (new approach)
+        config = WebdownConfig(
+            url="https://example.com",
+            include_toc=True,
+            show_progress=True
+        )
+        markdown = convert_url_to_markdown(config)
     """
+    # Determine if we're using a config object or URL string
+    if isinstance(url_or_config, WebdownConfig):
+        config = url_or_config
+        if config.url is None:
+            raise WebdownError("URL must be provided in the config object")
+        url = config.url
+        include_links = config.include_links
+        include_images = config.include_images
+        include_toc = config.include_toc
+        css_selector = config.css_selector
+        compact_output = config.compact_output
+        body_width = config.body_width
+        show_progress = config.show_progress
+    else:
+        # Using the traditional parameter-based approach
+        url = url_or_config
+
     html = fetch_url(url, show_progress=show_progress)
     return html_to_markdown(
         html,
