@@ -102,6 +102,35 @@
   - [ ] Run `poetry publish --build` command
   - [ ] Update documentation with installation instructions from PyPI
 
+## Code Improvements
+- [ ] Reduce dependency complexity
+  - [ ] Consider replacing tqdm with simple custom progress bar (~15 lines)
+  - [ ] Evaluate necessity of the custom exception hierarchy (WebdownError, NetworkError, etc.)
+  - [ ] Simplify parameter interface of `convert_url_to_markdown()` (consider Config object)
+- [ ] Optimize html2text usage
+  - [ ] Ensure all html2text options are exposed where useful
+  - [ ] Benchmark and optimize performance for large documents
+
+## Documentation Enhancements
+- [ ] Add batch processing examples
+  - [ ] Document how to process multiple URLs efficiently
+  - [ ] Provide shell script examples for batch processing
+- [ ] Include configuration recommendations
+  - [ ] Add guidance for optimal settings for different site types (blogs, docs, etc.)
+  - [ ] Document best practices for token efficiency with LLMs
+- [ ] Improve error handling documentation
+  - [ ] Explain how users should handle common failures
+  - [ ] Add troubleshooting section for common issues
+
+## Test Improvements
+- [ ] Complete edge case coverage
+  - [ ] Add tests for network failure scenarios
+  - [ ] Test different HTML edge cases and encoding issues
+- [ ] Enhance integration tests
+  - [ ] Test against more diverse real-world websites
+  - [ ] Add performance testing for large documents
+  - [ ] Test with slow connections and timeout scenarios
+
 ## Features to Consider
 - [x] Add a progress bar for downloads
 - [ ] Support for custom HTML to Markdown converters
