@@ -6,14 +6,18 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/webdown.svg)](https://pypi.org/project/webdown/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A Python CLI tool for converting web pages to clean, readable Markdown format. Webdown makes it easy to extract content from websites for documentation, notes, content migration, or offline reading.
+A Python CLI tool for converting web pages to clean, readable Markdown format. Webdown makes it easy
+to extract content from websites for documentation, notes, content migration, or offline reading.
+
+I made this tool specifically so I could download documentation, convert it to Markdown and feed
+it into an LLM coding tool.
 
 ## Why Webdown?
 
 - **Clean Conversion**: Produces readable Markdown without formatting artifacts
 - **Selective Extraction**: Target specific page sections with CSS selectors
 - **Customization Options**: Control links, images, text wrapping, and more
-- **Progress Tracking**: Visual download progress for large pages
+- **Progress Tracking**: Visual download progress for large pages with `-p` flag
 - **Python Integration**: Use as a CLI tool or integrate into your Python projects
 
 ## Installation
@@ -200,12 +204,22 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Run tests to make sure everything works (`poetry run pytest`)
+3. Run tests to make sure everything works:
+   ```bash
+   # Run standard tests
+   poetry run pytest
+
+   # Run tests with coverage
+   poetry run pytest --cov=webdown
+
+   # Run integration tests
+   poetry run pytest --integration
+   ```
 4. Commit your changes (`git commit -m 'Add some amazing feature'`)
 5. Push to the branch (`git push origin feature/amazing-feature`)
 6. Open a Pull Request
 
-Please make sure your code passes all tests, type checks, and follows our coding style (enforced by pre-commit hooks).
+Please make sure your code passes all tests, type checks, and follows our coding style (enforced by pre-commit hooks). We aim to maintain high code coverage (currently at 93%). When adding features, please include tests.
 
 For more details, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
