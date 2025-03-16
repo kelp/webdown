@@ -39,16 +39,18 @@
   - [x] Add detailed module-level docstrings to all modules
   - [x] Add comprehensive function and class docstrings
   - [x] Include examples in docstrings where helpful
-- [x] Generate API documentation with pydoc
-  - [x] Create docs/api/ directory with HTML documentation
-  - [x] Create custom index.html as documentation entry point
+- [x] Generate API documentation with pdoc
+  - [x] Add Makefile commands for generating docs (`make docs`)
+  - [x] Add local documentation server command (`make docs-serve`)
+  - [x] Improve formatting of docstrings with Markdown bullet lists
 - [x] Expand README.md with more detailed usage examples
 - [x] Add contributing guidelines
   - [x] Create CONTRIBUTING.md with development instructions
   - [x] Include coding standards and PR process
 - [x] Confirm license (MIT) and update copyright information
 - [x] Improve API documentation
-  - [x] Auto-generate API docs with pydoc
+  - [x] Better CLI documentation with improved help formatting
+  - [x] Enhance WebdownConfig class documentation
   - [x] Document all functions, classes, and modules
 
 ## Local Development Best Practices
@@ -96,11 +98,12 @@
   - [x] Create GitHub release notes template from CHANGELOG.md
 
 ## Future Publishing Tasks
-- [ ] Publish to PyPI with Poetry
-  - [ ] Create PyPI account and configure credentials
-  - [ ] Verify all package metadata is correct
-  - [ ] Run `poetry publish --build` command
-  - [ ] Update documentation with installation instructions from PyPI
+- [x] Publish to PyPI with Poetry
+  - [x] Create PyPI account and configure credentials
+  - [x] Verify all package metadata is correct
+  - [x] Set up GitHub Actions for automated PyPI publishing
+  - [x] Configure PyPI Trusted Publishers for secure authentication
+  - [x] Update documentation with installation instructions from PyPI
 
 ## Code Improvements
 - [ ] Reduce dependency complexity
@@ -112,6 +115,10 @@
   - [ ] Benchmark and optimize performance for large documents
 
 ## Documentation Enhancements
+- [x] Complete API documentation with pdoc
+  - [x] Generate HTML documentation with proper navigation
+  - [x] Make CLI module part of the public API for better discoverability
+  - [x] Improve docstring formatting with Markdown syntax
 - [ ] Add batch processing examples
   - [ ] Document how to process multiple URLs efficiently
   - [ ] Provide shell script examples for batch processing
@@ -121,6 +128,7 @@
 - [ ] Improve error handling documentation
   - [ ] Explain how users should handle common failures
   - [ ] Add troubleshooting section for common issues
+- [ ] Consider setting up ReadTheDocs or GitHub Pages for online documentation hosting
 
 ## Test Improvements
 - [ ] Complete edge case coverage
@@ -133,6 +141,12 @@
 
 ## Features to Consider
 - [x] Add a progress bar for downloads
+- [x] Improve API with WebdownConfig class for better parameter organization
+- [x] Support advanced HTML2Text options in both CLI and API:
+  - [x] Single line break mode
+  - [x] Unicode character support
+  - [x] HTML tables preservation
+  - [x] Custom emphasis and strong emphasis markers
 - [ ] Support for custom HTML to Markdown converters
 - [ ] Support for authentication for accessing private web content
 - [ ] Markdown output styling options
@@ -149,3 +163,4 @@
 - [x] Remove zero-width spaces and other invisible characters
 - [ ] Post-processing option to clean and normalize generated Markdown
 - [x] Add command-line option to set html2text body_width (currently hard-coded to 0)
+- [ ] Add multi-language support for non-English websites
