@@ -4,6 +4,9 @@ repo_url: https://github.com/kelp/webdown
 repo_name: kelp/webdown
 edit_uri: edit/main/
 
+# GitHub Pages custom domain
+use_directory_urls: true
+
 # Documentation directory and site output
 docs_dir: docs
 site_dir: site
@@ -60,6 +63,8 @@ markdown_extensions:
   - md_in_html
   - pymdownx.snippets:
       base_path: ["."]
+      auto_append: []
+      auto_prepend: []
       check_paths: true
   # UI elements
   - admonition
