@@ -63,8 +63,6 @@ markdown_extensions:
   - md_in_html
   - pymdownx.snippets:
       base_path: ["."]
-      auto_append: []
-      auto_prepend: []
       check_paths: true
   # UI elements
   - admonition
