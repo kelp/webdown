@@ -108,6 +108,17 @@ For complete documentation, use the `--help` flag:
 webdown --help
 ```
 
+## Documentation
+
+API documentation is available in the [docs](https://github.com/kelp/webdown/tree/main/docs) directory.
+
+You can generate the documentation locally with:
+
+```bash
+make docs        # Generate HTML docs in the docs/ directory
+make docs-serve  # Start a local documentation server at http://localhost:8080
+```
+
 ## Development
 
 ### Prerequisites
@@ -167,6 +178,12 @@ make build
 
 # Start interactive Poetry shell
 make shell
+
+# Generate documentation
+make docs
+
+# Start documentation server
+make docs-serve
 
 # Show all available commands
 make help

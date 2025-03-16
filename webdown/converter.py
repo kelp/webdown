@@ -32,26 +32,29 @@ class WebdownConfig:
     making it easier to manage and extend the functionality.
 
     Attributes:
-        url: URL of the web page to convert (required for URL-based conversion)
-        include_links: Whether to include hyperlinks (True) or plain text (False)
-        include_images: Whether to include images (True) or exclude them (False)
-        include_toc: Whether to generate table of contents
-        css_selector: CSS selector to extract specific content (e.g., "main")
-        compact_output: Whether to remove excessive blank lines
-        body_width: Maximum line length for wrapping (0 for no wrapping)
-        show_progress: Whether to display a progress bar during download
+        Basic options:
 
-        # Advanced HTML2Text options
-        single_line_break: Whether to use single line breaks (True) or double (False)
-        protect_links: Whether to protect links from line wrapping with brackets
-        images_as_html: Whether to keep images as HTML rather than Markdown syntax
-        unicode_snob: Whether to use Unicode characters instead of ASCII equivalents
-        tables_as_html: Whether to keep tables as HTML rather than Markdown syntax
-        emphasis_mark: Character to use for emphasis (usually underscore '_')
-        strong_mark: Character to use for strong emphasis (usually asterisks '**')
-        default_image_alt: Default alt text to use when images don't have any
-        pad_tables: Whether to add padding spaces for table alignment
-        wrap_list_items: Whether to wrap list items to the body_width
+        * url: URL of the web page to convert (required for URL-based conversion)
+        * include_links: Whether to include hyperlinks (True) or plain text (False)
+        * include_images: Whether to include images (True) or exclude them (False)
+        * include_toc: Whether to generate table of contents
+        * css_selector: CSS selector to extract specific content (e.g., "main")
+        * compact_output: Whether to remove excessive blank lines
+        * body_width: Maximum line length for wrapping (0 for no wrapping)
+        * show_progress: Whether to display a progress bar during download
+
+        Advanced HTML2Text options:
+
+        * single_line_break: Whether to use single line breaks (True) or double (False)
+        * protect_links: Whether to protect links from line wrapping with brackets
+        * images_as_html: Whether to keep images as HTML rather than Markdown syntax
+        * unicode_snob: Whether to use Unicode characters instead of ASCII equivalents
+        * tables_as_html: Whether to keep tables as HTML rather than Markdown syntax
+        * emphasis_mark: Character to use for emphasis (usually underscore '_')
+        * strong_mark: Character to use for strong emphasis (usually asterisks '**')
+        * default_image_alt: Default alt text to use when images don't have any
+        * pad_tables: Whether to add padding spaces for table alignment
+        * wrap_list_items: Whether to wrap list items to the body_width
     """
 
     # Basic options
@@ -85,9 +88,10 @@ class WebdownError(Exception):
     distinguished by checking the message content.
 
     Error types include:
-    - URL format errors (when the URL doesn't follow standard format)
-    - Network errors (connection issues, timeouts, HTTP errors)
-    - Parsing errors (issues with processing the HTML content)
+
+    * URL format errors (when the URL doesn't follow standard format)
+    * Network errors (connection issues, timeouts, HTTP errors)
+    * Parsing errors (issues with processing the HTML content)
     """
 
     pass
@@ -207,29 +211,33 @@ def html_to_markdown(
     If a config object is provided, it takes precedence over individual parameters.
 
     Args:
-        html: HTML content to convert as a string
-        include_links: Whether to include hyperlinks (True) or convert to plain text
-        include_images: Whether to include images (True) or exclude them (False)
-        include_toc: Whether to generate table of contents based on headings
-        css_selector: CSS selector to extract specific content (e.g., "main")
-        compact_output: Whether to remove excessive blank lines in the output
-        body_width: Maximum line length for text wrapping (0 for no wrapping)
+        Basic options:
 
-        # Advanced HTML2Text options
-        single_line_break: Whether to use single line breaks instead of double
-        protect_links: Whether to protect links from line wrapping with brackets
-        images_as_html: Whether to keep images as HTML rather than Markdown syntax
-        unicode_snob: Whether to use Unicode characters instead of ASCII equivalents
-        tables_as_html: Whether to keep tables as HTML rather than Markdown format
-        emphasis_mark: Character to use for emphasis (default: "_")
-        strong_mark: Character to use for strong emphasis (default: "**")
-        default_image_alt: Default alt text for images without alt attributes
-        pad_tables: Whether to add padding spaces for table alignment
-        wrap_list_items: Whether to wrap list items to the body_width
+        * html: HTML content to convert as a string
+        * include_links: Whether to include hyperlinks (True) or convert to plain text
+        * include_images: Whether to include images (True) or exclude them (False)
+        * include_toc: Whether to generate table of contents based on headings
+        * css_selector: CSS selector to extract specific content (e.g., "main")
+        * compact_output: Whether to remove excessive blank lines in the output
+        * body_width: Maximum line length for text wrapping (0 for no wrapping)
 
-        # Config object support
-        config: A WebdownConfig object containing all configuration options.
-               If provided, all other parameters are ignored.
+        Advanced HTML2Text options:
+
+        * single_line_break: Whether to use single line breaks instead of double
+        * protect_links: Whether to protect links from line wrapping with brackets
+        * images_as_html: Whether to keep images as HTML rather than Markdown syntax
+        * unicode_snob: Whether to use Unicode characters instead of ASCII equivalents
+        * tables_as_html: Whether to keep tables as HTML rather than Markdown format
+        * emphasis_mark: Character to use for emphasis (default: "_")
+        * strong_mark: Character to use for strong emphasis (default: "**")
+        * default_image_alt: Default alt text for images without alt attributes
+        * pad_tables: Whether to add padding spaces for table alignment
+        * wrap_list_items: Whether to wrap list items to the body_width
+
+        Config object support:
+
+        * config: A WebdownConfig object containing all configuration options.
+          If provided, all other parameters are ignored.
 
     Returns:
         A string containing the converted Markdown content
@@ -348,14 +356,14 @@ def convert_url_to_markdown(
     If a WebdownConfig object is provided, all other parameters are ignored.
 
     Args:
-        url_or_config: URL of the web page or a WebdownConfig object
-        include_links: Whether to include hyperlinks (ignored if config provided)
-        include_images: Whether to include images (ignored if config provided)
-        include_toc: Whether to generate table of contents (ignored if config provided)
-        css_selector: CSS selector for content extraction (ignored if config provided)
-        compact_output: Whether to remove blank lines (ignored if config provided)
-        body_width: Maximum line length for text wrapping (ignored if config provided)
-        show_progress: Whether to display a progress bar (ignored if config provided)
+        * url_or_config: URL of the web page or a WebdownConfig object
+        * include_links: Whether to include hyperlinks (ignored if config provided)
+        * include_images: Whether to include images (ignored if config provided)
+        * include_toc: Generate table of contents (ignored if config provided)
+        * css_selector: CSS selector for extraction (ignored if config provided)
+        * compact_output: Whether to remove blank lines (ignored if config provided)
+        * body_width: Maximum line length for text wrapping (ignored if config provided)
+        * show_progress: Whether to display a progress bar (ignored if config provided)
 
     Returns:
         Markdown content

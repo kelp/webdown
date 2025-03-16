@@ -4,13 +4,13 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "webdown"
-version = "0.4.0"
+version = "0.4.1"
 description = "Convert web pages to markdown"
 authors = ["Travis Cole <kelp@plek.org>"]
 readme = "README.md"
 repository = "https://github.com/kelp/webdown"
 homepage = "https://github.com/kelp/webdown"
-documentation = "https://github.com/kelp/webdown#readme"
+documentation = "https://github.com/kelp/webdown/tree/main/docs"
 keywords = ["web", "markdown", "html", "converter"]
 license = "MIT"
 classifiers = [
@@ -43,6 +43,7 @@ pre-commit = "^4.1.0"
 types-requests = "^2.32.0.20250306"
 isort = "^6.0.1"
 types-tqdm = "^4.67.0.20250301"
+pdoc = "^15.0.1"
 
 [tool.poetry.scripts]
 webdown = "webdown.cli:main"

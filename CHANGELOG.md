@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2025-03-15
+
+### Added
+- Added pdoc documentation generation with `make docs` and `make docs-serve` commands
+- Generated documentation now available in the `docs/` directory
+
+### Improved
+- Enhanced CLI documentation with detailed explanations and practical examples
+- Improved command-line help with logically organized option groups and better descriptions
+- Added epilog with link to project repository
+
 ## [0.4.0] - 2025-03-15
 
 ### Added

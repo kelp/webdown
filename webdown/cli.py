@@ -1,25 +1,81 @@
 """Command-line interface for webdown.
 
-This module provides the command-line interface (CLI) for webdown, allowing users
-to convert web pages to Markdown from the terminal. It parses command-line arguments,
-handles error reporting, and manages input/output operations.
+This module provides the command-line interface (CLI) for Webdown, a tool for
+converting web pages to clean, readable Markdown format. The CLI allows users to
+customize various aspects of the conversion process, from content selection to
+formatting options.
+
+## Basic Usage
+
+The most basic usage is to simply provide a URL:
+
+```bash
+webdown https://example.com
+```
+
+This will fetch the web page and convert it to Markdown,
+displaying the result to stdout.
+To save the output to a file:
+
+```bash
+webdown https://example.com -o output.md
+```
+
+## Common Options
+
+The CLI offers various options to customize the conversion:
+
+* `-o, --output FILE`: Write output to FILE instead of stdout
+* `-t, --toc`: Generate a table of contents based on headings
+* `-L, --no-links`: Strip hyperlinks, converting them to plain text
+* `-I, --no-images`: Exclude images from the output
+* `-s, --css SELECTOR`: Extract only content matching the CSS selector (e.g., "main")
+* `-c, --compact`: Remove excessive blank lines from the output
+* `-w, --width N`: Set line width for wrapped text (0 for no wrapping)
+* `-p, --progress`: Show download progress bar
+* `-V, --version`: Show version information and exit
+* `-h, --help`: Show help message and exit
+
+## Advanced Options
+
+Advanced formatting options for fine-tuning the Markdown output:
+
+* `--single-line-break`: Use single line breaks instead of two line breaks
+* `--unicode`: Use Unicode characters instead of ASCII equivalents
+* `--tables-as-html`: Keep tables as HTML instead of converting to Markdown
+* `--emphasis-mark CHAR`: Character(s) to use for emphasis (default: '_')
+* `--strong-mark CHARS`: Character(s) to use for strong emphasis (default: '**')
+
+## Example Scenarios
+
+1. Basic conversion with a table of contents:
+   ```bash
+   webdown https://example.com -t -o output.md
+   ```
+
+2. Extract only the main content area with compact output and text wrapping:
+   ```bash
+   webdown https://example.com -s "main" -c -w 80 -o output.md
+   ```
+
+3. Create a plain text version (no links or images):
+   ```bash
+   webdown https://example.com -L -I -o text_only.md
+   ```
+
+4. Show download progress for large pages and customize Markdown formatting:
+   ```bash
+   webdown https://example.com -p --single-line-break --unicode -o output.md
+   ```
+
+5. Extract content from a specific div and customize emphasis markers:
+   ```bash
+   webdown https://example.com -s "#content" --emphasis-mark "*" \
+     --strong-mark "__" -o output.md
+   ```
 
 The entry point is the `main()` function, which is called when the command
-`webdown` is executed. The available options include:
-
-  -o, --output FILE     Write output to FILE instead of stdout
-  -t, --toc             Generate a table of contents based on headings
-  -L, --no-links        Strip hyperlinks, converting them to plain text
-  -I, --no-images       Exclude images from the output
-  -s, --css SELECTOR    Extract only content matching the CSS selector
-  -c, --compact         Remove excessive blank lines from the output
-  -w, --width N         Set the line width for wrapped text (0 for no wrapping)
-  -p, --progress        Show download progress bar
-  -V, --version         Show version information and exit
-  -h, --help            Show help message and exit
-
-Example usage:
-  webdown https://example.com -o output.md -c -t -w 80 -p
+`webdown` is executed.
 """
 
 import argparse
@@ -39,32 +95,75 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
     Returns:
         Parsed arguments
     """
-    parser = argparse.ArgumentParser(description="Convert web pages to markdown.")
-    parser.add_argument("url", help="URL of the web page to convert", nargs="?")
-    parser.add_argument("-o", "--output", help="Output file (default: stdout)")
-    parser.add_argument(
-        "-t", "--toc", action="store_true", help="Generate table of contents"
+    parser = argparse.ArgumentParser(
+        description="Convert web pages to clean, readable Markdown format.",
+        epilog="For more information: https://github.com/kelp/webdown",
     )
+
+    # Required argument
     parser.add_argument(
-        "-L", "--no-links", action="store_true", help="Strip hyperlinks"
+        "url",
+        help="URL of the web page to convert (e.g., https://example.com)",
+        nargs="?",
     )
-    parser.add_argument("-I", "--no-images", action="store_true", help="Exclude images")
-    parser.add_argument("-s", "--css", help="CSS selector to extract specific content")
-    parser.add_argument(
-        "-c", "--compact", action="store_true", help="Remove excessive blank lines"
+
+    # Input/Output options
+    io_group = parser.add_argument_group("Input/Output Options")
+    io_group.add_argument(
+        "-o",
+        "--output",
+        metavar="FILE",
+        help="Write Markdown output to FILE instead of stdout",
     )
-    parser.add_argument(
+    io_group.add_argument(
+        "-p",
+        "--progress",
+        action="store_true",
+        help="Display a progress bar during download (useful for large pages)",
+    )
+
+    # Content options
+    content_group = parser.add_argument_group("Content Selection")
+    content_group.add_argument(
+        "-s",
+        "--css",
+        metavar="SELECTOR",
+        help="Extract content matching CSS selector (e.g., 'main', '.content')",
+    )
+    content_group.add_argument(
+        "-L",
+        "--no-links",
+        action="store_true",
+        help="Convert hyperlinks to plain text (remove all link markup)",
+    )
+    content_group.add_argument(
+        "-I",
+        "--no-images",
+        action="store_true",
+        help="Exclude images from the output completely",
+    )
+
+    # Formatting options
+    format_group = parser.add_argument_group("Formatting Options")
+    format_group.add_argument(
+        "-t",
+        "--toc",
+        action="store_true",
+        help="Generate a table of contents based on headings in the document",
+    )
+    format_group.add_argument(
+        "-c",
+        "--compact",
+        action="store_true",
+        help="Remove excessive blank lines for more compact output",
+    )
+    format_group.add_argument(
         "-w",
         "--width",
         type=int,
         default=0,
-        help="Set line width for wrapped text (0 for no wrapping)",
-    )
-    parser.add_argument(
-        "-p",
-        "--progress",
-        action="store_true",
-        help="Show download progress bar",
+        metavar="N",
+        help="Set line width (0 disables wrapping, 80 recommended for readability)",
     )
 
     # Add advanced HTML2Text options
@@ -72,7 +171,7 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
     advanced_group.add_argument(
         "--single-line-break",
         action="store_true",
-        help="Use single line breaks instead of two line breaks",
+        help="Use single line breaks instead of double (creates more compact output)",
     )
     advanced_group.add_argument(
         "--unicode",
@@ -87,15 +186,19 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
     advanced_group.add_argument(
         "--emphasis-mark",
         default="_",
-        help="Character(s) to use for emphasis (default: '_')",
+        metavar="CHAR",
+        help="Character(s) for emphasis (default: '_', alternative: '*')",
     )
     advanced_group.add_argument(
         "--strong-mark",
         default="**",
-        help="Character(s) to use for strong emphasis (default: '**')",
+        metavar="CHARS",
+        help="Character(s) for strong emphasis (default: '**', alt: '__')",
     )
 
-    parser.add_argument(
+    # Meta options
+    meta_group = parser.add_argument_group("Meta Options")
+    meta_group.add_argument(
         "-V",
         "--version",
         action="version",

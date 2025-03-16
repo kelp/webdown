@@ -1,4 +1,4 @@
-.PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update
+.PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update docs docs-serve
 
 # Use Poetry for all commands
 POETRY := poetry
@@ -80,7 +80,12 @@ clean:
 	rm -rf .pytest_cache/
 	rm -rf .mypy_cache/
 
-# Simplified documentation approach - see README.md
+# Documentation
+docs:
+	$(POETRY) run pdoc webdown -o docs
+
+docs-serve:
+	$(POETRY) run pdoc -h localhost -p 8080 webdown
 
 shell:
 	@echo "Starting Poetry shell..."
@@ -104,4 +109,6 @@ help:
 	@echo "  clean           Remove build artifacts and caches"
 	@echo "  shell           Start Poetry shell (interactive environment)"
 	@echo "  install-dev     Install package for current user in development mode"
+	@echo "  docs            Generate HTML documentation with pdoc"
+	@echo "  docs-serve      Start a local documentation server at http://localhost:8080"
 	@echo "  help            Show this help message"
