@@ -236,18 +236,6 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Home
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
@@ -258,34 +246,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -462,23 +422,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -498,15 +441,263 @@
 
 <h1 id="webdown">Webdown<a class="headerlink" href="#webdown" title="Permanent link">&para;</a></h1>
 <div class="md-content">
-<p>{% include "README.md" %}</p>
-</div>
-<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
-<p>This documentation includes:</p>
+<h1 id="webdown_1">Webdown<a class="headerlink" href="#webdown_1" title="Permanent link">&para;</a></h1>
+<p><a href="https://github.com/kelp/webdown/actions/workflows/python-tests.yml"><img alt="Python Tests" src="https://github.com/kelp/webdown/actions/workflows/python-tests.yml/badge.svg" /></a>
+<a href="https://codecov.io/gh/kelp/webdown"><img alt="codecov" src="https://codecov.io/gh/kelp/webdown/branch/main/graph/badge.svg" /></a>
+<a href="https://badge.fury.io/py/webdown"><img alt="PyPI version" src="https://badge.fury.io/py/webdown.svg" /></a>
+<a href="https://pypi.org/project/webdown/"><img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/webdown.svg" /></a>
+<a href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a></p>
+<p>A Python CLI tool for converting web pages to clean, readable Markdown format. Webdown makes it easy
+to extract content from websites for documentation, notes, content migration, or offline reading.</p>
+<p>I made this tool specifically so I could download documentation, convert it to Markdown and feed
+it into an LLM coding tool.</p>
+<h2 id="why-webdown">Why Webdown?<a class="headerlink" href="#why-webdown" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="api/">API Reference</a> - Detailed documentation for Python API</li>
-<li><a href="changelog/">Changelog</a> - Version history and changes</li>
-<li><a href="contributing/">Contributing Guide</a> - How to contribute to the project</li>
+<li><strong>Clean Conversion</strong>: Produces readable Markdown without formatting artifacts</li>
+<li><strong>Selective Extraction</strong>: Target specific page sections with CSS selectors</li>
+<li><strong>Customization Options</strong>: Control links, images, text wrapping, and more</li>
+<li><strong>Progress Tracking</strong>: Visual download progress for large pages with <code>-p</code> flag</li>
+<li><strong>Python Integration</strong>: Use as a CLI tool or integrate into your Python projects</li>
 </ul>
+<h2 id="use-cases">Use Cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h2>
+<h3 id="documentation-for-ai-coding-assistants">Documentation for AI Coding Assistants<a class="headerlink" href="#documentation-for-ai-coding-assistants" title="Permanent link">&para;</a></h3>
+<p>Webdown is particularly useful for preparing documentation to use with AI-assisted coding tools like Claude Code, GitHub Copilot, or ChatGPT:</p>
+<ul>
+<li>Convert technical documentation into clean Markdown for AI context</li>
+<li>Extract only the relevant parts of large documentation pages using CSS selectors</li>
+<li>Strip out images and formatting that might consume token context</li>
+<li>Generate well-structured tables of contents for better navigation</li>
+<li>Batch process API documentation for library-specific assistance</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Example: Convert API docs and store for AI coding context</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>webdown<span class="w"> </span>https://api.example.com/docs<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-I<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-o<span class="w"> </span>api_context.md
+</code></pre></div>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<h3 id="from-pypi">From PyPI<a class="headerlink" href="#from-pypi" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>webdown
+</code></pre></div>
+<h3 id="install-from-source">Install from Source<a class="headerlink" href="#install-from-source" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Clone the repository</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/kelp/webdown.git
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">cd</span><span class="w"> </span>webdown
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># Install with pip</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>pip<span class="w"> </span>install<span class="w"> </span>.
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1"># Or install with Poetry</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>poetry<span class="w"> </span>install
+</code></pre></div>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<p>Basic usage:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webdown<span class="w"> </span>https://example.com/page.html<span class="w"> </span>-o<span class="w"> </span>output.md
+</code></pre></div>
+<p>Output to stdout:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>webdown<span class="w"> </span>https://example.com/page.html
+</code></pre></div>
+<h3 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>-o, --output</code>: Output file (default: stdout)</li>
+<li><code>-t, --toc</code>: Generate table of contents</li>
+<li><code>-L, --no-links</code>: Strip hyperlinks</li>
+<li><code>-I, --no-images</code>: Exclude images</li>
+<li><code>-s, --css SELECTOR</code>: CSS selector to extract specific content</li>
+<li><code>-c, --compact</code>: Remove excessive blank lines from the output</li>
+<li><code>-w, --width N</code>: Set the line width for wrapped text (0 for no wrapping)</li>
+<li><code>-p, --progress</code>: Show download progress bar</li>
+</ul>
+<p><strong>Advanced Options:</strong></p>
+<ul>
+<li><code>--single-line-break</code>: Use single line breaks instead of two line breaks</li>
+<li><code>--unicode</code>: Use Unicode characters instead of ASCII equivalents</li>
+<li><code>--tables-as-html</code>: Keep tables as HTML instead of converting to Markdown</li>
+<li><code>--emphasis-mark CHAR</code>: Character(s) to use for emphasis (default: '_')</li>
+<li><code>--strong-mark CHARS</code>: Character(s) to use for strong emphasis (default: '**')</li>
+</ul>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<p>Generate markdown with a table of contents:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-t<span class="w"> </span>-o<span class="w"> </span>output.md
+</code></pre></div>
+<p>Extract only main content:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-o<span class="w"> </span>output.md
+</code></pre></div>
+<p>Strip links and images:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-L<span class="w"> </span>-I<span class="w"> </span>-o<span class="w"> </span>output.md
+</code></pre></div>
+<p>Compact output with progress bar and line wrapping:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-c<span class="w"> </span>-p<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-o<span class="w"> </span>output.md
+</code></pre></div>
+<p>For complete documentation, use the <code>--help</code> flag:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>webdown<span class="w"> </span>--help
+</code></pre></div>
+<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
+<p>API documentation is available online at <a href="https://tcole.net/webdown/">tcole.net/webdown</a>.</p>
+<p>You can also generate the documentation locally with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>make<span class="w"> </span>docs<span class="w">        </span><span class="c1"># Generate HTML docs in the docs/ directory</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>make<span class="w"> </span>docs-serve<span class="w">  </span><span class="c1"># Start a local documentation server at http://localhost:8080</span>
+</code></pre></div>
+<h2 id="development">Development<a class="headerlink" href="#development" title="Permanent link">&para;</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Python 3.10+ (3.13 recommended)</li>
+<li><a href="https://python-poetry.org/docs/#installation">Poetry</a> for dependency management</li>
+</ul>
+<h3 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Clone the repository</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/kelp/webdown.git
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nb">cd</span><span class="w"> </span>webdown
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1"># Install dependencies with Poetry</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>poetry<span class="w"> </span>install
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>poetry<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>install
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="c1"># Optional: Start a Poetry shell for interactive development</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>poetry<span class="w"> </span>shell
+</code></pre></div>
+<h3 id="development-commands">Development Commands<a class="headerlink" href="#development-commands" title="Permanent link">&para;</a></h3>
+<p>We use a Makefile to streamline development tasks:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Install dependencies</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>make<span class="w"> </span>install
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Run tests</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>make<span class="w"> </span><span class="nb">test</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># Run tests with coverage</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>make<span class="w"> </span>test-coverage
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="c1"># Run integration tests</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>make<span class="w"> </span>integration-test
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="c1"># Run linting</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>make<span class="w"> </span>lint
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="c1"># Run type checking</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>make<span class="w"> </span>type-check
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="c1"># Format code</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>make<span class="w"> </span>format
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="c1"># Run all pre-commit hooks</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>make<span class="w"> </span>pre-commit
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="c1"># Run all checks (lint, type-check, test)</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>make<span class="w"> </span>all-checks
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="c1"># Build package</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>make<span class="w"> </span>build
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="c1"># Start interactive Poetry shell</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>make<span class="w"> </span>shell
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="c1"># Generate documentation</span>
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>make<span class="w"> </span>docs
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a><span class="c1"># Start documentation server</span>
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>make<span class="w"> </span>docs-serve
+<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>
+<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a><span class="c1"># Publishing to PyPI (maintainers only)</span>
+<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a><span class="c1"># See CONTRIBUTING.md for details on the release process</span>
+<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>make<span class="w"> </span>build<span class="w">         </span><span class="c1"># Build package</span>
+<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a>make<span class="w"> </span>publish-test<span class="w">  </span><span class="c1"># Publish to TestPyPI (for testing)</span>
+<a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>
+<a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a><span class="c1"># Show all available commands</span>
+<a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a>make<span class="w"> </span><span class="nb">help</span>
+</code></pre></div>
+<h3 id="poetry-commands">Poetry Commands<a class="headerlink" href="#poetry-commands" title="Permanent link">&para;</a></h3>
+<p>You can also use Poetry directly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Start an interactive shell in the Poetry environment</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>poetry<span class="w"> </span>shell
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># Run a command in the Poetry environment</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># Add a new dependency</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>poetry<span class="w"> </span>add<span class="w"> </span>requests
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="c1"># Add a development dependency</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>poetry<span class="w"> </span>add<span class="w"> </span>--group<span class="w"> </span>dev<span class="w"> </span>black
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="c1"># Update dependencies</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>poetry<span class="w"> </span>update
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="c1"># Build package</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>poetry<span class="w"> </span>build
+</code></pre></div>
+<h2 id="python-api-usage">Python API Usage<a class="headerlink" href="#python-api-usage" title="Permanent link">&para;</a></h2>
+<p>Webdown can also be used as a Python library in your own projects:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">webdown.converter</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_url_to_markdown</span><span class="p">,</span> <span class="n">WebdownConfig</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># Method 1: Basic conversion with individual parameters</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">markdown</span> <span class="o">=</span> <span class="n">convert_url_to_markdown</span><span class="p">(</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">)</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="c1"># Method 1: With all options as parameters (original style)</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="n">markdown</span> <span class="o">=</span> <span class="n">convert_url_to_markdown</span><span class="p">(</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    <span class="n">include_links</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>    <span class="n">include_images</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>    <span class="n">include_toc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>    <span class="n">css_selector</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>  <span class="c1"># Only extract main content</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>    <span class="n">compact_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Remove excessive blank lines</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>    <span class="n">body_width</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>        <span class="c1"># Wrap text at 80 characters</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span>    <span class="c1"># Show download progress bar</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="p">)</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="c1"># Method 2: Using the Config object (new in 0.3.1)</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="n">config</span> <span class="o">=</span> <span class="n">WebdownConfig</span><span class="p">(</span>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>    <span class="c1"># Basic options</span>
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>    <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>    <span class="n">include_toc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a>    <span class="n">css_selector</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a>    <span class="n">compact_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a>    <span class="n">body_width</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+<a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a>    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a>
+<a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a>    <span class="c1"># Advanced options (all optional)</span>
+<a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a>    <span class="n">single_line_break</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-14-30" name="__codelineno-14-30" href="#__codelineno-14-30"></a>    <span class="n">unicode_snob</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Use Unicode characters</span>
+<a id="__codelineno-14-31" name="__codelineno-14-31" href="#__codelineno-14-31"></a>    <span class="n">tables_as_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-14-32" name="__codelineno-14-32" href="#__codelineno-14-32"></a>    <span class="n">emphasis_mark</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-33" name="__codelineno-14-33" href="#__codelineno-14-33"></a>    <span class="n">strong_mark</span><span class="o">=</span><span class="s2">&quot;**&quot;</span>
+<a id="__codelineno-14-34" name="__codelineno-14-34" href="#__codelineno-14-34"></a><span class="p">)</span>
+<a id="__codelineno-14-35" name="__codelineno-14-35" href="#__codelineno-14-35"></a><span class="n">markdown</span> <span class="o">=</span> <span class="n">convert_url_to_markdown</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-14-36" name="__codelineno-14-36" href="#__codelineno-14-36"></a>
+<a id="__codelineno-14-37" name="__codelineno-14-37" href="#__codelineno-14-37"></a><span class="c1"># Save to file</span>
+<a id="__codelineno-14-38" name="__codelineno-14-38" href="#__codelineno-14-38"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;output.md&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-14-39" name="__codelineno-14-39" href="#__codelineno-14-39"></a>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">markdown</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">&para;</a></h2>
+<p>Contributions are welcome! Please feel free to submit a Pull Request.</p>
+<ol>
+<li>Fork the repository</li>
+<li>Create your feature branch (<code>git checkout -b feature/amazing-feature</code>)</li>
+<li>Run tests to make sure everything works:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Run standard tests</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># Run tests with coverage</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>webdown
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1"># Run integration tests</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--integration
+</code></pre></div></li>
+<li>Commit your changes (<code>git commit -m 'Add some amazing feature'</code>)</li>
+<li>Push to the branch (<code>git push origin feature/amazing-feature</code>)</li>
+<li>Open a Pull Request</li>
+</ol>
+<p>Please make sure your code passes all tests, type checks, and follows our coding style (enforced by pre-commit hooks). We aim to maintain high code coverage (currently at 93%). When adding features, please include tests.</p>
+<p>For more details, see <a href="CONTRIBUTING.md">CONTRIBUTING.md</a>.</p>
+<h2 id="support">Support<a class="headerlink" href="#support" title="Permanent link">&para;</a></h2>
+<p>If you encounter any problems or have feature requests, please <a href="https://github.com/kelp/webdown/issues">open an issue</a> on GitHub.</p>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
+<p>MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Documentation Links</p>
+<p>For full documentation, check out these additional resources:
+- <a href="api/">API Reference</a> - Detailed documentation for Python API
+- <a href="changelog/">Changelog</a> - Version history and changes
+- <a href="contributing/">Contributing Guide</a> - How to contribute to the project
+- <a href="https://github.com/kelp/webdown/blob/main/LICENSE">License</a> - MIT License details</p>
+</div>
 
 
 

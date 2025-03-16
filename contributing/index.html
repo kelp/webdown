@@ -441,7 +441,166 @@
 
 <h1 id="contributing-guide">Contributing Guide<a class="headerlink" href="#contributing-guide" title="Permanent link">&para;</a></h1>
 <div class="md-content">
-<p>{% include "CONTRIBUTING.md" %}</p>
+<h1 id="contributing-to-webdown">Contributing to Webdown<a class="headerlink" href="#contributing-to-webdown" title="Permanent link">&para;</a></h1>
+<p>Thank you for your interest in contributing to Webdown! This document provides guidelines and instructions for contributing to this project.</p>
+<h2 id="development-environment-setup">Development Environment Setup<a class="headerlink" href="#development-environment-setup" title="Permanent link">&para;</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Python 3.10 or higher</li>
+<li><a href="https://python-poetry.org/docs/#installation">Poetry</a> for dependency management</li>
+<li>Git</li>
+</ul>
+<h3 id="setting-up-development-environment">Setting Up Development Environment<a class="headerlink" href="#setting-up-development-environment" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Clone the repository:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/kelp/webdown.git
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>webdown
+</code></pre></div></p>
+</li>
+<li>
+<p>Install dependencies using Poetry:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry<span class="w"> </span>install
+</code></pre></div></p>
+</li>
+<li>
+<p>Install pre-commit hooks:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>install
+</code></pre></div></p>
+</li>
+</ol>
+<h3 id="development-commands">Development Commands<a class="headerlink" href="#development-commands" title="Permanent link">&para;</a></h3>
+<p>We use a Makefile to simplify common development tasks:</p>
+<ul>
+<li>Install dependencies: <code>make install</code></li>
+<li>Install for local development: <code>make install-dev</code></li>
+<li>Run tests: <code>make test</code></li>
+<li>Run tests with coverage: <code>make test-coverage</code></li>
+<li>Run integration tests: <code>make integration-test</code></li>
+<li>Run linting: <code>make lint</code></li>
+<li>Run type checking: <code>make type-check</code></li>
+<li>Format code: <code>make format</code></li>
+<li>Run all checks: <code>make all-checks</code></li>
+</ul>
+<p>You can also use Poetry directly:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>mypy<span class="w"> </span>webdown
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>poetry<span class="w"> </span>run<span class="w"> </span>flake8<span class="w"> </span>webdown
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>poetry<span class="w"> </span>run<span class="w"> </span>black<span class="w"> </span>webdown
+</code></pre></div></p>
+<h2 id="coding-standards">Coding Standards<a class="headerlink" href="#coding-standards" title="Permanent link">&para;</a></h2>
+<h3 id="code-style">Code Style<a class="headerlink" href="#code-style" title="Permanent link">&para;</a></h3>
+<p>This project follows PEP 8 conventions with some modifications enforced by Black and flake8:</p>
+<ul>
+<li>Use 4 spaces for indentation (enforced by Black)</li>
+<li>Line length is limited to 88 characters (enforced by Black)</li>
+<li>Follow naming conventions:</li>
+<li>Classes: <code>CamelCase</code></li>
+<li>Functions and variables: <code>snake_case</code></li>
+<li>Constants: <code>UPPER_CASE</code></li>
+</ul>
+<h3 id="type-hinting">Type Hinting<a class="headerlink" href="#type-hinting" title="Permanent link">&para;</a></h3>
+<p>All code should use Python type hints:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">parameter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optional_param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Function documentation.&quot;&quot;&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="o">...</span>
+</code></pre></div>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>All modules, classes, and functions should have docstrings.</li>
+<li>Use the Google docstring format:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">param1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">param2</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Short description of function.</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="sd">    Longer description explaining details if needed.</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="sd">    Args:</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="sd">        param1: Description of param1</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="sd">        param2: Description of param2</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="sd">        Description of return value</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="sd">    Raises:</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="sd">        ExceptionType: When and why this exception is raised</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h3 id="updating-documentation">Updating Documentation<a class="headerlink" href="#updating-documentation" title="Permanent link">&para;</a></h3>
+<p>After making changes to the codebase, especially when adding new features or modifying existing ones:</p>
+<ol>
+<li>Update the docstrings in the code with implementation details</li>
+<li>Update the README.md with any new command-line options or examples</li>
+<li>Update CHANGELOG.md with user-facing changes</li>
+</ol>
+<p>The CLI argument parser in <code>webdown/cli.py</code> is the source of truth for command-line options, and the README.md is the main user documentation.</p>
+<h3 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Use custom exception classes defined in <code>converter.py</code></li>
+<li>Provide meaningful error messages</li>
+<li>Document all possible exceptions in docstrings</li>
+</ul>
+<h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
+<h3 id="writing-tests">Writing Tests<a class="headerlink" href="#writing-tests" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Write tests for all new functionality</li>
+<li>Tests should be placed in the <code>webdown/tests</code> directory</li>
+<li>Follow test class naming: <code>TestClassName</code></li>
+<li>Follow test method naming: <code>test_functionality_being_tested</code></li>
+<li>Use fixtures where appropriate to reduce code duplication</li>
+</ul>
+<h3 id="running-tests">Running Tests<a class="headerlink" href="#running-tests" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Run all tests: <code>make test</code></li>
+<li>Run with coverage: <code>make test-coverage</code></li>
+<li>Run integration tests: <code>make integration-test</code></li>
+</ul>
+<h2 id="pull-request-process">Pull Request Process<a class="headerlink" href="#pull-request-process" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Fork the repository and create a feature branch</li>
+<li>Implement your changes, following the coding standards</li>
+<li>Ensure all tests pass, including new tests for your feature</li>
+<li>Update documentation if needed</li>
+<li>Submit a pull request with a clear description of the changes</li>
+<li>Address any feedback in code reviews</li>
+</ol>
+<h2 id="versioning">Versioning<a class="headerlink" href="#versioning" title="Permanent link">&para;</a></h2>
+<p>We follow <a href="https://semver.org/">Semantic Versioning</a>:</p>
+<ul>
+<li>MAJOR version for incompatible API changes</li>
+<li>MINOR version for functionality added in a backward-compatible manner</li>
+<li>PATCH version for backward-compatible bug fixes</li>
+</ul>
+<h2 id="publishing-to-pypi-maintainers-only">Publishing to PyPI (Maintainers Only)<a class="headerlink" href="#publishing-to-pypi-maintainers-only" title="Permanent link">&para;</a></h2>
+<p>Webdown uses GitHub Actions to automate the release process:</p>
+<ol>
+<li>Update version number in:</li>
+<li><code>pyproject.toml</code></li>
+<li><code>webdown/__init__.py</code></li>
+<li>Update <code>CHANGELOG.md</code> with the new version and changes</li>
+<li>Commit the version bump changes</li>
+<li>Run the release target to verify everything and create the tag:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>release
+</code></pre></div></li>
+<li>If the release target succeeds, push the tag to trigger the release:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v0.4.x
+</code></pre></div></li>
+<li>The GitHub Actions workflow will:</li>
+<li>Verify the version numbers match</li>
+<li>Run tests</li>
+<li>Build the package</li>
+<li>Create a GitHub release with content from CHANGELOG.md</li>
+<li>Publish to PyPI automatically</li>
+</ol>
+<p>For local testing before a release, you can use:
+- <code>make build</code> to build the package locally
+- <code>make publish-test</code> to publish to TestPyPI</p>
+<p>Note: PyPI publishing uses GitHub's OIDC and PyPI's Trusted Publishers feature for secure authentication without tokens.</p>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
+<p>By contributing to this project, you agree that your contributions will be licensed under the project's MIT License (see LICENSE file).</p>
+<h2 id="questions">Questions?<a class="headerlink" href="#questions" title="Permanent link">&para;</a></h2>
+<p>If you have any questions or need help, please open an issue or contact the maintainers directly.</p>
+<p>Thank you for your contributions!</p>
 </div>
 
 

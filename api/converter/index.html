@@ -1099,9 +1099,52 @@
 
 
 <h1 id="core-api-reference">Core API Reference<a class="headerlink" href="#core-api-reference" title="Permanent link">&para;</a></h1>
-<p>This page documents the core API for Webdown, including the <code>WebdownConfig</code> class
-and functions for converting HTML to Markdown.</p>
-<h2 id="main-functions">Main Functions<a class="headerlink" href="#main-functions" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+
+    <div class="doc doc-contents first">
+
+        <p>HTML to Markdown conversion functionality.</p>
+<p>This module provides functions for fetching web content and converting it to Markdown.
+Key features include:
+- URL validation and HTML fetching with proper error handling
+- HTML to Markdown conversion using html2text
+- Support for content filtering with CSS selectors
+- Table of contents generation
+- Removal of excessive blank lines (compact mode)
+- Removal of zero-width spaces and other invisible characters</p>
+<p>The main entry point is the <code>convert_url_to_markdown</code> function, which handles
+the entire process from fetching a URL to producing clean Markdown output.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="main-functions">Main Functions<a class="headerlink" href="#main-functions" title="Permanent link">&para;</a></h2>
 
 
 <div class="doc doc-object doc-function">
@@ -2211,7 +2254,7 @@ making it easier to manage and extend the functionality.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="url = None
+            <td><code><a class="autorefs autorefs-internal" title="url: Optional[str] = None
 
   
       class-attribute
@@ -2227,7 +2270,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="include_links = True
+            <td><code><a class="autorefs autorefs-internal" title="include_links: bool = True
 
   
       class-attribute
@@ -2243,7 +2286,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="include_images = True
+            <td><code><a class="autorefs autorefs-internal" title="include_images: bool = True
 
   
       class-attribute
@@ -2259,7 +2302,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="include_toc = False
+            <td><code><a class="autorefs autorefs-internal" title="include_toc: bool = False
 
   
       class-attribute
@@ -2275,7 +2318,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="css_selector = None
+            <td><code><a class="autorefs autorefs-internal" title="css_selector: Optional[str] = None
 
   
       class-attribute
@@ -2291,7 +2334,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="compact_output = False
+            <td><code><a class="autorefs autorefs-internal" title="compact_output: bool = False
 
   
       class-attribute
@@ -2307,7 +2350,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="body_width = 0
+            <td><code><a class="autorefs autorefs-internal" title="body_width: int = 0
 
   
       class-attribute
@@ -2323,7 +2366,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="show_progress = False
+            <td><code><a class="autorefs autorefs-internal" title="show_progress: bool = False
 
   
       class-attribute
@@ -2339,7 +2382,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="single_line_break = False
+            <td><code><a class="autorefs autorefs-internal" title="single_line_break: bool = False
 
   
       class-attribute
@@ -2355,7 +2398,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="protect_links = False
+            <td><code><a class="autorefs autorefs-internal" title="protect_links: bool = False
 
   
       class-attribute
@@ -2371,7 +2414,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="images_as_html = False
+            <td><code><a class="autorefs autorefs-internal" title="images_as_html: bool = False
 
   
       class-attribute
@@ -2387,7 +2430,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="unicode_snob = False
+            <td><code><a class="autorefs autorefs-internal" title="unicode_snob: bool = False
 
   
       class-attribute
@@ -2403,7 +2446,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="tables_as_html = False
+            <td><code><a class="autorefs autorefs-internal" title="tables_as_html: bool = False
 
   
       class-attribute
@@ -2419,7 +2462,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="emphasis_mark = '_'
+            <td><code><a class="autorefs autorefs-internal" title="emphasis_mark: str = '_'
 
   
       class-attribute
@@ -2435,7 +2478,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="strong_mark = '**'
+            <td><code><a class="autorefs autorefs-internal" title="strong_mark: str = '**'
 
   
       class-attribute
@@ -2451,7 +2494,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="default_image_alt = ''
+            <td><code><a class="autorefs autorefs-internal" title="default_image_alt: str = ''
 
   
       class-attribute
@@ -2467,7 +2510,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="pad_tables = False
+            <td><code><a class="autorefs autorefs-internal" title="pad_tables: bool = False
 
   
       class-attribute
@@ -2483,7 +2526,7 @@ making it easier to manage and extend the functionality.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="wrap_list_items = False
+            <td><code><a class="autorefs autorefs-internal" title="wrap_list_items: bool = False
 
   
       class-attribute
@@ -2624,7 +2667,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.body_width" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">body_width</span> <span class="o">=</span> <span class="mi">0</span></code>
+            <code class="highlight language-python"><span class="n">body_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2645,7 +2688,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.compact_output" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">compact_output</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">compact_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2666,7 +2709,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.css_selector" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">css_selector</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">css_selector</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2687,7 +2730,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.default_image_alt" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">default_image_alt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></code>
+            <code class="highlight language-python"><span class="n">default_image_alt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2708,7 +2751,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.emphasis_mark" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">emphasis_mark</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span></code>
+            <code class="highlight language-python"><span class="n">emphasis_mark</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2729,7 +2772,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.images_as_html" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">images_as_html</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">images_as_html</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2750,7 +2793,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.include_images" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">include_images</span> <span class="o">=</span> <span class="kc">True</span></code>
+            <code class="highlight language-python"><span class="n">include_images</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2771,7 +2814,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.include_links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">include_links</span> <span class="o">=</span> <span class="kc">True</span></code>
+            <code class="highlight language-python"><span class="n">include_links</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2792,7 +2835,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.include_toc" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">include_toc</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">include_toc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2813,7 +2856,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.pad_tables" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">pad_tables</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">pad_tables</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2834,7 +2877,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.protect_links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">protect_links</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">protect_links</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2855,7 +2898,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.show_progress" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">show_progress</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">show_progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2876,7 +2919,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.single_line_break" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">single_line_break</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">single_line_break</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2897,7 +2940,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.strong_mark" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">strong_mark</span> <span class="o">=</span> <span class="s1">&#39;**&#39;</span></code>
+            <code class="highlight language-python"><span class="n">strong_mark</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;**&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2918,7 +2961,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.tables_as_html" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">tables_as_html</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">tables_as_html</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2939,7 +2982,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.unicode_snob" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">unicode_snob</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">unicode_snob</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2960,7 +3003,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">url</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2981,7 +3024,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.wrap_list_items" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">wrap_list_items</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">wrap_list_items</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3003,7 +3046,7 @@ making it easier to manage and extend the functionality.</p>
 
 
 <h3 id="webdown.converter.WebdownConfig.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_links</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_images</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_toc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">css_selector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compact_output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">body_width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">single_line_break</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">protect_links</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">images_as_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unicode_snob</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tables_as_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">emphasis_mark</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">strong_mark</span><span class="o">=</span><span class="s1">&#39;**&#39;</span><span class="p">,</span> <span class="n">default_image_alt</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">pad_tables</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">wrap_list_items</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">include_links</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">include_images</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">include_toc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">css_selector</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">compact_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">body_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">show_progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">single_line_break</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">protect_links</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">images_as_html</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">unicode_snob</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">tables_as_html</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">emphasis_mark</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">strong_mark</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;**&#39;</span><span class="p">,</span> <span class="n">default_image_alt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">pad_tables</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">wrap_list_items</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 <a href="#webdown.converter.WebdownConfig.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
