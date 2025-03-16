@@ -1,8 +1,6 @@
 # Webdown
 
-``` markdown title="README.md"
 --8<-- "README.md"
-```
 
 !!! note "Documentation Links"
     For full documentation, check out these additional resources:
