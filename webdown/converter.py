@@ -24,42 +24,16 @@ from tqdm import tqdm
 
 
 class WebdownError(Exception):
-    """Base exception for webdown errors.
+    """Exception for webdown errors.
 
-    This is the parent class for all custom exceptions raised by the webdown package.
-    It inherits from the standard Exception class and serves as a way to catch
-    all webdown-specific errors.
-    """
+    This exception class is used for all errors raised by the webdown package.
+    The error type is indicated by a descriptive message and can be
+    distinguished by checking the message content.
 
-    pass
-
-
-class NetworkError(WebdownError):
-    """Exception raised for network-related errors.
-
-    This exception is raised when there are problems with the network connection
-    or HTTP request, such as timeouts, connection errors, or HTTP error status codes.
-
-    Examples:
-        - Connection timeout
-        - DNS resolution failure
-        - Server returned 404, 500, etc.
-        - SSL certificate errors
-    """
-
-    pass
-
-
-class InvalidURLError(WebdownError):
-    """Exception raised for invalid URL format.
-
-    This exception is raised when the provided URL is not properly formatted
-    according to URL standards (scheme://netloc/path?query#fragment).
-
-    Examples:
-        - Missing scheme (http://, https://)
-        - Missing domain
-        - Malformed URL structure
+    Error types include:
+    - URL format errors (when the URL doesn't follow standard format)
+    - Network errors (connection issues, timeouts, HTTP errors)
+    - Parsing errors (issues with processing the HTML content)
     """
 
     pass
@@ -94,11 +68,10 @@ def fetch_url(url: str, show_progress: bool = False) -> str:
         HTML content as string
 
     Raises:
-        InvalidURLError: If URL format is invalid
-        NetworkError: If URL cannot be fetched
+        WebdownError: If URL is invalid or cannot be fetched
     """
     if not validate_url(url):
-        raise InvalidURLError(f"Invalid URL format: {url}")
+        raise WebdownError(f"Invalid URL format: {url}")
 
     try:
         # Stream the response to show download progress
@@ -139,13 +112,13 @@ def fetch_url(url: str, show_progress: bool = False) -> str:
             response.raise_for_status()
             return str(response.text)
     except requests.exceptions.Timeout:
-        raise NetworkError(f"Connection timed out while fetching {url}")
+        raise WebdownError(f"Connection timed out while fetching {url}")
     except requests.exceptions.ConnectionError:
-        raise NetworkError(f"Connection error while fetching {url}")
+        raise WebdownError(f"Connection error while fetching {url}")
     except requests.exceptions.HTTPError as e:
-        raise NetworkError(f"HTTP error {e.response.status_code} while fetching {url}")
+        raise WebdownError(f"HTTP error {e.response.status_code} while fetching {url}")
     except requests.exceptions.RequestException as e:
-        raise NetworkError(f"Error fetching {url}: {str(e)}")
+        raise WebdownError(f"Error fetching {url}: {str(e)}")
 
 
 def html_to_markdown(
@@ -270,8 +243,7 @@ def convert_url_to_markdown(
         Markdown content
 
     Raises:
-        InvalidURLError: If URL format is invalid
-        NetworkError: If URL cannot be fetched
+        WebdownError: If URL is invalid or cannot be fetched
     """
     html = fetch_url(url, show_progress=show_progress)
     return html_to_markdown(

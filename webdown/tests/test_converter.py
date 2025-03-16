@@ -5,8 +5,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from webdown.converter import (
-    InvalidURLError,
-    NetworkError,
+    WebdownError,
     convert_url_to_markdown,
     fetch_url,
     html_to_markdown,
@@ -37,24 +36,25 @@ class TestFetchUrl:
     """Tests for fetch_url function."""
 
     def test_invalid_url_raises_error(self) -> None:
-        """Test that invalid URLs raise InvalidURLError."""
-        with pytest.raises(InvalidURLError):
+        """Test that invalid URLs raise WebdownError."""
+        with pytest.raises(WebdownError) as exc_info:
             fetch_url("not_a_url")
+        assert "Invalid URL format" in str(exc_info.value)
 
     @patch("webdown.converter.requests.get")
-    def test_request_exceptions_raise_network_error(self, mock_get: MagicMock) -> None:
-        """Test that request exceptions raise NetworkError."""
+    def test_request_exceptions_raise_webdown_error(self, mock_get: MagicMock) -> None:
+        """Test that request exceptions raise WebdownError."""
         import requests
 
         # Test timeout
         mock_get.side_effect = requests.exceptions.Timeout
-        with pytest.raises(NetworkError) as exc_info:
+        with pytest.raises(WebdownError) as exc_info:
             fetch_url("https://example.com")
         assert "timed out" in str(exc_info.value).lower()
 
         # Test connection error
         mock_get.side_effect = requests.exceptions.ConnectionError
-        with pytest.raises(NetworkError) as exc_info:
+        with pytest.raises(WebdownError) as exc_info:
             fetch_url("https://example.com")
         assert "connection error" in str(exc_info.value).lower()
 
@@ -62,14 +62,14 @@ class TestFetchUrl:
         response_mock = MagicMock()
         response_mock.status_code = 404
         mock_get.side_effect = requests.exceptions.HTTPError(response=response_mock)
-        with pytest.raises(NetworkError) as exc_info:
+        with pytest.raises(WebdownError) as exc_info:
             fetch_url("https://example.com")
         assert "http error" in str(exc_info.value).lower()
         assert "404" in str(exc_info.value)
 
         # Test generic request exception
         mock_get.side_effect = requests.exceptions.RequestException("generic error")
-        with pytest.raises(NetworkError) as exc_info:
+        with pytest.raises(WebdownError) as exc_info:
             fetch_url("https://example.com")
         assert "error fetching" in str(exc_info.value).lower()
         assert "generic error" in str(exc_info.value)

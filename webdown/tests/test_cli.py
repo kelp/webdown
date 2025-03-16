@@ -10,7 +10,7 @@ import pytest
 # Used in test_main_module through fixture import
 import webdown.cli  # noqa: F401
 from webdown.cli import main, parse_args
-from webdown.converter import InvalidURLError, NetworkError
+from webdown.converter import WebdownError
 
 
 class TestParseArgs:
@@ -226,8 +226,8 @@ class TestMain:
     @patch("webdown.cli.convert_url_to_markdown")
     def test_error_handling(self, mock_convert: MagicMock) -> None:
         """Test error handling."""
-        # Test InvalidURLError
-        mock_convert.side_effect = InvalidURLError("Invalid URL: not_a_url")
+        # Test URL format error
+        mock_convert.side_effect = WebdownError("Invalid URL: not_a_url")
 
         stderr_backup = sys.stderr
         try:
@@ -239,8 +239,8 @@ class TestMain:
         finally:
             sys.stderr = stderr_backup
 
-        # Test NetworkError
-        mock_convert.side_effect = NetworkError("Connection error")
+        # Test network error
+        mock_convert.side_effect = WebdownError("Connection error")
 
         try:
             err = io.StringIO()

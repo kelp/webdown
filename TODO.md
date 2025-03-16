@@ -104,8 +104,8 @@
 
 ## Code Improvements
 - [ ] Reduce dependency complexity
-  - [ ] Consider replacing tqdm with simple custom progress bar (~15 lines)
-  - [ ] Evaluate necessity of the custom exception hierarchy (WebdownError, NetworkError, etc.)
+  - [x] Consider replacing tqdm with simple custom progress bar (~15 lines) - DECISION: Keep tqdm for better UX and cross-platform support
+  - [x] Evaluate necessity of the custom exception hierarchy (WebdownError, NetworkError, etc.) - IMPLEMENTED: Simplified to single WebdownError class
   - [ ] Simplify parameter interface of `convert_url_to_markdown()` (consider Config object)
 - [ ] Optimize html2text usage
   - [ ] Ensure all html2text options are exposed where useful
