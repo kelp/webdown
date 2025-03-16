@@ -72,6 +72,9 @@ poetry.lock
 tmp/
 temp/
 
+# MkDocs
+site/
+
 # Exclude .claude directory except for commands
 !.claude/
 !.claude/commands/

@@ -82,10 +82,13 @@ clean:
 
 # Documentation
 docs:
-	$(POETRY) run pdoc webdown -o docs
+	$(POETRY) run mkdocs build
 
 docs-serve:
-	$(POETRY) run pdoc -h localhost -p 8080 webdown
+	$(POETRY) run mkdocs serve
+
+docs-deploy:
+	$(POETRY) run mkdocs gh-deploy --force
 
 shell:
 	@echo "Starting Poetry shell..."
@@ -162,8 +165,9 @@ help:
 	@echo "  clean           Remove build artifacts and caches"
 	@echo "  shell           Start Poetry shell (interactive environment)"
 	@echo "  install-dev     Install package for current user in development mode"
-	@echo "  docs            Generate HTML documentation with pdoc"
-	@echo "  docs-serve      Start a local documentation server at http://localhost:8080"
+	@echo "  docs            Generate documentation with MkDocs"
+	@echo "  docs-serve      Start a local MkDocs documentation server at http://localhost:8000"
+	@echo "  docs-deploy     Deploy documentation to GitHub Pages"
 	@echo "  publish-test    Publish package to TestPyPI (test.pypi.org)"
 	@echo "  publish         Emergency manual publishing to PyPI (normally done via GitHub Actions)"
 	@echo "  release         Prepare and tag a new release (runs checks, verifies versions, creates git tag)"

@@ -1,0 +1,72 @@
+site_name: Webdown Documentation
+site_url: https://tcole.net/webdown/
+repo_url: https://github.com/kelp/webdown
+repo_name: kelp/webdown
+edit_uri: edit/main/
+
+# Documentation directory and site output
+docs_dir: docs
+site_dir: site
+
+# Theme configuration
+theme:
+  name: material
+  palette:
+    # Indigo primary color
+    primary: indigo
+    accent: indigo
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    - navigation.indexes
+    - content.code.copy
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+  icon:
+    repo: fontawesome/brands/github
+
+# MkDocs plugins
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_category_heading: true
+            show_if_no_docstring: false
+            heading_level: 2
+
+# Markdown extensions
+markdown_extensions:
+  # Code highlighting
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  # Includes
+  - md_in_html
+  - pymdownx.snippets
+  # UI elements
+  - admonition
+  - pymdownx.details
+  # Table of contents and formatting
+  - toc:
+      permalink: true
+  - attr_list
+  - tables
+
+# Navigation structure
+nav:
+  - Home: index.md
+  - API Reference:
+    - Overview: api/index.md
+    - Core API: api/converter.md
+    - CLI: api/cli.md
+  - Changelog: changelog.md
+  - Contributing: contributing.md

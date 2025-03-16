@@ -8,7 +8,9 @@ on:
       - 'docs/**'
       - '.github/workflows/docs.yml'
       - 'README.md'
+      - 'CHANGELOG.md'
       - 'CONTRIBUTING.md'
+      - 'mkdocs.yml'
   # Allow manual triggering
   workflow_dispatch:
 
@@ -32,23 +34,17 @@ jobs:
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Poetry Version
-        run: poetry --version
-
       - name: Install dependencies
         run: |
           poetry install
 
-      - name: Build docs
+      # Allows MkDocs to access the python module for API docs
+      - name: Install package in development mode
         run: |
-          poetry run pdoc webdown -o docs
+          poetry install
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          force_orphan: true
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'docs: update documentation site'
+      - name: Deploy MkDocs to GitHub Pages
+        run: |
+          poetry run mkdocs gh-deploy --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
