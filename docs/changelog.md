@@ -1,7 +1,5 @@
 # Changelog
 
-<!-- Included content from CHANGELOG.md -->
-
-```markdown
+``` markdown title="CHANGELOG.md"
 --8<-- "CHANGELOG.md"
 ```

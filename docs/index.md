@@ -1,8 +1,6 @@
 # Webdown
 
-<!-- Included content from README.md -->
-
-```markdown
+``` markdown title="README.md"
 --8<-- "README.md"
 ```
 

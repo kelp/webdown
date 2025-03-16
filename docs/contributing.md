@@ -1,7 +1,5 @@
 # Contributing Guide
 
-<!-- Included content from CONTRIBUTING.md -->
-
-```markdown
+``` markdown title="CONTRIBUTING.md"
 --8<-- "CONTRIBUTING.md"
 ```
