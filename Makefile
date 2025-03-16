@@ -1,4 +1,4 @@
-.PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update docs docs-serve
+.PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update docs docs-serve publish publish-test
 
 # Use Poetry for all commands
 POETRY := poetry
@@ -91,6 +91,25 @@ shell:
 	@echo "Starting Poetry shell..."
 	@$(POETRY) shell
 
+publish-test: clean build
+	@echo "Publishing package to TestPyPI..."
+	@$(POETRY) config repositories.testpypi https://test.pypi.org/legacy/
+	@$(POETRY) publish --repository testpypi
+
+publish: clean all-checks build
+	@echo "NOTICE: For production PyPI publishing, use the GitHub Actions workflow by tagging a release."
+	@echo "See CONTRIBUTING.md for the release process."
+	@echo ""
+	@echo "This command is for emergency manual publishing only."
+	@echo "Are you sure you want to publish directly to PyPI? [y/N] "
+	@read -r response; \
+	if [ "$$response" = "y" ] || [ "$$response" = "Y" ]; then \
+		echo "Publishing package to PyPI..."; \
+		$(POETRY) publish; \
+	else \
+		echo "Publishing aborted."; \
+	fi
+
 help:
 	@echo "Available targets:"
 	@echo "  install         Install package and dependencies with Poetry"
@@ -111,4 +130,6 @@ help:
 	@echo "  install-dev     Install package for current user in development mode"
 	@echo "  docs            Generate HTML documentation with pdoc"
 	@echo "  docs-serve      Start a local documentation server at http://localhost:8080"
+	@echo "  publish-test    Publish package to TestPyPI (test.pypi.org)"
+	@echo "  publish         Emergency manual publishing to PyPI (normally done via GitHub Actions)"
 	@echo "  help            Show this help message"

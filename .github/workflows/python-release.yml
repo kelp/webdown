@@ -8,6 +8,10 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write  # Required for PyPI's trusted publishing
+      contents: write  # Required for creating GitHub releases
     steps:
       - uses: actions/checkout@v4
         with:
@@ -75,8 +79,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to PyPI
-        env:
-          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
-          poetry publish --no-interaction
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true

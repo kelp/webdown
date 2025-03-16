@@ -39,8 +39,24 @@ webdown https://api.example.com/docs -s "main" -I -c -w 80 -o api_context.md
 
 ## Installation
 
+### From PyPI
+
 ```bash
 pip install webdown
+```
+
+### Install from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/kelp/webdown.git
+cd webdown
+
+# Install with pip
+pip install .
+
+# Or install with Poetry
+poetry install
 ```
 
 ## Usage
@@ -184,6 +200,11 @@ make docs
 
 # Start documentation server
 make docs-serve
+
+# Publishing to PyPI (maintainers only)
+# See CONTRIBUTING.md for details on the release process
+make build         # Build package
+make publish-test  # Publish to TestPyPI (for testing)
 
 # Show all available commands
 make help

@@ -145,6 +145,34 @@ We follow [Semantic Versioning](https://semver.org/):
 - MINOR version for functionality added in a backward-compatible manner
 - PATCH version for backward-compatible bug fixes
 
+## Publishing to PyPI (Maintainers Only)
+
+Webdown uses GitHub Actions to automate the release process:
+
+1. Ensure all tests pass and code quality checks succeed: `make all-checks`
+2. Update version number in:
+   - `pyproject.toml`
+   - `webdown/__init__.py`
+3. Update `CHANGELOG.md` with the new version and changes
+4. Commit the version bump changes
+5. Create and push a new tag with the version number (prefixed with 'v'):
+   ```bash
+   git tag -a v0.4.1 -m "Release version 0.4.1"
+   git push origin v0.4.1
+   ```
+6. The GitHub Actions workflow will:
+   - Verify the version numbers match
+   - Run tests
+   - Build the package
+   - Create a GitHub release with content from CHANGELOG.md
+   - Publish to PyPI automatically
+
+For local testing before a release, you can use:
+- `make build` to build the package locally
+- `make publish-test` to publish to TestPyPI
+
+Note: PyPI publishing uses GitHub's OIDC and PyPI's Trusted Publishers feature for secure authentication without tokens.
+
 ## License
 
 By contributing to this project, you agree that your contributions will be licensed under the project's MIT License (see LICENSE file).
