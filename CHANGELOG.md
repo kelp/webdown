@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] - 2025-03-16
+
+### Improved
+- Migrated documentation to MkDocs with Material theme for better API reference
+- Added proper documentation site with auto-generation from docstrings
+- Fixed documentation deployment to GitHub Pages
+- Improved docstrings to be more consistent across modules
+
 ## [0.4.1] - 2025-03-15
 
 ### Added
