@@ -1,5 +1,11 @@
 # Webdown Development Guide
 
+## Working with Claude
+
+- **No hallucinations**: If Claude is uncertain about any answer or how to do something, it should explicitly say so rather than guessing or making up information.
+- **Clear uncertainty**: When encountering ambiguous requirements or unknown aspects of the codebase, Claude should openly acknowledge uncertainty and ask for clarification.
+- **Providing alternatives**: When unsure about a specific solution, Claude should present multiple options along with their potential trade-offs.
+
 ## Version Management (Semantic Versioning)
 
 We follow [Semantic Versioning](https://semver.org/) for version numbering (MAJOR.MINOR.PATCH):
