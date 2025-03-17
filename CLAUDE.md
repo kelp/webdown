@@ -20,7 +20,6 @@ When making changes, choose the appropriate version increment based on the impac
 
 ### Build & Testing Commands
 - Install dependencies: `poetry install`
-- Activate shell: `poetry shell`
 - Run all tests: `poetry run pytest` or `make test`
 - Run specific test: `poetry run pytest webdown/tests/test_file.py::TestClass::test_function`
 - Run with coverage: `poetry run pytest --cov=webdown` or `make test-coverage`
@@ -31,11 +30,38 @@ When making changes, choose the appropriate version increment based on the impac
 - All checks: `make all-checks`
 - Building package: `poetry build` or `make build`
 
+### Path-Independent Environment Management
+- We use a path-independent approach that works regardless of where the repo is cloned
+- Poetry is configured to create virtualenvs in-project: `poetry config virtualenvs.in-project true`
+- Use `./scripts/run.sh <command>` to run any command in the correct environment
+- Examples:
+  - Run tests: `./scripts/run.sh pytest`
+  - Run pre-commit: `./scripts/run.sh pre-commit run`
+  - Run any other command: `./scripts/run.sh python -m webdown.cli`
+
+### Virtual Environment Management
+- Install dependencies: `poetry install`
+- Run commands in virtual environment: `poetry run <command>` or `./scripts/run.sh <command>`
+- Activate environment in fish shell: `source (poetry env activate --fish)`
+- Activate environment in bash/zsh: `source $(poetry env activate)`
+- Check environment info: `poetry env info`
+
+### Pre-commit Setup
+- Pre-commit is configured to use isolated environments via `default_language_version`
+- Install hooks: `./scripts/run.sh pre-commit install` (only needed once)
+- If pre-commit hooks need to be reinstalled:
+  ```bash
+  # Remove old hooks
+  rm -f .git/hooks/pre-commit
+
+  # Install hooks with our helper script
+  ./scripts/run.sh pre-commit install
+  ```
+
 ### Development with Poetry
 - Add dependency: `poetry add requests`
 - Add dev dependency: `poetry add --group dev pytest`
 - Update dependencies: `poetry update`
-- Run commands in virtual environment: `poetry run <command>`
 
 ## Code Style Guidelines
 - Follow PEP 8 conventions (enforced by Black and flake8)

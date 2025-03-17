@@ -60,6 +60,9 @@ pythonpath = [
     "."
 ]
 
+[tool.coverage.run]
+omit = ["webdown/tests/test_integration.py"]
+
 [tool.mypy]
 python_version = "3.13"
 warn_return_any = true

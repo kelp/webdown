@@ -1,8 +1,12 @@
 .PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update docs docs-serve publish publish-test release
 
+# Path-independent environment setup
+SCRIPT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+RUN_SCRIPT := $(SCRIPT_DIR)/scripts/run.sh
+
 # Use Poetry for all commands
 POETRY := poetry
-POETRY_RUN := $(POETRY) run
+POETRY_RUN := $(RUN_SCRIPT)
 
 install:
 	@echo "Installing package and dependencies with Poetry..."
