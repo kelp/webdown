@@ -5,6 +5,8 @@ converting web pages to clean, readable Markdown format. The CLI allows users to
 customize various aspects of the conversion process, from content selection to
 formatting options.
 
+For a complete reference, see the [CLI Reference](../cli-reference.md) documentation.
+
 ## Basic Usage
 
 The most basic usage is to simply provide a URL:
@@ -33,6 +35,7 @@ The CLI offers various options to customize the conversion:
 * `-c, --compact`: Remove excessive blank lines from the output
 * `-w, --width N`: Set line width for wrapped text (0 for no wrapping)
 * `-p, --progress`: Show download progress bar
+* `--stream-threshold BYTES`: Size threshold for streaming mode (default: 10MB)
 * `-V, --version`: Show version information and exit
 * `-h, --help`: Show help message and exit
 
@@ -42,9 +45,14 @@ Advanced formatting options for fine-tuning the Markdown output:
 
 * `--single-line-break`: Use single line breaks instead of two line breaks
 * `--unicode`: Use Unicode characters instead of ASCII equivalents
+* `--protect-links`: Protect links from line wrapping (keeps URLs on a single line)
+* `--images-as-html`: Keep images as HTML rather than converting to Markdown
 * `--tables-as-html`: Keep tables as HTML instead of converting to Markdown
 * `--emphasis-mark CHAR`: Character(s) to use for emphasis (default: '_')
 * `--strong-mark CHARS`: Character(s) to use for strong emphasis (default: '**')
+* `--default-image-alt TEXT`: Default alt text for images without any
+* `--pad-tables`: Add padding spaces for table alignment in Markdown
+* `--wrap-list-items`: Wrap list items to the specified body width
 
 ## Example Scenarios
 
@@ -72,6 +80,17 @@ Advanced formatting options for fine-tuning the Markdown output:
    ```bash
    webdown https://example.com -s "#content" --emphasis-mark "*" \
      --strong-mark "__" -o output.md
+   ```
+
+6. Process a large webpage with memory optimization:
+   ```bash
+   webdown https://example.com -p --stream-threshold 5242880
+   ```
+
+7. Complete example with multiple options:
+   ```bash
+   webdown https://example.com -s "main" -t -c -w 80 -p \
+     --unicode --single-line-break -o output.md
    ```
 
 The entry point is the `main()` function, which is called when the command

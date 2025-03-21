@@ -76,9 +76,12 @@ markdown_extensions:
 # Navigation structure
 nav:
   - Home: index.md
+  - CLI:
+    - Reference: cli-reference.md
+    - Cheat Sheet: cli-cheatsheet.md
   - API Reference:
     - Overview: api/index.md
     - Core API: api/converter.md
-    - CLI: api/cli.md
+    - CLI Module: api/cli.md
   - Changelog: changelog.md
   - Contributing: contributing.md
