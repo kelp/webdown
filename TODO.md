@@ -197,7 +197,12 @@
 - [ ] Add option to preserve or transform HTML comments
 - [ ] Support for rendering math equations (MathJax/LaTeX)
 - [ ] Command-line option for output file format (Markdown, CommonMark, GitHub Flavored Markdown)
-- [ ] Add Claude XML output format option for preparing content specifically for Claude
+- [ ] Add Anthropic Claude XML format support
+  - [ ] Implement converter for Claude XML format (content wrapped in XML tags)
+  - [ ] Add CLI option to output in Claude XML format (`--format claude-xml`)
+  - [ ] Include options for wrapping content in human/assistant tags
+  - [ ] Support for code blocks with proper language tags
+  - [ ] Document Claude XML format usage and examples
 - [ ] Interactive mode to select page sections to convert
 - [x] Option to compact output by removing excessive blank lines
 - [x] Remove zero-width spaces and other invisible characters
