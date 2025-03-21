@@ -1,25 +1,40 @@
 version: 2
 updates:
+  # Enable version updates for Python/pip - dependencies in pyproject.toml
   - package-ecosystem: "pip"
+    # Look for pyproject.toml in the repository root
     directory: "/"
+    # Check for updates once a week (on Monday)
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
-    target-branch: "main"
+      day: "monday"
+    # Specify labels for pull requests
     labels:
       - "dependencies"
+      - "security"
+    # Allow up to 10 open pull requests for pip dependencies
+    open-pull-requests-limit: 10
+    # Set reviewers for pull requests
     reviewers:
-      - "username"  # Replace with your GitHub username
-    versioning-strategy: auto
+      - "kelp"
+    # Group all non-major updates into a single PR
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    # Ignore major and breaking updates
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
+  # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
-    open-pull-requests-limit: 5
-    target-branch: "main"
+      interval: "weekly"
+      day: "monday"
     labels:
       - "dependencies"
       - "github-actions"
-    reviewers:
-      - "username"  # Replace with your GitHub username
+    open-pull-requests-limit: 10

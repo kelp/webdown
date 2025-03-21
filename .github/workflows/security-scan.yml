@@ -1,0 +1,57 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run weekly on Monday at 9:00 AM
+    - cron: '0 9 * * 1'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  security-scan:
+    name: Dependency Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+        cache: 'pip'
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: |
+        poetry install
+
+    - name: Run Safety check
+      run: |
+        poetry run safety check
+
+    - name: Generate Safety report
+      if: always()  # Run even if previous step fails
+      run: |
+        poetry run safety check --output text --save-json safety-report.json
+
+    - name: Upload Safety report
+      if: always()  # Run even if previous steps fail
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-reports
+        path: safety-report.json
+        retention-days: 90
+
+    - name: Check for vulnerabilities with pip-audit
+      run: |
+        pip install pip-audit
+        pip-audit
