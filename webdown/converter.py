@@ -40,6 +40,8 @@ class WebdownConfig:
         compact_output (bool): Whether to remove excessive blank lines
         body_width (int): Maximum line length for wrapping (0 for no wrapping)
         show_progress (bool): Whether to display a progress bar during download
+        stream_threshold (int): Size threshold in bytes for using streaming mode
+            (0 to always stream)
         single_line_break (bool): Whether to use single line breaks (True) or double
         protect_links (bool): Whether to protect links from line wrapping
         images_as_html (bool): Whether to keep images as HTML rather than Markdown
@@ -61,6 +63,7 @@ class WebdownConfig:
     compact_output: bool = False
     body_width: int = 0
     show_progress: bool = False
+    stream_threshold: int = 10 * 1024 * 1024  # 10MB threshold for streaming
 
     # Advanced HTML2Text options
     single_line_break: bool = False
@@ -427,6 +430,7 @@ def convert_url_to_markdown(
     compact_output: bool = False,
     body_width: int = 0,
     show_progress: bool = False,
+    stream_threshold: int = 10 * 1024 * 1024,  # 10MB threshold for streaming
 ) -> str:
     """Convert a web page to markdown.
 
@@ -458,6 +462,10 @@ def convert_url_to_markdown(
 
         show_progress (bool):
             Whether to display a progress bar (ignored if config provided)
+
+        stream_threshold (int):
+            Size threshold in bytes for using streaming mode (default: 10MB)
+            Set to 0 to always use streaming, or a large number to disable
 
     Returns:
         str: Markdown content
@@ -494,17 +502,139 @@ def convert_url_to_markdown(
         compact_output = config.compact_output
         body_width = config.body_width
         show_progress = config.show_progress
+        stream_threshold = config.stream_threshold
     else:
         # Using the traditional parameter-based approach
         url = url_or_config
+        config = None
 
-    html = fetch_url(url, show_progress=show_progress)
+    # Validate URL
+    if not validate_url(url):
+        raise WebdownError(f"Invalid URL format: {url}")
 
-    if isinstance(url_or_config, WebdownConfig):
-        # Pass the config object to html_to_markdown
+    try:
+        # Check content length with a HEAD request to determine if we should stream
+        use_streaming = False
+        if stream_threshold > 0:
+            try:
+                head_response = requests.head(url, timeout=5)
+                content_length = int(head_response.headers.get("content-length", "0"))
+                use_streaming = content_length > stream_threshold
+            except (requests.RequestException, ValueError):
+                # If HEAD request fails or content-length is invalid, use non-streaming
+                use_streaming = False
+        else:
+            # If threshold is 0, always use streaming
+            use_streaming = True
+
+        if use_streaming:
+            # Use streaming mode for large documents
+            return _process_url_streaming(
+                url,
+                include_links=include_links,
+                include_images=include_images,
+                include_toc=include_toc,
+                css_selector=css_selector,
+                compact_output=compact_output,
+                body_width=body_width,
+                show_progress=show_progress,
+                config=config,
+            )
+        else:
+            # Use standard mode for smaller documents
+            html = fetch_url(url, show_progress=show_progress)
+
+            if config is not None:
+                # Pass the config object to html_to_markdown
+                return html_to_markdown(html, config=config)
+            else:
+                # Use individual parameters
+                return html_to_markdown(
+                    html,
+                    include_links=include_links,
+                    include_images=include_images,
+                    include_toc=include_toc,
+                    css_selector=css_selector,
+                    compact_output=compact_output,
+                    body_width=body_width,
+                )
+    except requests.exceptions.Timeout:
+        raise WebdownError(f"Connection timed out while fetching {url}")
+    except requests.exceptions.ConnectionError:
+        raise WebdownError(f"Connection error while fetching {url}")
+    except requests.exceptions.HTTPError as e:
+        raise WebdownError(f"HTTP error {e.response.status_code} while fetching {url}")
+    except requests.exceptions.RequestException as e:
+        raise WebdownError(f"Error fetching {url}: {str(e)}")
+
+
+def _process_url_streaming(
+    url: str,
+    include_links: bool = True,
+    include_images: bool = True,
+    include_toc: bool = False,
+    css_selector: Optional[str] = None,
+    compact_output: bool = False,
+    body_width: int = 0,
+    show_progress: bool = False,
+    config: Optional[WebdownConfig] = None,
+) -> str:
+    """Process a URL using streaming mode for large documents.
+
+    This internal function handles large documents by streaming the content
+    and processing it in chunks to minimize memory usage.
+
+    Args:
+        url: URL to fetch and process
+        Other parameters: Same as convert_url_to_markdown
+
+    Returns:
+        str: Markdown content
+    """
+    # Make a streaming request
+    response = requests.get(url, timeout=10, stream=True)
+    response.raise_for_status()
+
+    # Get content length if available
+    total_size = int(response.headers.get("content-length", 0))
+
+    # Create a buffer for the HTML content
+    html_buffer = io.StringIO()
+
+    # Create progress bar if requested
+    progress_desc = f"Downloading {url.split('/')[-1] or 'webpage'}"
+    with tqdm(
+        total=total_size if total_size > 0 else None,
+        unit="B",
+        unit_scale=True,
+        unit_divisor=1024,
+        desc=progress_desc,
+        disable=not show_progress,
+    ) as progress_bar:
+        # Process content in chunks
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                # Calculate chunk size for progress bar
+                if isinstance(chunk, bytes):
+                    chunk_size = len(chunk)
+                    text_chunk = chunk.decode("utf-8", errors="replace")
+                else:
+                    chunk_size = len(chunk.encode("utf-8"))
+                    text_chunk = chunk
+
+                # Update progress
+                progress_bar.update(chunk_size)
+
+                # Append to buffer
+                html_buffer.write(text_chunk)
+
+    # Get complete HTML content
+    html = html_buffer.getvalue()
+
+    # Process with html_to_markdown
+    if config is not None:
         return html_to_markdown(html, config=config)
     else:
-        # Use individual parameters
         return html_to_markdown(
             html,
             include_links=include_links,

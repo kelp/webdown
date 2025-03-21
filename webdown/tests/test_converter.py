@@ -397,6 +397,54 @@ class TestConvertUrlToMarkdown:
         # Verify result is returned from html_to_markdown
         assert result == "# Test\n\nContent"
 
+    @patch("webdown.converter.requests.head")
+    @patch("webdown.converter.requests.get")
+    @patch("webdown.converter.html_to_markdown")
+    def test_streaming_mode(
+        self,
+        mock_html_to_markdown: MagicMock,
+        mock_get: MagicMock,
+        mock_head: MagicMock,
+    ) -> None:
+        """Test streaming mode for large documents."""
+        # Setup mock HEAD response to trigger streaming
+        mock_head_response = MagicMock()
+        mock_head_response.headers = {"content-length": "20000000"}  # 20MB
+        mock_head.return_value = mock_head_response
+
+        # Setup mock GET response for streaming
+        mock_get_response = MagicMock()
+        mock_get_response.headers = {"content-length": "20000000"}
+        mock_get_response.iter_content.return_value = [
+            b"<html><body>",
+            b"<h1>Test</h1>",
+            b"<p>Content</p>",
+            b"</body></html>",
+        ]
+        mock_get.return_value = mock_get_response
+
+        # Mock html_to_markdown
+        mock_html_to_markdown.return_value = "# Test\n\nContent"
+
+        # Create a config with a low threshold to force streaming
+        config = WebdownConfig(
+            url="https://example.com",
+            include_toc=True,
+            stream_threshold=1000,  # Very low threshold to ensure streaming
+        )
+
+        # Call the function
+        result = convert_url_to_markdown(config)
+
+        # Verify the result
+        assert result == "# Test\n\nContent"
+
+        # Verify HEAD request was made to check size
+        mock_head.assert_called_once_with("https://example.com", timeout=5)
+
+        # Verify GET request was made with stream=True
+        mock_get.assert_called_once_with("https://example.com", timeout=10, stream=True)
+
     def test_config_missing_url(self) -> None:
         """Test that WebdownConfig without URL raises an error."""
         # Create config without URL

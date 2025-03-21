@@ -167,6 +167,16 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         metavar="N",
         help="Set line width (0 disables wrapping, 80 recommended for readability)",
     )
+    format_group.add_argument(
+        "--stream-threshold",
+        type=int,
+        default=10 * 1024 * 1024,  # 10MB
+        metavar="BYTES",
+        help=(
+            "Size threshold in bytes for using streaming mode "
+            "(default: 10MB, 0 to always stream)"
+        ),
+    )
 
     # Add advanced HTML2Text options
     advanced_group = parser.add_argument_group("Advanced Options")
@@ -284,6 +294,7 @@ def main(args: Optional[List[str]] = None) -> int:
             compact_output=parsed_args.compact,
             body_width=parsed_args.width,
             show_progress=parsed_args.progress,
+            stream_threshold=parsed_args.stream_threshold,
             # Advanced options
             single_line_break=parsed_args.single_line_break,
             protect_links=parsed_args.protect_links,
