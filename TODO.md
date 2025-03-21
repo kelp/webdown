@@ -1,5 +1,31 @@
 # Webdown Project TODO
 
+## Bug Fixes and Quality Issues
+- [ ] Fix stream decoding inconsistency in progress reporting
+  - [ ] Review and fix lines 153-158 in converter.py where we use `decode_unicode=True` but measure encoded chunk length
+  - [ ] Test with large web pages to verify progress bar accuracy
+- [ ] Improve error handling consistency
+  - [ ] Replace generic `except Exception` in cli.py with specific exception handling
+  - [ ] Ensure all WebdownError exceptions include meaningful contextual information
+- [ ] Add parameter validation
+  - [ ] Validate CSS selectors before use to provide better error messages
+  - [ ] Add validation for width parameter and other numeric inputs
+- [ ] Fix TOC generation issues
+  - [ ] Improve heading detection to handle code blocks with # characters
+  - [ ] Fix link generation in TOC to properly handle special characters in heading titles
+  - [ ] Test TOC generation with complex content
+- [ ] Expose all WebdownConfig parameters in CLI
+  - [ ] Add missing parameters like protect_links, images_as_html, etc. to CLI interface
+  - [ ] Update CLI documentation to reflect new parameters
+- [ ] Fix mypy configuration inconsistency
+  - [ ] Change Python version in pyproject.toml [tool.mypy] section from 3.13 to 3.10 to match minimum supported version
+- [ ] Optimize performance for large documents
+  - [ ] Improve progress bar implementation to avoid extra HEAD request
+  - [ ] Implement streaming processing for very large documents
+- [ ] Add dependency security scanning
+  - [ ] Set up security scanning in CI/CD pipeline to check for vulnerabilities
+  - [ ] Create plan for addressing detected vulnerabilities
+
 ## Environment Setup
 - [x] Set up proper Python development environment with pyenv
   - [x] Create `.python-version` file with appropriate Python version
@@ -119,6 +145,10 @@
   - [x] Generate HTML documentation with proper navigation
   - [x] Make CLI module part of the public API for better discoverability
   - [x] Improve docstring formatting with Markdown syntax
+- [ ] Improve CLI documentation
+  - [ ] Document all available options including the missing WebdownConfig parameters
+  - [ ] Provide examples for each advanced option
+  - [ ] Create a comprehensive CLI cheat sheet
 - [ ] Add batch processing examples
   - [ ] Document how to process multiple URLs efficiently
   - [ ] Provide shell script examples for batch processing
@@ -128,16 +158,25 @@
 - [ ] Improve error handling documentation
   - [ ] Explain how users should handle common failures
   - [ ] Add troubleshooting section for common issues
+  - [ ] Document common error scenarios and their resolution
+- [ ] Document advanced TOC functionality
+  - [ ] Explain TOC link generation and limitations
+  - [ ] Provide examples of customized TOC formatting
 - [ ] Consider setting up ReadTheDocs or GitHub Pages for online documentation hosting
 
 ## Test Improvements
 - [ ] Complete edge case coverage
   - [ ] Add tests for network failure scenarios
   - [ ] Test different HTML edge cases and encoding issues
+  - [ ] Add tests for invalid CSS selectors
+  - [ ] Test TOC generation with malformed headings and special characters
+  - [ ] Test with very large HTML documents to verify memory usage
+  - [ ] Add tests for Unicode handling and invisible character removal
 - [ ] Enhance integration tests
   - [ ] Test against more diverse real-world websites
   - [ ] Add performance testing for large documents
   - [ ] Test with slow connections and timeout scenarios
+  - [ ] Test progress bar accuracy with different content-length responses
 
 ## Features to Consider
 - [x] Add a progress bar for downloads
@@ -158,6 +197,7 @@
 - [ ] Add option to preserve or transform HTML comments
 - [ ] Support for rendering math equations (MathJax/LaTeX)
 - [ ] Command-line option for output file format (Markdown, CommonMark, GitHub Flavored Markdown)
+- [ ] Add Claude XML output format option for preparing content specifically for Claude
 - [ ] Interactive mode to select page sections to convert
 - [x] Option to compact output by removing excessive blank lines
 - [x] Remove zero-width spaces and other invisible characters
