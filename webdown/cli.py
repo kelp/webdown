@@ -82,8 +82,10 @@ import argparse
 import sys
 from typing import List, Optional
 
+import requests
+
 from webdown import __version__
-from webdown.converter import WebdownConfig, convert_url_to_markdown
+from webdown.converter import WebdownConfig, WebdownError, convert_url_to_markdown
 
 
 def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
@@ -179,6 +181,16 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         help="Use Unicode characters instead of ASCII equivalents",
     )
     advanced_group.add_argument(
+        "--protect-links",
+        action="store_true",
+        help="Protect links from line wrapping (keeps URLs on a single line)",
+    )
+    advanced_group.add_argument(
+        "--images-as-html",
+        action="store_true",
+        help="Keep images as HTML rather than converting to Markdown format",
+    )
+    advanced_group.add_argument(
         "--tables-as-html",
         action="store_true",
         help="Keep tables as HTML instead of converting to Markdown",
@@ -194,6 +206,22 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         default="**",
         metavar="CHARS",
         help="Character(s) for strong emphasis (default: '**', alt: '__')",
+    )
+    advanced_group.add_argument(
+        "--default-image-alt",
+        default="",
+        metavar="TEXT",
+        help="Default alt text for images that don't have any (default: empty string)",
+    )
+    advanced_group.add_argument(
+        "--pad-tables",
+        action="store_true",
+        help="Add padding spaces for table alignment in Markdown output",
+    )
+    advanced_group.add_argument(
+        "--wrap-list-items",
+        action="store_true",
+        help="Wrap list items to the specified body width",
     )
 
     # Meta options
@@ -258,10 +286,15 @@ def main(args: Optional[List[str]] = None) -> int:
             show_progress=parsed_args.progress,
             # Advanced options
             single_line_break=parsed_args.single_line_break,
+            protect_links=parsed_args.protect_links,
+            images_as_html=parsed_args.images_as_html,
             unicode_snob=parsed_args.unicode,
             tables_as_html=parsed_args.tables_as_html,
             emphasis_mark=parsed_args.emphasis_mark,
             strong_mark=parsed_args.strong_mark,
+            default_image_alt=parsed_args.default_image_alt,
+            pad_tables=parsed_args.pad_tables,
+            wrap_list_items=parsed_args.wrap_list_items,
         )
 
         # Convert using the config object
@@ -275,8 +308,20 @@ def main(args: Optional[List[str]] = None) -> int:
 
         return 0
 
+    except WebdownError as e:
+        sys.stderr.write(f"Web conversion error: {str(e)}\n")
+        return 1
+    except requests.exceptions.RequestException as e:
+        sys.stderr.write(f"Network error: {str(e)}\n")
+        return 1
+    except IOError as e:
+        sys.stderr.write(f"File I/O error: {str(e)}\n")
+        return 1
+    except ValueError as e:
+        sys.stderr.write(f"Value error: {str(e)}\n")
+        return 1
     except Exception as e:
-        sys.stderr.write(f"Error: {str(e)}\n")
+        sys.stderr.write(f"Unexpected error: {str(e)}\n")
         return 1
 
 

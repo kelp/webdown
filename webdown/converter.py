@@ -102,11 +102,24 @@ def validate_url(url: str) -> bool:
 
     >>> validate_url('https://example.com')
     True
+    >>> validate_url('http://example.com')
+    True
     >>> validate_url('not_a_url')
     False
     """
+    if not isinstance(url, str):
+        return False
+
+    if not url.strip():
+        return False
+
     parsed = urlparse(url)
-    return bool(parsed.scheme and parsed.netloc)
+
+    # Check for required components
+    has_scheme = bool(parsed.scheme)
+    has_netloc = bool(parsed.netloc)
+
+    return has_scheme and has_netloc
 
 
 def fetch_url(url: str, show_progress: bool = False) -> str:
@@ -128,34 +141,46 @@ def fetch_url(url: str, show_progress: bool = False) -> str:
     try:
         # Stream the response to show download progress
         if show_progress:
-            # First make a HEAD request to get the content length
-            head_response = requests.head(url, timeout=5)
-            head_response.raise_for_status()
-            total_size = int(head_response.headers.get("content-length", 0))
-
-            # Now make the GET request with stream=True
+            # Make a GET request with stream=True
             response = requests.get(url, timeout=10, stream=True)
             response.raise_for_status()
+
+            # Get content length from headers if available
+            total_size = int(response.headers.get("content-length", 0))
+
+            # Page name for the progress bar
+            page_name = url.split("/")[-1] or "webpage"
 
             # Create a buffer to store the content
             content = io.StringIO()
 
-            # Create a progress bar
+            # Create progress bar - note that if content-length is unknown (0),
+            # tqdm will show a progress bar without the total
             with tqdm(
-                total=total_size,
+                total=total_size if total_size > 0 else None,
                 unit="B",
                 unit_scale=True,
                 unit_divisor=1024,
-                desc=f"Downloading {url.split('/')[-1] or 'webpage'}",
+                desc=f"Downloading {page_name}",
                 disable=not show_progress,
             ) as progress_bar:
-                # Decode each chunk and update the progress bar
-                for chunk in response.iter_content(
-                    chunk_size=1024, decode_unicode=True
-                ):
+                # Process chunks consistently, handling both str and bytes
+                for chunk in response.iter_content(chunk_size=1024):
                     if chunk:
-                        progress_bar.update(len(chunk.encode("utf-8")))
-                        content.write(chunk)
+                        # Calculate chunk size for progress bar
+                        if isinstance(chunk, bytes):
+                            chunk_size = len(chunk)
+                            # Decode bytes for StringIO
+                            text_chunk = chunk.decode("utf-8", errors="replace")
+                        else:
+                            # Handle str chunks (mostly for tests)
+                            chunk_size = len(chunk.encode("utf-8"))
+                            text_chunk = chunk
+
+                        # Update progress with correct size
+                        progress_bar.update(chunk_size)
+                        # Store in string buffer
+                        content.write(text_chunk)
 
             return content.getvalue()
         else:
@@ -247,10 +272,33 @@ def html_to_markdown(
     """
     # Extract specific content by CSS selector if provided
     if css_selector:
-        soup = BeautifulSoup(html, "html.parser")
-        selected = soup.select(css_selector)
-        if selected:
-            html = "".join(str(element) for element in selected)
+        # Validate CSS selector format
+        if not isinstance(css_selector, str) or not css_selector.strip():
+            raise WebdownError("CSS selector must be a non-empty string")
+
+        # Some basic validation to catch obvious syntax errors
+        invalid_chars = ["<", ">", "(", ")", "@"]
+        if any(char in css_selector for char in invalid_chars):
+            raise WebdownError(
+                f"Invalid CSS selector: '{css_selector}'. Contains invalid characters."
+            )
+
+        try:
+            soup = BeautifulSoup(html, "html.parser")
+            selected = soup.select(css_selector)
+            if selected:
+                html = "".join(str(element) for element in selected)
+            else:
+                # Warning - no elements matched
+                import warnings
+
+                warnings.warn(
+                    f"CSS selector '{css_selector}' did not match any elements"
+                )
+        except Exception as e:
+            raise WebdownError(
+                f"Error applying CSS selector '{css_selector}': {str(e)}"
+            )
 
     # Use config object if provided, otherwise use individual parameters
     if config is not None:
@@ -271,6 +319,16 @@ def html_to_markdown(
         default_image_alt = config.default_image_alt
         pad_tables = config.pad_tables
         wrap_list_items = config.wrap_list_items
+
+    # Validate numeric parameters
+    if not isinstance(body_width, int):
+        raise WebdownError(
+            f"body_width must be an integer, got {type(body_width).__name__}"
+        )
+    if body_width < 0:
+        raise WebdownError(
+            f"body_width must be a non-negative integer, got {body_width}"
+        )
 
     # Configure html2text
     h = html2text.HTML2Text()
@@ -307,16 +365,51 @@ def html_to_markdown(
 
     # Add table of contents if requested
     if include_toc:
-        headings = re.findall(r"^(#{1,6})\s+(.+)$", markdown, re.MULTILINE)
+        # First identify code blocks to avoid picking up # in code
+        code_blocks = []
+        # Find all code blocks (both indented and fenced)
+        fenced_matches = list(re.finditer(r"```.*?\n.*?```", markdown, re.DOTALL))
+        for match in fenced_matches:
+            code_blocks.append((match.start(), match.end()))
+
+        # Now find headings outside of code blocks
+        headings = []
+        heading_matches = re.finditer(r"^(#{1,6})\s+(.+)$", markdown, re.MULTILINE)
+
+        for match in heading_matches:
+            # Check if this heading is within a code block
+            is_in_code_block = False
+            for start, end in code_blocks:
+                if start <= match.start() <= end:
+                    is_in_code_block = True
+                    break
+
+            if not is_in_code_block:
+                headings.append((match.group(1), match.group(2)))
 
         if headings:
             toc = ["# Table of Contents\n"]
+            used_links: dict[str, int] = {}  # Track used links to avoid duplicates
+
             for markers, title in headings:
                 level = len(markers) - 1  # Adjust for 0-based indentation
                 indent = "  " * level
+
+                # Create a URL-friendly link
+                # 1. Convert to lowercase
+                # 2. Replace spaces with hyphens
+                # 3. Remove special characters
                 link = title.lower().replace(" ", "-")
-                # Clean the link of non-alphanumeric characters
-                link = re.sub(r"[^\w-]", "", link)
+                # Remove non-alphanumeric chars except hyphens
+                link = re.sub(r"[^\w\-]", "", link)
+
+                # Handle duplicate links by adding a suffix
+                if link in used_links:
+                    used_links[link] += 1
+                    link = f"{link}-{used_links[link]}"
+                else:
+                    used_links[link] = 1
+
                 toc.append(f"{indent}- [{title}](#{link})")
 
             markdown = "\n".join(toc) + "\n\n" + markdown

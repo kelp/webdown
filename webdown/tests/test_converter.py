@@ -87,19 +87,14 @@ class TestFetchUrl:
         mock_get.assert_called_once_with("https://example.com", timeout=10)
 
     @patch("webdown.converter.requests.get")
-    @patch("webdown.converter.requests.head")
     @patch("webdown.converter.tqdm")
     def test_fetch_url_with_progress_bar(
-        self, mock_tqdm: MagicMock, mock_head: MagicMock, mock_get: MagicMock
+        self, mock_tqdm: MagicMock, mock_get: MagicMock
     ) -> None:
         """Test fetch_url with progress bar."""
-        # Mock HEAD response
-        mock_head_response = MagicMock()
-        mock_head_response.headers = {"content-length": "1000"}
-        mock_head.return_value = mock_head_response
-
         # Mock GET response
         mock_get_response = MagicMock()
+        mock_get_response.headers = {"content-length": "1000"}
         mock_get_response.iter_content.return_value = ["chunk1", "chunk2", "chunk3"]
         mock_get.return_value = mock_get_response
 
@@ -109,9 +104,6 @@ class TestFetchUrl:
 
         # Call the function with progress bar
         _ = fetch_url("https://example.com", show_progress=True)
-
-        # Verify the HEAD request was made
-        mock_head.assert_called_once_with("https://example.com", timeout=5)
 
         # Verify the GET request was made with stream=True
         mock_get.assert_called_once_with("https://example.com", timeout=10, stream=True)
