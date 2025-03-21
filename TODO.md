@@ -22,9 +22,9 @@
 - [ ] Optimize performance for large documents
   - [ ] Improve progress bar implementation to avoid extra HEAD request
   - [ ] Implement streaming processing for very large documents
-- [ ] Add dependency security scanning
-  - [ ] Set up security scanning in CI/CD pipeline to check for vulnerabilities
-  - [ ] Create plan for addressing detected vulnerabilities
+- [x] Add dependency security scanning
+  - [x] Set up security scanning in CI/CD pipeline to check for vulnerabilities
+  - [x] Create plan for addressing detected vulnerabilities (SECURITY.md)
 
 ## Environment Setup
 - [x] Set up proper Python development environment with pyenv
