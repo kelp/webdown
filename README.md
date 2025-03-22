@@ -82,15 +82,12 @@ webdown https://example.com/page.html
 - `-s, --css SELECTOR`: CSS selector to extract specific content
 - `-c, --compact`: Remove excessive blank lines from the output
 - `-w, --width N`: Set the line width for wrapped text (0 for no wrapping)
-- `-p, --progress`: Show download progress bar
+- `-p, --progress`: Show download progress bar (useful for large files)
+- `--claude-xml`: Output in Claude XML format for use with Claude AI
+- `--metadata`: Include metadata in Claude XML output (default)
+- `--no-metadata`: Exclude metadata from Claude XML output
 
-**Advanced Options:**
-
-- `--single-line-break`: Use single line breaks instead of two line breaks
-- `--unicode`: Use Unicode characters instead of ASCII equivalents
-- `--tables-as-html`: Keep tables as HTML instead of converting to Markdown
-- `--emphasis-mark CHAR`: Character(s) to use for emphasis (default: '_')
-- `--strong-mark CHARS`: Character(s) to use for strong emphasis (default: '**')
+For large web pages (over 10MB), streaming mode is automatically used to optimize memory usage.
 
 ## Examples
 
@@ -116,6 +113,12 @@ Compact output with progress bar and line wrapping:
 
 ```bash
 webdown https://example.com -c -p -w 80 -o output.md
+```
+
+Generate Claude XML format for use with Claude AI:
+
+```bash
+webdown https://example.com --claude-xml -o doc.xml
 ```
 
 For complete documentation, use the `--help` flag:
@@ -253,31 +256,40 @@ markdown = convert_url_to_markdown(
     css_selector="main",  # Only extract main content
     compact_output=True,  # Remove excessive blank lines
     body_width=80,        # Wrap text at 80 characters
-    show_progress=True    # Show download progress bar
+    show_progress=True    # Show download progress bar (streaming is automatic for large pages)
 )
 
-# Method 2: Using the Config object (new in 0.3.1)
+# Method 2: Using the Config object
 config = WebdownConfig(
-    # Basic options
     url="https://example.com",
     include_toc=True,
     css_selector="main",
     compact_output=True,
     body_width=80,
-    show_progress=True,
-
-    # Advanced options (all optional)
-    single_line_break=False,
-    unicode_snob=True,  # Use Unicode characters
-    tables_as_html=False,
-    emphasis_mark="_",
-    strong_mark="**"
+    show_progress=True
 )
 markdown = convert_url_to_markdown(config)
 
 # Save to file
 with open("output.md", "w") as f:
     f.write(markdown)
+
+# Method 3: Convert to Claude XML format
+from webdown.converter import convert_url_to_claude_xml, ClaudeXMLConfig
+
+# Basic Claude XML conversion
+xml = convert_url_to_claude_xml("https://example.com")
+
+# With custom XML configuration
+xml_config = ClaudeXMLConfig(
+    include_metadata=True,
+    add_date=True
+)
+xml = convert_url_to_claude_xml("https://example.com", xml_config)
+
+# Save XML output
+with open("output.xml", "w") as f:
+    f.write(xml)
 ```
 
 ## Contributing

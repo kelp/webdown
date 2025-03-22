@@ -1,6 +1,6 @@
-"""HTML to Markdown conversion functionality.
+"""HTML to Markdown and Claude XML conversion functionality.
 
-This module provides functions for fetching web content and converting it to Markdown.
+This module provides functions for fetching web content and converting it to Markdown or Claude XML.
 Key features include:
 - URL validation and HTML fetching with proper error handling
 - HTML to Markdown conversion using html2text
@@ -8,12 +8,16 @@ Key features include:
 - Table of contents generation
 - Removal of excessive blank lines (compact mode)
 - Removal of zero-width spaces and other invisible characters
+- Claude XML output format generation for AI context optimization
 
-The main entry point is the `convert_url_to_markdown` function, which handles
-the entire process from fetching a URL to producing clean Markdown output.
+The main entry points are the `convert_url_to_markdown` and `convert_url_to_claude_xml` functions,
+which handle the entire process from fetching a URL to producing clean output.
 """
 
+import datetime
 import io
+import re
+import xml.sax.saxutils as saxutils
 from dataclasses import dataclass
 from typing import Optional
 from urllib.parse import urlparse
@@ -25,11 +29,31 @@ from tqdm import tqdm
 
 
 @dataclass
+class ClaudeXMLConfig:
+    """Configuration options for Claude XML output format.
+
+    This class contains settings specific to the Claude XML output format,
+    providing options to customize the structure and metadata of the generated document.
+
+    Attributes:
+        include_metadata (bool): Include metadata section with title, source URL, and date
+        add_date (bool): Include current date in the metadata section
+        doc_tag (str): Root document tag name
+        beautify (bool): Add indentation and newlines for human readability
+    """
+
+    include_metadata: bool = True
+    add_date: bool = True
+    doc_tag: str = "claude_documentation"
+    beautify: bool = True
+
+
+@dataclass
 class WebdownConfig:
     """Configuration options for HTML to Markdown conversion.
 
     This class centralizes all configuration options for the conversion process,
-    making it easier to manage and extend the functionality.
+    focusing on the most useful options for LLM documentation processing.
 
     Attributes:
         url (Optional[str]): URL of the web page to convert
@@ -40,21 +64,9 @@ class WebdownConfig:
         compact_output (bool): Whether to remove excessive blank lines
         body_width (int): Maximum line length for wrapping (0 for no wrapping)
         show_progress (bool): Whether to display a progress bar during download
-        stream_threshold (int): Size threshold in bytes for using streaming mode
-            (0 to always stream)
-        single_line_break (bool): Whether to use single line breaks (True) or double
-        protect_links (bool): Whether to protect links from line wrapping
-        images_as_html (bool): Whether to keep images as HTML rather than Markdown
-        unicode_snob (bool): Whether to use Unicode characters instead of ASCII
-        tables_as_html (bool): Whether to keep tables as HTML rather than Markdown
-        emphasis_mark (str): Character to use for emphasis (usually underscore)
-        strong_mark (str): Character to use for strong emphasis (usually asterisks)
-        default_image_alt (str): Default alt text to use when images don't have any
-        pad_tables (bool): Whether to add padding spaces for table alignment
-        wrap_list_items (bool): Whether to wrap list items to the body_width
     """
 
-    # Basic options
+    # Core options
     url: Optional[str] = None
     include_links: bool = True
     include_images: bool = True
@@ -63,19 +75,6 @@ class WebdownConfig:
     compact_output: bool = False
     body_width: int = 0
     show_progress: bool = False
-    stream_threshold: int = 10 * 1024 * 1024  # 10MB threshold for streaming
-
-    # Advanced HTML2Text options
-    single_line_break: bool = False
-    protect_links: bool = False
-    images_as_html: bool = False
-    unicode_snob: bool = False
-    tables_as_html: bool = False  # Equivalent to bypass_tables in html2text
-    emphasis_mark: str = "_"
-    strong_mark: str = "**"
-    default_image_alt: str = ""
-    pad_tables: bool = False
-    wrap_list_items: bool = False
 
 
 class WebdownError(Exception):
@@ -209,17 +208,6 @@ def html_to_markdown(
     css_selector: Optional[str] = None,
     compact_output: bool = False,
     body_width: int = 0,
-    # Advanced HTML2Text options
-    single_line_break: bool = False,
-    protect_links: bool = False,
-    images_as_html: bool = False,
-    unicode_snob: bool = False,
-    tables_as_html: bool = False,
-    emphasis_mark: str = "_",
-    strong_mark: str = "**",
-    default_image_alt: str = "",
-    pad_tables: bool = False,
-    wrap_list_items: bool = False,
     # Config object support
     config: Optional[WebdownConfig] = None,
 ) -> str:
@@ -312,16 +300,6 @@ def html_to_markdown(
         css_selector = config.css_selector
         compact_output = config.compact_output
         body_width = config.body_width
-        single_line_break = config.single_line_break
-        protect_links = config.protect_links
-        images_as_html = config.images_as_html
-        unicode_snob = config.unicode_snob
-        tables_as_html = config.tables_as_html
-        emphasis_mark = config.emphasis_mark
-        strong_mark = config.strong_mark
-        default_image_alt = config.default_image_alt
-        pad_tables = config.pad_tables
-        wrap_list_items = config.wrap_list_items
 
     # Validate numeric parameters
     if not isinstance(body_width, int):
@@ -336,22 +314,17 @@ def html_to_markdown(
     # Configure html2text
     h = html2text.HTML2Text()
 
-    # Basic options
+    # Set core options
     h.ignore_links = not include_links
     h.ignore_images = not include_images
     h.body_width = body_width  # User-defined line width
 
-    # Advanced options
-    h.single_line_break = single_line_break
-    h.protect_links = protect_links
-    h.images_as_html = images_as_html
-    h.unicode_snob = unicode_snob
-    h.bypass_tables = tables_as_html  # Note: bypass_tables is the opposite of md tables
-    h.emphasis_mark = emphasis_mark
-    h.strong_mark = strong_mark
-    h.default_image_alt = default_image_alt
-    h.pad_tables = pad_tables
-    h.wrap_list_items = wrap_list_items
+    # Always use Unicode mode for better character representation
+    h.unicode_snob = True
+
+    # Use default values for other options
+    h.single_line_break = False
+    h.bypass_tables = False
 
     markdown = h.handle(html)
 
@@ -421,6 +394,206 @@ def html_to_markdown(
     return str(markdown)
 
 
+def markdown_to_claude_xml(
+    markdown: str,
+    source_url: Optional[str] = None,
+    config: Optional[ClaudeXMLConfig] = None,
+) -> str:
+    """Convert Markdown content to Claude XML format.
+
+    This function converts Markdown content to a structured XML format
+    suitable for use with Claude AI models. It handles basic elements like
+    headings, paragraphs, and code blocks.
+
+    Args:
+        markdown (str): Markdown content to convert
+        source_url (Optional[str]): Source URL for the content (for metadata)
+        config (Optional[ClaudeXMLConfig]): Configuration options for XML output
+
+    Returns:
+        str: Claude XML formatted content
+    """
+    if config is None:
+        config = ClaudeXMLConfig()
+
+    # Helper functions
+    def escape_xml(text: str) -> str:
+        """Escape XML special characters."""
+        return saxutils.escape(text)
+
+    def indent(text: str, level: int = 0, spaces: int = 2) -> str:
+        """Add indentation to text if beautify is enabled."""
+        if not config.beautify:
+            return text
+        indent_str = " " * spaces * level
+        return f"{indent_str}{text}"
+
+    # Extract title from first heading
+    title = None
+    title_match = re.search(r"^#\s+(.+)$", markdown, re.MULTILINE)
+    if title_match:
+        title = title_match.group(1).strip()
+
+    # Extract code blocks to prevent processing their content as markdown
+    code_blocks = []
+    code_pattern = re.compile(r"```(\w*)\n(.*?)```", re.DOTALL)
+    code_matches = list(code_pattern.finditer(markdown))
+
+    # Replace code blocks with placeholders to protect them during processing
+    placeholder_md = markdown
+    for i, match in enumerate(code_matches):
+        lang = match.group(1).strip() or None
+        code = match.group(2)
+        code_blocks.append((i, lang, code))
+        placeholder = f"CODE_BLOCK_PLACEHOLDER_{i}"
+        placeholder_md = placeholder_md.replace(match.group(0), placeholder)
+
+    # Build the XML document
+    xml_parts = []
+    xml_parts.append(f"<{config.doc_tag}>")
+
+    # Add metadata section if requested
+    if config.include_metadata:
+        metadata_items = []
+        if title:
+            metadata_items.append(indent(f"<title>{escape_xml(title)}</title>", 1))
+        if source_url:
+            metadata_items.append(
+                indent(f"<source>{escape_xml(source_url)}</source>", 1)
+            )
+        if config.add_date:
+            today = datetime.datetime.now().strftime("%Y-%m-%d")
+            metadata_items.append(indent(f"<date>{today}</date>", 1))
+
+        if metadata_items:
+            xml_parts.append(indent("<metadata>", 1))
+            xml_parts.extend(metadata_items)
+            xml_parts.append(indent("</metadata>", 1))
+
+    # Add content section
+    xml_parts.append(indent("<content>", 1))
+
+    # Process the markdown content with code blocks removed
+    # Here we do some basic content processing
+
+    # Split into sections based on headings
+    sections = re.split(r"(?m)^(#{1,6}\s+.+)$", placeholder_md)
+
+    # First item will be any content before the first heading
+    if sections[0].strip():
+        text = sections[0].strip()
+        xml_parts.append(indent(f"<text>{escape_xml(text)}</text>", 2))
+
+    # Process sections (each heading and its content)
+    for i in range(1, len(sections), 2):
+        if i + 1 < len(sections):
+            heading = sections[i].strip()
+            content = sections[i + 1].strip()
+
+            # Extract heading level and text
+            heading_match = re.match(r"(#{1,6})\s+(.+)$", heading)
+            if heading_match:
+                level = len(heading_match.group(1))
+                heading_text = heading_match.group(2).strip()
+
+                # Add section
+                xml_parts.append(indent(f"<section>", 2))
+                xml_parts.append(
+                    indent(f"<heading>{escape_xml(heading_text)}</heading>", 3)
+                )
+
+                # Process content paragraphs
+                if content:
+                    paragraphs = re.split(r"\n\n+", content)
+                    for para in paragraphs:
+                        para = para.strip()
+                        if not para:
+                            continue
+
+                        # Check if this paragraph is a code block placeholder
+                        code_match = re.match(r"CODE_BLOCK_PLACEHOLDER_(\d+)", para)
+                        if code_match:
+                            block_id = int(code_match.group(1))
+                            _, lang, code = code_blocks[block_id]
+
+                            if lang:
+                                xml_parts.append(indent(f'<code language="{lang}">', 3))
+                            else:
+                                xml_parts.append(indent("<code>", 3))
+
+                            # Add code with proper indentation
+                            for line in code.split("\n"):
+                                xml_parts.append(indent(escape_xml(line), 4))
+
+                            xml_parts.append(indent("</code>", 3))
+                        else:
+                            xml_parts.append(
+                                indent(f"<text>{escape_xml(para)}</text>", 3)
+                            )
+
+                xml_parts.append(indent("</section>", 2))
+
+    # Process any code blocks that weren't inside sections
+    # Restore any code blocks that were outside of sections
+    for i, placeholder in enumerate(placeholder_md.split("\n")):
+        code_match = re.match(r"CODE_BLOCK_PLACEHOLDER_(\d+)", placeholder.strip())
+        if code_match and placeholder.strip() == placeholder:
+            block_id = int(code_match.group(1))
+            _, lang, code = code_blocks[block_id]
+
+            if lang:
+                xml_parts.append(indent(f'<code language="{lang}">', 2))
+            else:
+                xml_parts.append(indent("<code>", 2))
+
+            # Add code with proper indentation
+            for line in code.split("\n"):
+                xml_parts.append(indent(escape_xml(line), 3))
+
+            xml_parts.append(indent("</code>", 2))
+
+    # Close content section
+    xml_parts.append(indent("</content>", 1))
+
+    # Close root element
+    xml_parts.append(f"</{config.doc_tag}>")
+
+    return "\n".join(xml_parts)
+
+
+def convert_url_to_claude_xml(
+    url_or_config: str | WebdownConfig,
+    claude_xml_config: Optional[ClaudeXMLConfig] = None,
+) -> str:
+    """Convert a web page directly to Claude XML format.
+
+    This function fetches a web page and converts it to Claude XML format,
+    optimized for use with Claude AI models.
+
+    Args:
+        url_or_config (Union[str, WebdownConfig]): URL to fetch or config object
+        claude_xml_config (Optional[ClaudeXMLConfig]): XML output configuration
+
+    Returns:
+        str: Claude XML formatted content
+
+    Raises:
+        WebdownError: If URL is invalid or cannot be fetched
+    """
+    # Determine the source URL
+    source_url = None
+    if isinstance(url_or_config, WebdownConfig):
+        source_url = url_or_config.url
+    else:
+        source_url = url_or_config
+
+    # Use the existing markdown conversion pipeline
+    markdown = convert_url_to_markdown(url_or_config)
+
+    # Convert the markdown to Claude XML
+    return markdown_to_claude_xml(markdown, source_url, claude_xml_config)
+
+
 def convert_url_to_markdown(
     url_or_config: str | WebdownConfig,
     include_links: bool = True,
@@ -430,13 +603,15 @@ def convert_url_to_markdown(
     compact_output: bool = False,
     body_width: int = 0,
     show_progress: bool = False,
-    stream_threshold: int = 10 * 1024 * 1024,  # 10MB threshold for streaming
 ) -> str:
     """Convert a web page to markdown.
 
     This function accepts either a URL string or a WebdownConfig object.
     If a URL string is provided, the remaining parameters are used for configuration.
     If a WebdownConfig object is provided, all other parameters are ignored.
+
+    For large web pages (over 10MB), streaming mode is automatically used to
+    optimize memory usage.
 
     Args:
         url_or_config (Union[str, WebdownConfig]):
@@ -462,10 +637,6 @@ def convert_url_to_markdown(
 
         show_progress (bool):
             Whether to display a progress bar (ignored if config provided)
-
-        stream_threshold (int):
-            Size threshold in bytes for using streaming mode (default: 10MB)
-            Set to 0 to always use streaming, or a large number to disable
 
     Returns:
         str: Markdown content
@@ -502,7 +673,6 @@ def convert_url_to_markdown(
         compact_output = config.compact_output
         body_width = config.body_width
         show_progress = config.show_progress
-        stream_threshold = config.stream_threshold
     else:
         # Using the traditional parameter-based approach
         url = url_or_config
@@ -512,20 +682,19 @@ def convert_url_to_markdown(
     if not validate_url(url):
         raise WebdownError(f"Invalid URL format: {url}")
 
+    # Fixed streaming threshold at 10MB
+    STREAM_THRESHOLD = 10 * 1024 * 1024
+
     try:
         # Check content length with a HEAD request to determine if we should stream
         use_streaming = False
-        if stream_threshold > 0:
-            try:
-                head_response = requests.head(url, timeout=5)
-                content_length = int(head_response.headers.get("content-length", "0"))
-                use_streaming = content_length > stream_threshold
-            except (requests.RequestException, ValueError):
-                # If HEAD request fails or content-length is invalid, use non-streaming
-                use_streaming = False
-        else:
-            # If threshold is 0, always use streaming
-            use_streaming = True
+        try:
+            head_response = requests.head(url, timeout=5)
+            content_length = int(head_response.headers.get("content-length", "0"))
+            use_streaming = content_length > STREAM_THRESHOLD
+        except (requests.RequestException, ValueError):
+            # If HEAD request fails or content-length is invalid, use non-streaming
+            use_streaming = False
 
         if use_streaming:
             # Use streaming mode for large documents
@@ -582,7 +751,8 @@ def _process_url_streaming(
     """Process a URL using streaming mode for large documents.
 
     This internal function handles large documents by streaming the content
-    and processing it in chunks to minimize memory usage.
+    and processing it in chunks to minimize memory usage. It is automatically
+    used for documents larger than 10MB to optimize memory usage.
 
     Args:
         url: URL to fetch and process

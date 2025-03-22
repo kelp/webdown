@@ -133,12 +133,14 @@
   - [x] Update documentation with installation instructions from PyPI
 
 ## Code Improvements
-- [ ] Reduce dependency complexity
+- [x] Reduce dependency complexity
   - [x] Consider replacing tqdm with simple custom progress bar (~15 lines) - DECISION: Keep tqdm for better UX and cross-platform support
   - [x] Evaluate necessity of the custom exception hierarchy (WebdownError, NetworkError, etc.) - IMPLEMENTED: Simplified to single WebdownError class
   - [x] Simplify parameter interface of `convert_url_to_markdown()` (consider Config object) - IMPLEMENTED: Added WebdownConfig class while preserving backward compatibility
-- [ ] Optimize html2text usage
-  - [x] Ensure all html2text options are exposed where useful - IMPLEMENTED: Added advanced options to WebdownConfig and CLI
+  - [x] Remove low-value formatting options to simplify the interface - IMPLEMENTED: Removed advanced formatting options and simplified interface
+- [x] Optimize html2text usage
+  - [x] Set Unicode mode to always on for better character representation
+  - [x] Simplify streaming implementation with fixed 10MB threshold
   - [ ] Benchmark and optimize performance for large documents
 
 ## Documentation Enhancements
@@ -198,12 +200,17 @@
 - [ ] Add option to preserve or transform HTML comments
 - [ ] Support for rendering math equations (MathJax/LaTeX)
 - [ ] Command-line option for output file format (Markdown, CommonMark, GitHub Flavored Markdown)
-- [ ] Add Anthropic Claude XML format support
-  - [ ] Implement converter for Claude XML format (content wrapped in XML tags)
-  - [ ] Add CLI option to output in Claude XML format (`--format claude-xml`)
-  - [ ] Include options for wrapping content in human/assistant tags
-  - [ ] Support for code blocks with proper language tags
-  - [ ] Document Claude XML format usage and examples
+- [x] Add Anthropic Claude XML format support
+  - [x] Implement converter for Claude XML format (content wrapped in XML tags)
+  - [x] Add CLI option to output in Claude XML format (`--claude-xml`)
+  - [x] Include options for metadata handling in XML output
+  - [x] Support for code blocks with proper language tags
+  - [x] Document Claude XML format usage and examples
+
+- [ ] Improve Claude XML format for better understanding
+  - [ ] Fix code block detection and formatting in XML output
+  - [ ] Enhance section hierarchy preservation (maintain h1/h2/h3 relationships)
+  - [ ] Add preset CSS selectors for common documentation sites
 - [ ] Interactive mode to select page sections to convert
 - [x] Option to compact output by removing excessive blank lines
 - [x] Remove zero-width spaces and other invisible characters

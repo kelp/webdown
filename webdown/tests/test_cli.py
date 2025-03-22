@@ -133,34 +133,35 @@ class TestParseArgs:
         args = parse_args(["https://example.com", "-p"])
         assert args.progress is True
 
-    def test_advanced_options(self) -> None:
-        """Test parsing advanced HTML2Text options."""
+    def test_claude_xml_options(self) -> None:
+        """Test parsing Claude XML options."""
         # Default values
         args = parse_args(["https://example.com"])
-        assert args.single_line_break is False
-        assert args.unicode is False
-        assert args.tables_as_html is False
-        assert args.emphasis_mark == "_"
-        assert args.strong_mark == "**"
+        assert args.claude_xml is False
+        assert args.metadata is True
+        assert args.add_date is True
 
-        # With custom values
+        # With claude_xml flag
+        args = parse_args(["https://example.com", "--claude-xml"])
+        assert args.claude_xml is True
+
+        # With no-metadata flag
+        args = parse_args(["https://example.com", "--claude-xml", "--no-metadata"])
+        assert args.claude_xml is True
+        assert args.metadata is False
+
+        # With no-date flag
+        args = parse_args(["https://example.com", "--claude-xml", "--no-date"])
+        assert args.claude_xml is True
+        assert args.add_date is False
+
+        # Test combined options
         args = parse_args(
-            [
-                "https://example.com",
-                "--single-line-break",
-                "--unicode",
-                "--tables-as-html",
-                "--emphasis-mark",
-                "*",
-                "--strong-mark",
-                "__",
-            ]
+            ["https://example.com", "--claude-xml", "--no-metadata", "--no-date"]
         )
-        assert args.single_line_break is True
-        assert args.unicode is True
-        assert args.tables_as_html is True
-        assert args.emphasis_mark == "*"
-        assert args.strong_mark == "__"
+        assert args.claude_xml is True
+        assert args.metadata is False
+        assert args.add_date is False
 
     def test_version_flag(self) -> None:
         """Test version flag is recognized."""
@@ -254,6 +255,38 @@ class TestMain:
         # Verify file was opened and written to
         mock_open.assert_called_once_with("output.md", "w", encoding="utf-8")
         mock_file.write.assert_called_once_with("# Markdown Content")
+
+    @patch("webdown.cli.convert_url_to_claude_xml")
+    def test_claude_xml_conversion(self, mock_convert_to_xml: MagicMock) -> None:
+        """Test converting to Claude XML."""
+        mock_convert_to_xml.return_value = (
+            "<claude_documentation>content</claude_documentation>"
+        )
+
+        # Test with stdout
+        with patch("sys.stdout", new=io.StringIO()) as fake_out:
+            exit_code = main(["https://example.com", "--claude-xml"])
+            assert exit_code == 0
+            assert (
+                fake_out.getvalue()
+                == "<claude_documentation>content</claude_documentation>"
+            )
+
+        # Test with file output
+        with patch("builtins.open", new_callable=MagicMock) as mock_open:
+            mock_file = MagicMock()
+            mock_open.return_value.__enter__.return_value = mock_file
+
+            exit_code = main(
+                ["https://example.com", "--claude-xml", "-o", "output.xml"]
+            )
+            assert exit_code == 0
+
+            # Verify file was opened and written to
+            mock_open.assert_called_once_with("output.xml", "w", encoding="utf-8")
+            mock_file.write.assert_called_once_with(
+                "<claude_documentation>content</claude_documentation>"
+            )
 
     @patch("webdown.cli.convert_url_to_markdown")
     def test_error_handling(self, mock_convert: MagicMock) -> None:

@@ -37,23 +37,12 @@ class TestWebdownConfig:
 
     def test_html_to_markdown_with_config(self) -> None:
         """Test html_to_markdown with WebdownConfig object."""
-        # Create config with various options
         config = WebdownConfig(
             include_links=False,
             include_images=False,
             include_toc=True,
             compact_output=True,
             body_width=80,
-            single_line_break=True,
-            protect_links=True,
-            images_as_html=True,
-            unicode_snob=True,
-            tables_as_html=True,
-            emphasis_mark="*",  # Changed from "-" to avoid conflict with list items
-            strong_mark="__",
-            default_image_alt="No image description",
-            pad_tables=True,
-            wrap_list_items=True,
         )
 
         # Convert HTML to Markdown using config

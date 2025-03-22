@@ -407,7 +407,7 @@ class TestConvertUrlToMarkdown:
         mock_head: MagicMock,
     ) -> None:
         """Test streaming mode for large documents."""
-        # Setup mock HEAD response to trigger streaming
+        # Setup mock HEAD response to trigger streaming (exceeds 10MB threshold)
         mock_head_response = MagicMock()
         mock_head_response.headers = {"content-length": "20000000"}  # 20MB
         mock_head.return_value = mock_head_response
@@ -426,11 +426,10 @@ class TestConvertUrlToMarkdown:
         # Mock html_to_markdown
         mock_html_to_markdown.return_value = "# Test\n\nContent"
 
-        # Create a config with a low threshold to force streaming
+        # Create a config for automated streaming (>10MB)
         config = WebdownConfig(
             url="https://example.com",
             include_toc=True,
-            stream_threshold=1000,  # Very low threshold to ensure streaming
         )
 
         # Call the function

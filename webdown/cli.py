@@ -35,24 +35,20 @@ The CLI offers various options to customize the conversion:
 * `-c, --compact`: Remove excessive blank lines from the output
 * `-w, --width N`: Set line width for wrapped text (0 for no wrapping)
 * `-p, --progress`: Show download progress bar
-* `--stream-threshold BYTES`: Size threshold for streaming mode (default: 10MB)
 * `-V, --version`: Show version information and exit
 * `-h, --help`: Show help message and exit
 
-## Advanced Options
+Note: For large web pages (over 10MB), webdown automatically uses streaming mode to optimize memory usage.
 
-Advanced formatting options for fine-tuning the Markdown output:
 
-* `--single-line-break`: Use single line breaks instead of two line breaks
-* `--unicode`: Use Unicode characters instead of ASCII equivalents
-* `--protect-links`: Protect links from line wrapping (keeps URLs on a single line)
-* `--images-as-html`: Keep images as HTML rather than converting to Markdown
-* `--tables-as-html`: Keep tables as HTML instead of converting to Markdown
-* `--emphasis-mark CHAR`: Character(s) to use for emphasis (default: '_')
-* `--strong-mark CHARS`: Character(s) to use for strong emphasis (default: '**')
-* `--default-image-alt TEXT`: Default alt text for images without any
-* `--pad-tables`: Add padding spaces for table alignment in Markdown
-* `--wrap-list-items`: Wrap list items to the specified body width
+## Claude XML Options
+
+Options for generating Claude XML format, optimized for use with Claude AI:
+
+* `--claude-xml`: Output in Claude XML format instead of Markdown
+* `--metadata`: Include metadata section in XML (default: True)
+* `--no-metadata`: Exclude metadata section from XML
+* `--no-date`: Don't include current date in metadata
 
 ## Example Scenarios
 
@@ -71,26 +67,34 @@ Advanced formatting options for fine-tuning the Markdown output:
    webdown https://example.com -L -I -o text_only.md
    ```
 
-4. Show download progress for large pages and customize Markdown formatting:
+4. Show download progress for large pages:
    ```bash
-   webdown https://example.com -p --single-line-break --unicode -o output.md
+   webdown https://example.com -p -o output.md
    ```
 
-5. Extract content from a specific div and customize emphasis markers:
+5. Extract content from a specific div:
    ```bash
-   webdown https://example.com -s "#content" --emphasis-mark "*" \
-     --strong-mark "__" -o output.md
+   webdown https://example.com -s "#content" -o output.md
    ```
 
-6. Process a large webpage with memory optimization:
+6. Process a large webpage with progress bar (streaming is automatic for large pages):
    ```bash
-   webdown https://example.com -p --stream-threshold 5242880
+   webdown https://example.com -p
    ```
 
-7. Complete example with multiple options:
+7. Generate output in Claude XML format for use with Claude AI:
    ```bash
-   webdown https://example.com -s "main" -t -c -w 80 -p \
-     --unicode --single-line-break -o output.md
+   webdown https://example.com -s "main" --claude-xml -o output.xml
+   ```
+
+8. Create Claude XML without metadata:
+   ```bash
+   webdown https://example.com --claude-xml --no-metadata -o output.xml
+   ```
+
+9. Complete example with multiple options:
+   ```bash
+   webdown https://example.com -s "main" -t -c -w 80 -p -o output.md
    ```
 
 The entry point is the `main()` function, which is called when the command
@@ -104,7 +108,13 @@ from typing import List, Optional
 import requests
 
 from webdown import __version__
-from webdown.converter import WebdownConfig, WebdownError, convert_url_to_markdown
+from webdown.converter import (
+    ClaudeXMLConfig,
+    WebdownConfig,
+    WebdownError,
+    convert_url_to_claude_xml,
+    convert_url_to_markdown,
+)
 
 
 def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
@@ -186,71 +196,32 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         metavar="N",
         help="Set line width (0 disables wrapping, 80 recommended for readability)",
     )
-    format_group.add_argument(
-        "--stream-threshold",
-        type=int,
-        default=10 * 1024 * 1024,  # 10MB
-        metavar="BYTES",
-        help=(
-            "Size threshold in bytes for using streaming mode "
-            "(default: 10MB, 0 to always stream)"
-        ),
-    )
 
-    # Add advanced HTML2Text options
-    advanced_group = parser.add_argument_group("Advanced Options")
-    advanced_group.add_argument(
-        "--single-line-break",
+    # Output Format Options
+    format_group = parser.add_argument_group("Output Format Options")
+    format_group.add_argument(
+        "--claude-xml",
         action="store_true",
-        help="Use single line breaks instead of double (creates more compact output)",
+        help="Output in Claude XML format optimized for Claude AI models",
     )
-    advanced_group.add_argument(
-        "--unicode",
+    format_group.add_argument(
+        "--metadata",
         action="store_true",
-        help="Use Unicode characters instead of ASCII equivalents",
+        default=True,
+        help="Include metadata in Claude XML output (default: True)",
     )
-    advanced_group.add_argument(
-        "--protect-links",
-        action="store_true",
-        help="Protect links from line wrapping (keeps URLs on a single line)",
+    format_group.add_argument(
+        "--no-metadata",
+        action="store_false",
+        dest="metadata",
+        help="Exclude metadata from Claude XML output",
     )
-    advanced_group.add_argument(
-        "--images-as-html",
-        action="store_true",
-        help="Keep images as HTML rather than converting to Markdown format",
-    )
-    advanced_group.add_argument(
-        "--tables-as-html",
-        action="store_true",
-        help="Keep tables as HTML instead of converting to Markdown",
-    )
-    advanced_group.add_argument(
-        "--emphasis-mark",
-        default="_",
-        metavar="CHAR",
-        help="Character(s) for emphasis (default: '_', alternative: '*')",
-    )
-    advanced_group.add_argument(
-        "--strong-mark",
-        default="**",
-        metavar="CHARS",
-        help="Character(s) for strong emphasis (default: '**', alt: '__')",
-    )
-    advanced_group.add_argument(
-        "--default-image-alt",
-        default="",
-        metavar="TEXT",
-        help="Default alt text for images that don't have any (default: empty string)",
-    )
-    advanced_group.add_argument(
-        "--pad-tables",
-        action="store_true",
-        help="Add padding spaces for table alignment in Markdown output",
-    )
-    advanced_group.add_argument(
-        "--wrap-list-items",
-        action="store_true",
-        help="Wrap list items to the specified body width",
+    format_group.add_argument(
+        "--no-date",
+        action="store_false",
+        dest="add_date",
+        default=True,
+        help="Don't include current date in Claude XML metadata",
     )
 
     # Meta options
@@ -304,7 +275,6 @@ def main(args: Optional[List[str]] = None) -> int:
 
         # Create a config object from command-line arguments
         config = WebdownConfig(
-            # Basic options
             url=parsed_args.url,
             include_toc=parsed_args.toc,
             include_links=not parsed_args.no_links,
@@ -313,28 +283,28 @@ def main(args: Optional[List[str]] = None) -> int:
             compact_output=parsed_args.compact,
             body_width=parsed_args.width,
             show_progress=parsed_args.progress,
-            stream_threshold=parsed_args.stream_threshold,
-            # Advanced options
-            single_line_break=parsed_args.single_line_break,
-            protect_links=parsed_args.protect_links,
-            images_as_html=parsed_args.images_as_html,
-            unicode_snob=parsed_args.unicode,
-            tables_as_html=parsed_args.tables_as_html,
-            emphasis_mark=parsed_args.emphasis_mark,
-            strong_mark=parsed_args.strong_mark,
-            default_image_alt=parsed_args.default_image_alt,
-            pad_tables=parsed_args.pad_tables,
-            wrap_list_items=parsed_args.wrap_list_items,
         )
 
-        # Convert using the config object
-        markdown = convert_url_to_markdown(config)
+        # Determine output format and convert
+        if parsed_args.claude_xml:
+            # Create Claude XML config from CLI arguments
+            claude_config = ClaudeXMLConfig(
+                include_metadata=parsed_args.metadata,
+                add_date=parsed_args.add_date,
+            )
 
+            # Convert to Claude XML format
+            output = convert_url_to_claude_xml(config, claude_config)
+        else:
+            # Use standard markdown conversion
+            output = convert_url_to_markdown(config)
+
+        # Write output to file or stdout
         if parsed_args.output:
             with open(parsed_args.output, "w", encoding="utf-8") as f:
-                f.write(markdown)
+                f.write(output)
         else:
-            sys.stdout.write(markdown)
+            sys.stdout.write(output)
 
         return 0
 
