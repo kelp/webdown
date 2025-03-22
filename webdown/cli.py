@@ -330,11 +330,14 @@ def _write_output(output: str, output_path: Optional[str]) -> None:
         output: Content to write
         output_path: Path to output file or None for stdout
     """
+    # Ensure exactly one trailing newline for consistent output
+    output_content = output.rstrip("\n") + "\n"
+
     if output_path:
         with open(output_path, "w", encoding="utf-8") as f:
-            f.write(output)
+            f.write(output_content)
     else:
-        sys.stdout.write(output)
+        sys.stdout.write(output_content)
 
 
 def _auto_fix_url(url: str) -> str:
@@ -363,9 +366,8 @@ def _auto_fix_url(url: str) -> str:
         fixed_url = f"https://{url}"
         # Verify it parses correctly after adding https://
         if urlparse(fixed_url).netloc:
-            sys.stderr.write(
-                f"Note: Added https:// prefix to URL: {url} → {fixed_url}\n"
-            )
+            # Print notification without trailing newline
+            sys.stderr.write(f"Note: Added https:// prefix to URL: {url} → {fixed_url}")
             return fixed_url
 
     return url

@@ -194,7 +194,7 @@ class TestMain:
             sys.stdout = out
             exit_code = main(["https://example.com"])
             assert exit_code == 0
-            assert out.getvalue() == "# Markdown Content"
+            assert out.getvalue() == "# Markdown Content\n"
         finally:
             sys.stdout = stdout_backup
 
@@ -254,7 +254,7 @@ class TestMain:
 
         # Verify file was opened and written to
         mock_open.assert_called_once_with("output.md", "w", encoding="utf-8")
-        mock_file.write.assert_called_once_with("# Markdown Content")
+        mock_file.write.assert_called_once_with("# Markdown Content\n")
 
     @patch("webdown.cli.convert_url_to_claude_xml")
     def test_claude_xml_conversion(self, mock_convert_to_xml: MagicMock) -> None:
@@ -269,7 +269,7 @@ class TestMain:
             assert exit_code == 0
             assert (
                 fake_out.getvalue()
-                == "<claude_documentation>content</claude_documentation>"
+                == "<claude_documentation>content</claude_documentation>\n"
             )
 
         # Test with file output
@@ -285,7 +285,7 @@ class TestMain:
             # Verify file was opened and written to
             mock_open.assert_called_once_with("output.xml", "w", encoding="utf-8")
             mock_file.write.assert_called_once_with(
-                "<claude_documentation>content</claude_documentation>"
+                "<claude_documentation>content</claude_documentation>\n"
             )
 
     @patch("webdown.cli.convert_url_to_markdown")
