@@ -14,11 +14,9 @@ install:
 	@$(POETRY_RUN) pre-commit install
 
 install-dev:
-	@echo "Installing package for current user in development mode..."
+	@echo "Installing package in development mode..."
 	@$(POETRY) install
-	@$(POETRY) build
-	@pip install --user -e .
-	@echo "✓ Installed webdown in development mode for current user"
+	@echo "✓ Installed webdown in development mode"
 
 test:
 	@echo "Running tests..."
@@ -202,7 +200,7 @@ help:
 	@echo "  update          Update dependencies"
 	@echo "  clean           Remove build artifacts and caches"
 	@echo "  shell           Start Poetry shell (interactive environment)"
-	@echo "  install-dev     Install package for current user in development mode"
+	@echo "  install-dev     Install package in development mode using Poetry"
 	@echo "  docs            Generate documentation with MkDocs"
 	@echo "  docs-serve      Start a local MkDocs documentation server at http://localhost:8000"
 	@echo "  docs-deploy     Deploy documentation to GitHub Pages"
