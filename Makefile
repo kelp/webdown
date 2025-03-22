@@ -1,4 +1,4 @@
-.PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update docs docs-serve publish publish-test release
+.PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update docs docs-serve publish publish-test release bump-version
 
 # Path-independent environment setup
 SCRIPT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
@@ -169,6 +169,22 @@ release-auto: all-checks build
 	echo "Tag v$$VERSION created successfully."; \
 	echo "To finish the release, run: git push origin v$$VERSION";
 
+bump-version:
+	@if [ -z "$(VERSION)" ]; then \
+		echo "Error: VERSION parameter is required"; \
+		echo "Usage: make bump-version VERSION=x.y.z"; \
+		exit 1; \
+	fi
+	@echo "Updating version to $(VERSION) in all files..."
+	@sed -i.bak 's/^version = ".*"/version = "$(VERSION)"/' pyproject.toml && rm pyproject.toml.bak
+	@sed -i.bak 's/__version__ = ".*"/__version__ = "$(VERSION)"/' webdown/__init__.py && rm webdown/__init__.py.bak
+	@echo "Version updated to $(VERSION) in:"
+	@echo "  - pyproject.toml"
+	@echo "  - webdown/__init__.py"
+	@echo ""
+	@echo "Don't forget to update CHANGELOG.md with an entry for version $(VERSION)"
+	@echo "Then run 'git diff' to verify changes before committing"
+
 help:
 	@echo "Available targets:"
 	@echo "  install         Install package and dependencies with Poetry"
@@ -195,4 +211,5 @@ help:
 	@echo "  release         Prepare for a new release (runs checks, verifies versions)"
 	@echo "  release CONFIRM=yes  Create a release tag without prompting"
 	@echo "  release-auto    Non-interactive version that creates the release tag automatically"
+	@echo "  bump-version    Update version in all files (Usage: make bump-version VERSION=x.y.z)"
 	@echo "  help            Show this help message"
