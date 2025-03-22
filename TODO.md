@@ -1,6 +1,46 @@
 # Webdown Project TODO
 
-## Bug Fixes and Quality Issues
+## Code Quality Improvements
+
+Based on code review (March 2025), here are needed improvements to enhance readability and maintainability:
+
+### 1. Refactor Long Functions
+- [ ] Break down `convert_url_to_markdown()` (49 lines) into smaller functions
+- [ ] Refactor `fetch_url_with_progress()` (45 lines) to have clearer responsibilities
+- [ ] Split `_process_markdown_section()` (38 lines) into smaller units
+- [ ] Simplify `_build_xml_structure()` (33 lines) for better readability
+
+### 2. Improve Parameter Management
+- [ ] Create configuration objects for parameter-heavy functions
+- [ ] Use XMLFormattingConfig for XML building and formatting functions
+- [ ] Consolidate parameters for `_process_markdown_paragraphs()`
+- [ ] Consolidate parameters for `indent_xml()`
+
+### 3. Reduce Code Duplication
+- [ ] Extract common XML building patterns into helper functions
+- [ ] Create reusable utilities for error handling
+- [ ] Standardize validation approach across the codebase
+
+### 4. Standardize Docstrings
+- [ ] Create a template for all docstrings
+- [ ] Apply consistent docstring format across the codebase
+- [ ] Add examples to docstrings where missing
+- [ ] Ensure return value documentation is complete
+
+### 5. Improve Function Naming
+- [ ] Rename `_get_normalized_config()` → `_validate_and_normalize_config()`
+- [ ] Rename `_process_markdown_paragraphs()` → `_convert_paragraphs_to_xml_elements()`
+- [ ] Rename `_process_content()` → `_convert_to_selected_format()`
+- [ ] Improve other helper function names for clarity
+
+### 6. Improve Abstraction Layers
+- [ ] Consider splitting converter.py into logical modules:
+  - [ ] `webdown/html_parser.py` - HTML fetching and parsing
+  - [ ] `webdown/markdown_converter.py` - HTML to Markdown conversion
+  - [ ] `webdown/xml_converter.py` - Markdown to XML conversion
+  - [ ] `webdown/config.py` - Configuration classes
+
+## Bug Fixes and Quality Issues (Completed)
 - [x] Fix stream decoding inconsistency in progress reporting
   - [x] Review and fix lines 153-158 in converter.py where we use `decode_unicode=True` but measure encoded chunk length
   - [x] Test with large web pages to verify progress bar accuracy
@@ -141,7 +181,6 @@
 - [x] Optimize html2text usage
   - [x] Set Unicode mode to always on for better character representation
   - [x] Simplify streaming implementation with fixed 10MB threshold - IMPLEMENTED: Removed configurable threshold in favor of automatic 10MB threshold
-  - [ ] Benchmark and optimize performance for large documents
 
 ## Documentation Enhancements
 - [x] Complete API documentation with pdoc
@@ -152,12 +191,6 @@
   - [x] Document all available options including the missing WebdownConfig parameters
   - [x] Provide examples for each advanced option
   - [x] Create a comprehensive CLI cheat sheet
-- [ ] Add batch processing examples
-  - [ ] Document how to process multiple URLs efficiently
-  - [ ] Provide shell script examples for batch processing
-- [ ] Include configuration recommendations
-  - [ ] Add guidance for optimal settings for different site types (blogs, docs, etc.)
-  - [ ] Document best practices for token efficiency with LLMs
 - [ ] Improve error handling documentation
   - [ ] Explain how users should handle common failures
   - [ ] Add troubleshooting section for common issues
@@ -167,8 +200,6 @@
   - [ ] Provide examples of customized TOC formatting
 - [ ] Document automatic streaming for large files
   - [ ] Explain 10MB threshold implementation
-  - [ ] Add advice for users working with very large documents
-- [ ] Consider setting up ReadTheDocs or GitHub Pages for online documentation hosting
 
 ## Test Improvements
 - [ ] Complete edge case coverage
@@ -194,29 +225,14 @@
   - [x] Unicode character support
   - [x] HTML tables preservation
   - [x] Custom emphasis and strong emphasis markers
-- [ ] Support for custom HTML to Markdown converters
-- [ ] Support for authentication for accessing private web content
-- [ ] Markdown output styling options
-- [ ] Batch processing of multiple URLs
 - [x] Add support for extracting specific page sections via CSS selectors
   - [x] Changed `-c/--css` flag to `-s/--css` (avoid conflict with compact)
-- [ ] Add caching mechanism for frequently accessed pages
-- [ ] Support for generating heading IDs for better navigation
-- [ ] Add option to preserve or transform HTML comments
-- [ ] Support for rendering math equations (MathJax/LaTeX)
-- [ ] Command-line option for output file format (Markdown, CommonMark, GitHub Flavored Markdown)
 
 ## Future Interface Simplifications
 - [x] Simplify streaming with fixed 10MB threshold
   - [x] Remove stream_threshold parameter from WebdownConfig
   - [x] Update CLI parser to remove stream_threshold option
   - [x] Implement fixed 10MB threshold for automatic streaming mode
-- [ ] Consider removing other low-value configuration options
-  - [ ] Evaluate remaining advanced options for potential removal
-  - [ ] Focus on making common use cases simple while preserving flexibility
-- [ ] Improve defaults for better out-of-the-box experience
-  - [ ] Set reasonable defaults for all options
-  - [ ] Consider environment detection to adapt defaults to terminal capabilities
 
 ## Claude XML Format
 - [x] Add Anthropic Claude XML format support
@@ -225,16 +241,6 @@
   - [x] Include options for metadata handling in XML output
   - [x] Support for code blocks with proper language tags
   - [x] Document Claude XML format usage and examples
-- [ ] Improve Claude XML format for better understanding
-  - [ ] Fix code block detection and formatting in XML output
-  - [ ] Enhance section hierarchy preservation (maintain h1/h2/h3 relationships)
-  - [ ] Add preset CSS selectors for common documentation sites
-  - [ ] Add test cases for XML format edge cases
-
-## Additional Features
-- [ ] Interactive mode to select page sections to convert
 - [x] Option to compact output by removing excessive blank lines
 - [x] Remove zero-width spaces and other invisible characters
-- [ ] Post-processing option to clean and normalize generated Markdown
 - [x] Add command-line option to set html2text body_width (currently hard-coded to 0)
-- [ ] Add multi-language support for non-English websites

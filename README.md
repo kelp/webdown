@@ -7,18 +7,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Python CLI tool for converting web pages to clean, readable Markdown format. Webdown makes it easy
-to extract content from websites for documentation, notes, content migration, or offline reading.
-
-I made this tool specifically so I could download documentation, convert it to Markdown and feed
-it into an LLM coding tool.
+to download documentation and feed it into an LLM coding tool.
 
 ## Why Webdown?
 
 - **Clean Conversion**: Produces readable Markdown without formatting artifacts
 - **Selective Extraction**: Target specific page sections with CSS selectors
-- **Customization Options**: Control links, images, text wrapping, and more
+- **Claude XML Format**: Optimized output format for Anthropic's Claude AI models
 - **Progress Tracking**: Visual download progress for large pages with `-p` flag
-- **Python Integration**: Use as a CLI tool or integrate into your Python projects
+- **Optimized Handling**: Automatic streaming for large pages (>10MB) with no configuration required
 
 ## Use Cases
 
@@ -30,7 +27,6 @@ Webdown is particularly useful for preparing documentation to use with AI-assist
 - Extract only the relevant parts of large documentation pages using CSS selectors
 - Strip out images and formatting that might consume token context
 - Generate well-structured tables of contents for better navigation
-- Batch process API documentation for library-specific assistance
 
 ```bash
 # Example: Convert API docs and store for AI coding context
@@ -84,10 +80,12 @@ webdown https://example.com/page.html
 - `-w, --width N`: Set the line width for wrapped text (0 for no wrapping)
 - `-p, --progress`: Show download progress bar (useful for large files)
 - `--claude-xml`: Output in Claude XML format for use with Claude AI
-- `--metadata`: Include metadata in Claude XML output (default)
-- `--no-metadata`: Exclude metadata from Claude XML output
+- `--no-metadata`: Exclude metadata section from Claude XML output (metadata is included by default)
+- `--no-date`: Exclude current date from metadata in Claude XML output (date is included by default)
 
-For large web pages (over 10MB), streaming mode is automatically used to optimize memory usage.
+For more details on the Claude XML format, see the [Anthropic documentation on Claude XML](https://docs.anthropic.com/claude/docs/advanced-data-extraction).
+
+For large web pages (over 10MB), streaming mode is automatically used to optimize memory usage without any configuration required.
 
 ## Examples
 
@@ -119,6 +117,18 @@ Generate Claude XML format for use with Claude AI:
 
 ```bash
 webdown https://example.com --claude-xml -o doc.xml
+```
+
+Claude XML with no metadata section:
+
+```bash
+webdown https://example.com --claude-xml --no-metadata -o doc.xml
+```
+
+Claude XML without the current date in metadata:
+
+```bash
+webdown https://example.com --claude-xml --no-date -o doc.xml
 ```
 
 For complete documentation, use the `--help` flag:
@@ -244,22 +254,10 @@ Webdown can also be used as a Python library in your own projects:
 ```python
 from webdown.converter import convert_url_to_markdown, WebdownConfig
 
-# Method 1: Basic conversion with individual parameters
+# Basic conversion
 markdown = convert_url_to_markdown("https://example.com")
 
-# Method 1: With all options as parameters (original style)
-markdown = convert_url_to_markdown(
-    url="https://example.com",
-    include_links=True,
-    include_images=True,
-    include_toc=True,
-    css_selector="main",  # Only extract main content
-    compact_output=True,  # Remove excessive blank lines
-    body_width=80,        # Wrap text at 80 characters
-    show_progress=True    # Show download progress bar (streaming is automatic for large pages)
-)
-
-# Method 2: Using the Config object
+# Using the Config object for more options
 config = WebdownConfig(
     url="https://example.com",
     include_toc=True,
@@ -274,22 +272,26 @@ markdown = convert_url_to_markdown(config)
 with open("output.md", "w") as f:
     f.write(markdown)
 
-# Method 3: Convert to Claude XML format
+# Convert to Claude XML format (optimized for Anthropic's Claude AI)
 from webdown.converter import convert_url_to_claude_xml, ClaudeXMLConfig
 
 # Basic Claude XML conversion
 xml = convert_url_to_claude_xml("https://example.com")
 
 # With custom XML configuration
-xml_config = ClaudeXMLConfig(
-    include_metadata=True,
-    add_date=True
+claude_config = ClaudeXMLConfig(
+    include_metadata=True,   # Include title, URL, and date (default: True)
+    add_date=True,           # Include current date in metadata (default: True)
+    doc_tag="claude_documentation"  # Root document tag name (default)
 )
-xml = convert_url_to_claude_xml("https://example.com", xml_config)
+xml = convert_url_to_claude_xml("https://example.com", claude_config)
 
 # Save XML output
 with open("output.xml", "w") as f:
     f.write(xml)
+
+# For more information on Claude XML format, see:
+# https://docs.anthropic.com/claude/docs/advanced-data-extraction
 ```
 
 ## Contributing

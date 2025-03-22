@@ -78,13 +78,17 @@ class TestFetchUrl:
     @patch("webdown.converter.requests.get")
     def test_successful_fetch(self, mock_get: MagicMock) -> None:
         """Test successful fetch returns HTML content."""
+        # Set up mock response with content-length for non-streaming path
         mock_response = MagicMock()
         mock_response.text = "<html><body>Test</body></html>"
+        mock_response.headers = {
+            "content-length": "100"
+        }  # Small content to trigger non-streaming path
         mock_get.return_value = mock_response
 
         result = fetch_url("https://example.com")
         assert result == "<html><body>Test</body></html>"
-        mock_get.assert_called_once_with("https://example.com", timeout=10)
+        mock_get.assert_called_once_with("https://example.com", timeout=10, stream=True)
 
     @patch("webdown.converter.requests.get")
     @patch("webdown.converter.tqdm")
@@ -122,7 +126,8 @@ class TestHtmlToMarkdown:
     def test_basic_conversion(self) -> None:
         """Test basic HTML to Markdown conversion."""
         html = "<h1>Title</h1><p>Paragraph</p>"
-        result = html_to_markdown(html)
+        config = WebdownConfig()
+        result = html_to_markdown(html, config)
         assert "# Title" in result
         assert "Paragraph" in result
 
@@ -134,11 +139,13 @@ class TestHtmlToMarkdown:
         mock_html2text.handle.return_value = "Markdown content"
 
         # Test links included (default)
-        html_to_markdown("<html><body>Test</body></html>")
+        config = WebdownConfig()
+        html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.ignore_links is False
 
         # Test links excluded
-        html_to_markdown("<html><body>Test</body></html>", include_links=False)
+        config = WebdownConfig(include_links=False)
+        html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.ignore_links is True
 
     @patch("webdown.converter.html2text.HTML2Text")
@@ -149,11 +156,13 @@ class TestHtmlToMarkdown:
         mock_html2text.handle.return_value = "Markdown content"
 
         # Test images included (default)
-        html_to_markdown("<html><body>Test</body></html>")
+        config = WebdownConfig()
+        html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.ignore_images is False
 
         # Test images excluded
-        html_to_markdown("<html><body>Test</body></html>", include_images=False)
+        config = WebdownConfig(include_images=False)
+        html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.ignore_images is True
 
     @patch("webdown.converter.html2text.HTML2Text")
@@ -164,15 +173,18 @@ class TestHtmlToMarkdown:
         mock_html2text.handle.return_value = "Markdown content"
 
         # Test default body_width (0)
-        html_to_markdown("<html><body>Test</body></html>")
+        config = WebdownConfig()
+        html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.body_width == 0
 
         # Test custom body_width
-        html_to_markdown("<html><body>Test</body></html>", body_width=80)
+        config = WebdownConfig(body_width=80)
+        html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.body_width == 80
 
         # Test another custom body_width
-        html_to_markdown("<html><body>Test</body></html>", body_width=72)
+        config = WebdownConfig(body_width=72)
+        html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.body_width == 72
 
     @patch("webdown.converter.BeautifulSoup")
@@ -191,7 +203,8 @@ class TestHtmlToMarkdown:
         # Instead of using __str__, directly use a string as the content
         mock_soup.select.return_value = ["<div>Selected content</div>"]
 
-        html_to_markdown("<html><body>Test</body></html>", css_selector="main")
+        config = WebdownConfig(css_selector="main")
+        html_to_markdown("<html><body>Test</body></html>", config)
 
         # Verify BeautifulSoup was called with the right parameters
         mock_beautiful_soup.assert_called_once_with(
@@ -213,7 +226,8 @@ class TestHtmlToMarkdown:
                 "# Title 1\n\nContent\n\n## Title 2\n\nMore content"
             )
 
-            result = html_to_markdown(html, include_toc=True)
+            config = WebdownConfig(include_toc=True)
+            result = html_to_markdown(html, config)
 
             # Verify table of contents was generated
             assert "# Table of Contents" in result
@@ -231,11 +245,13 @@ class TestHtmlToMarkdown:
             mock_html2text.handle.return_value = "Test\n\n\n\n\nParagraph\n\n\n\nEnd"
 
             # Without compact option
-            result = html_to_markdown(html, compact_output=False)
+            config = WebdownConfig(compact_output=False)
+            result = html_to_markdown(html, config)
             assert "Test\n\n\n\n\nParagraph\n\n\n\nEnd" in result
 
             # With compact option
-            result = html_to_markdown(html, compact_output=True)
+            config = WebdownConfig(compact_output=True)
+            result = html_to_markdown(html, config)
             assert "Test\n\nParagraph\n\nEnd" in result
 
     def test_removes_zero_width_spaces(self) -> None:
@@ -248,7 +264,8 @@ class TestHtmlToMarkdown:
             # Simulate output with zero-width spaces
             mock_html2text.handle.return_value = "Before\u200bAfter"
 
-            result = html_to_markdown(html)
+            config = WebdownConfig()
+            result = html_to_markdown(html, config)
             assert "\u200b" not in result
             assert "BeforeAfter" in result
 
@@ -256,7 +273,7 @@ class TestHtmlToMarkdown:
             mock_html2text.handle.return_value = (
                 "Text with\u200b zero\u200c width\u200d spaces\ufeff!"
             )
-            result = html_to_markdown(html)
+            result = html_to_markdown(html, config)
             assert "\u200b" not in result
             assert "\u200c" not in result
             assert "\u200d" not in result
@@ -276,29 +293,43 @@ class TestConvertUrlToMarkdown:
         mock_fetch_url.return_value = "<html><body>Test</body></html>"
         mock_html_to_markdown.return_value = "# Test\n\nContent"
 
-        result = convert_url_to_markdown(
-            "https://example.com",
+        config = WebdownConfig(
+            url="https://example.com",
             include_links=True,
             include_images=False,
             include_toc=True,
             css_selector="main",
         )
+        result = convert_url_to_markdown(config)
 
         # Verify fetch_url was called correctly
         mock_fetch_url.assert_called_once_with(
             "https://example.com", show_progress=False
         )
 
-        # Verify html_to_markdown was called with correct parameters
-        mock_html_to_markdown.assert_called_once_with(
-            "<html><body>Test</body></html>",
+        # Create expected config
+        expected_config = WebdownConfig(
+            url="https://example.com",
             include_links=True,
             include_images=False,
             include_toc=True,
             css_selector="main",
             compact_output=False,
             body_width=0,
+            show_progress=False,
         )
+
+        # Verify html_to_markdown was called with config object as positional arg
+        args, kwargs = mock_html_to_markdown.call_args
+        assert args[0] == "<html><body>Test</body></html>"  # First arg is HTML
+        assert len(args) >= 2  # Should have at least 2 args
+        assert args[1].url == expected_config.url
+        assert args[1].include_links == expected_config.include_links
+        assert args[1].include_images == expected_config.include_images
+        assert args[1].include_toc == expected_config.include_toc
+        assert args[1].css_selector == expected_config.css_selector
+        assert args[1].compact_output == expected_config.compact_output
+        assert args[1].body_width == expected_config.body_width
 
         # Verify result is returned from html_to_markdown
         assert result == "# Test\n\nContent"
@@ -312,26 +343,40 @@ class TestConvertUrlToMarkdown:
         mock_fetch_url.return_value = "<html><body>Test</body></html>"
         mock_html_to_markdown.return_value = "# Test\n\nContent"
 
-        result = convert_url_to_markdown(
-            "https://example.com",
+        config = WebdownConfig(
+            url="https://example.com",
             show_progress=True,
         )
+        result = convert_url_to_markdown(config)
 
         # Verify fetch_url was called with show_progress=True
         mock_fetch_url.assert_called_once_with(
             "https://example.com", show_progress=True
         )
 
-        # Verify html_to_markdown was called with correct parameters
-        mock_html_to_markdown.assert_called_once_with(
-            "<html><body>Test</body></html>",
+        # Create expected config
+        expected_config = WebdownConfig(
+            url="https://example.com",
             include_links=True,
             include_images=True,
             include_toc=False,
             css_selector=None,
             compact_output=False,
             body_width=0,
+            show_progress=False,
         )
+
+        # Verify html_to_markdown was called with config object as positional arg
+        args, kwargs = mock_html_to_markdown.call_args
+        assert args[0] == "<html><body>Test</body></html>"  # First arg is HTML
+        assert len(args) >= 2  # Should have at least 2 args
+        assert args[1].url == expected_config.url
+        assert args[1].include_links == expected_config.include_links
+        assert args[1].include_images == expected_config.include_images
+        assert args[1].include_toc == expected_config.include_toc
+        assert args[1].css_selector == expected_config.css_selector
+        assert args[1].compact_output == expected_config.compact_output
+        assert args[1].body_width == expected_config.body_width
 
         # Verify result is returned from html_to_markdown
         assert result == "# Test\n\nContent"
@@ -345,21 +390,35 @@ class TestConvertUrlToMarkdown:
         mock_fetch_url.return_value = "<html><body>Test</body></html>"
         mock_html_to_markdown.return_value = "# Test\n\nContent"
 
-        result = convert_url_to_markdown(
-            "https://example.com",
+        config = WebdownConfig(
+            url="https://example.com",
             body_width=80,
         )
+        result = convert_url_to_markdown(config)
 
-        # Verify html_to_markdown was called with correct body_width
-        mock_html_to_markdown.assert_called_once_with(
-            "<html><body>Test</body></html>",
+        # Create expected config
+        expected_config = WebdownConfig(
+            url="https://example.com",
             include_links=True,
             include_images=True,
             include_toc=False,
             css_selector=None,
             compact_output=False,
             body_width=80,
+            show_progress=False,
         )
+
+        # Verify html_to_markdown was called with config object as positional arg
+        args, kwargs = mock_html_to_markdown.call_args
+        assert args[0] == "<html><body>Test</body></html>"  # First arg is HTML
+        assert len(args) >= 2  # Should have at least 2 args
+        assert args[1].url == expected_config.url
+        assert args[1].include_links == expected_config.include_links
+        assert args[1].include_images == expected_config.include_images
+        assert args[1].include_toc == expected_config.include_toc
+        assert args[1].css_selector == expected_config.css_selector
+        assert args[1].compact_output == expected_config.compact_output
+        assert args[1].body_width == expected_config.body_width
 
         # Verify result is returned from html_to_markdown
         assert result == "# Test\n\nContent"
@@ -389,10 +448,10 @@ class TestConvertUrlToMarkdown:
             "https://example.com", show_progress=True
         )
 
-        # Verify html_to_markdown was called with config object
-        mock_html_to_markdown.assert_called_once_with(
-            "<html><body>Test</body></html>", config=config
-        )
+        # Verify html_to_markdown was called with config object as positional arg
+        args, kwargs = mock_html_to_markdown.call_args
+        assert args[0] == "<html><body>Test</body></html>"
+        assert args[1] == config
 
         # Verify result is returned from html_to_markdown
         assert result == "# Test\n\nContent"

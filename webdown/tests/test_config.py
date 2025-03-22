@@ -91,7 +91,10 @@ class TestWebdownConfig:
             ) as mock_html_to_md:
                 convert_url_to_markdown(config)
                 # Verify html_to_markdown was called with our config object
-                assert mock_html_to_md.call_args[1]["config"] == config
+                args, kwargs = mock_html_to_md.call_args
+                # Config should be passed as 2nd positional arg
+                assert len(args) >= 2
+                assert args[1] == config
 
     def test_convert_url_with_missing_url(self) -> None:
         """Test error when URL is missing from config."""

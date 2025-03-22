@@ -1,6 +1,6 @@
 # CLI Reference
 
-Webdown provides a powerful command-line interface for converting web pages to Markdown. This page provides a comprehensive reference for all available options.
+Webdown offers a straightforward command-line interface for converting web pages to Markdown or Claude XML format.
 
 ## Basic Usage
 
@@ -9,16 +9,6 @@ webdown URL [options]
 ```
 
 Where `URL` is the web page you want to convert (e.g., `https://example.com`).
-
-## Option Groups
-
-The options are organized into several groups:
-
-- **Input/Output Options**: Control where output is written and download progress display
-- **Content Selection**: Choose which parts of the page to include or exclude
-- **Formatting Options**: Customize the Markdown output format
-- **Advanced Options**: Fine-tune the HTML to Markdown conversion process
-- **Meta Options**: Show version information and help
 
 ## Complete Options Reference
 
@@ -44,22 +34,14 @@ The options are organized into several groups:
 | `-t, --toc` | Generate a table of contents based on headings in the document |
 | `-c, --compact` | Remove excessive blank lines for more compact output |
 | `-w N, --width N` | Set line width (0 disables wrapping, 80 recommended for readability) |
-| `--stream-threshold BYTES` | Size threshold in bytes for using streaming mode (default: 10MB, 0 to always stream) |
 
-### Advanced Options
+### Claude XML Options
 
 | Option | Description |
 |--------|-------------|
-| `--single-line-break` | Use single line breaks instead of double (creates more compact output) |
-| `--unicode` | Use Unicode characters instead of ASCII equivalents |
-| `--protect-links` | Protect links from line wrapping (keeps URLs on a single line) |
-| `--images-as-html` | Keep images as HTML rather than converting to Markdown format |
-| `--tables-as-html` | Keep tables as HTML instead of converting to Markdown |
-| `--emphasis-mark CHAR` | Character(s) for emphasis (default: '_', alternative: '*') |
-| `--strong-mark CHARS` | Character(s) for strong emphasis (default: '**', alt: '__') |
-| `--default-image-alt TEXT` | Default alt text for images that don't have any (default: empty string) |
-| `--pad-tables` | Add padding spaces for table alignment in Markdown output |
-| `--wrap-list-items` | Wrap list items to the specified body width |
+| `--claude-xml` | Output in Claude XML format instead of Markdown |
+| `--metadata` | Include metadata section in XML (default) |
+| `--no-metadata` | Exclude metadata section from XML |
 
 ### Meta Options
 
@@ -119,60 +101,23 @@ webdown https://example.com -p
 ```
 Displays a progress bar during download, useful for large pages.
 
-### Using Single Line Breaks
+### Claude XML Format
 
 ```bash
-webdown https://example.com --single-line-break
+webdown https://example.com --claude-xml -o output.xml
 ```
-Uses single line breaks instead of double line breaks, creating more compact output.
-
-### Unicode Support
-
-```bash
-webdown https://example.com --unicode
-```
-Preserves Unicode characters instead of converting them to ASCII equivalents.
-
-### Custom Emphasis Markers
-
-```bash
-webdown https://example.com --emphasis-mark "*" --strong-mark "__"
-```
-Uses asterisks for emphasis (*text*) and double underscores for strong emphasis (__text__).
-
-### HTML Tables
-
-```bash
-webdown https://example.com --tables-as-html
-```
-Keeps tables as HTML instead of converting them to Markdown format.
-
-### Streaming Large Documents
-
-```bash
-webdown https://example.com --stream-threshold 5242880
-```
-Uses streaming mode for documents larger than 5MB to optimize memory usage.
-
-### Protect Links from Wrapping
-
-```bash
-webdown https://example.com --protect-links
-```
-Prevents links from being wrapped, keeping URLs on a single line.
+Outputs the page content in Claude XML format, optimized for use with Anthropic's Claude AI.
 
 ### Complete Example with Multiple Options
 
 ```bash
-webdown https://example.com -s "main" -t -c -w 80 --unicode --single-line-break -p -o example.md
+webdown https://example.com -s "main" -t -c -w 80 -p -o example.md
 ```
 This example:
 - Extracts content from the `<main>` tag
 - Generates a table of contents
 - Removes excessive blank lines
 - Wraps text at 80 characters
-- Preserves Unicode characters
-- Uses single line breaks
 - Shows a progress bar during download
 - Saves output to example.md
 
@@ -188,13 +133,4 @@ This example:
 | Compact output | `webdown https://example.com -c` |
 | Set text width | `webdown https://example.com -w 80` |
 | Show progress | `webdown https://example.com -p` |
-| Single line breaks | `webdown https://example.com --single-line-break` |
-| Unicode support | `webdown https://example.com --unicode` |
-| Customize emphasis | `webdown https://example.com --emphasis-mark "*"` |
-| Protect links | `webdown https://example.com --protect-links` |
-| Images as HTML | `webdown https://example.com --images-as-html` |
-| Tables as HTML | `webdown https://example.com --tables-as-html` |
-| Default image alt text | `webdown https://example.com --default-image-alt "image"` |
-| Pad tables | `webdown https://example.com --pad-tables` |
-| Wrap list items | `webdown https://example.com --wrap-list-items` |
-| Optimize for large docs | `webdown https://example.com --stream-threshold 1048576` |
+| Claude XML format | `webdown https://example.com --claude-xml` |

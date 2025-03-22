@@ -7,7 +7,7 @@ import pytest
 import requests_mock
 
 from webdown.cli import main
-from webdown.converter import convert_url_to_markdown
+from webdown.converter import WebdownConfig, convert_url_to_markdown
 
 # Sample HTML content for testing
 SAMPLE_HTML = """<!DOCTYPE html>
@@ -48,27 +48,29 @@ class TestIntegration:
             assert "image" in result
 
             # With no links
-            result = convert_url_to_markdown("https://example.com", include_links=False)
+            config = WebdownConfig(url="https://example.com", include_links=False)
+            result = convert_url_to_markdown(config)
             assert "# Test Page Title" in result
             assert (
                 "[link](https://example.com)" not in result
             )  # Link should be plain text, not hyperlink
 
             # With no images
-            result = convert_url_to_markdown(
-                "https://example.com", include_images=False
-            )
+            config = WebdownConfig(url="https://example.com", include_images=False)
+            result = convert_url_to_markdown(config)
             assert "# Test Page Title" in result
             assert "image.jpg" not in result
 
             # With CSS selector
-            result = convert_url_to_markdown("https://example.com", css_selector="main")
+            config = WebdownConfig(url="https://example.com", css_selector="main")
+            result = convert_url_to_markdown(config)
             assert "Test Page Title" not in result  # Header is outside <main>
             assert "## Section 1" in result
             assert "## Section 2" in result
 
             # With table of contents
-            result = convert_url_to_markdown("https://example.com", include_toc=True)
+            config = WebdownConfig(url="https://example.com", include_toc=True)
+            result = convert_url_to_markdown(config)
             assert "# Table of Contents" in result
             assert "- [Test Page Title](#test-page-title)" in result
             assert "  - [Section 1](#section-1)" in result

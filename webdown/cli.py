@@ -38,7 +38,8 @@ The CLI offers various options to customize the conversion:
 * `-V, --version`: Show version information and exit
 * `-h, --help`: Show help message and exit
 
-Note: For large web pages (over 10MB), webdown automatically uses streaming mode to optimize memory usage.
+Note: For large web pages (over 10MB), webdown automatically uses streaming mode
+to optimize memory usage.
 
 
 ## Claude XML Options
@@ -105,8 +106,6 @@ import argparse
 import sys
 from typing import List, Optional
 
-import requests
-
 from webdown import __version__
 from webdown.converter import (
     ClaudeXMLConfig,
@@ -116,29 +115,28 @@ from webdown.converter import (
     convert_url_to_markdown,
 )
 
+# No requests import needed in CLI module
 
-def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
-    """Parse command line arguments.
+
+def _add_basic_arguments(parser: argparse.ArgumentParser) -> None:
+    """Add basic URL argument to the parser.
 
     Args:
-        args: Command line arguments (defaults to sys.argv[1:] if None)
-
-    Returns:
-        Parsed arguments
+        parser: ArgumentParser to add arguments to
     """
-    parser = argparse.ArgumentParser(
-        description="Convert web pages to clean, readable Markdown format.",
-        epilog="For more information: https://github.com/kelp/webdown",
-    )
-
-    # Required argument
     parser.add_argument(
         "url",
         help="URL of the web page to convert (e.g., https://example.com)",
         nargs="?",
     )
 
-    # Input/Output options
+
+def _add_io_arguments(parser: argparse.ArgumentParser) -> None:
+    """Add input/output related arguments to the parser.
+
+    Args:
+        parser: ArgumentParser to add arguments to
+    """
     io_group = parser.add_argument_group("Input/Output Options")
     io_group.add_argument(
         "-o",
@@ -153,7 +151,13 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         help="Display a progress bar during download (useful for large pages)",
     )
 
-    # Content options
+
+def _add_content_arguments(parser: argparse.ArgumentParser) -> None:
+    """Add content selection arguments to the parser.
+
+    Args:
+        parser: ArgumentParser to add arguments to
+    """
     content_group = parser.add_argument_group("Content Selection")
     content_group.add_argument(
         "-s",
@@ -174,7 +178,13 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         help="Exclude images from the output completely",
     )
 
-    # Formatting options
+
+def _add_formatting_arguments(parser: argparse.ArgumentParser) -> None:
+    """Add text formatting arguments to the parser.
+
+    Args:
+        parser: ArgumentParser to add arguments to
+    """
     format_group = parser.add_argument_group("Formatting Options")
     format_group.add_argument(
         "-t",
@@ -197,7 +207,13 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         help="Set line width (0 disables wrapping, 80 recommended for readability)",
     )
 
-    # Output Format Options
+
+def _add_claude_xml_arguments(parser: argparse.ArgumentParser) -> None:
+    """Add Claude XML format arguments to the parser.
+
+    Args:
+        parser: ArgumentParser to add arguments to
+    """
     format_group = parser.add_argument_group("Output Format Options")
     format_group.add_argument(
         "--claude-xml",
@@ -224,7 +240,13 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         help="Don't include current date in Claude XML metadata",
     )
 
-    # Meta options
+
+def _add_meta_arguments(parser: argparse.ArgumentParser) -> None:
+    """Add meta options to the parser.
+
+    Args:
+        parser: ArgumentParser to add arguments to
+    """
     meta_group = parser.add_argument_group("Meta Options")
     meta_group.add_argument(
         "-V",
@@ -234,7 +256,110 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         help="Show version information and exit",
     )
 
+
+def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
+    """Parse command line arguments.
+
+    Args:
+        args: Command line arguments (defaults to sys.argv[1:] if None)
+
+    Returns:
+        Parsed arguments
+    """
+    parser = argparse.ArgumentParser(
+        description="Convert web pages to clean, readable Markdown format.",
+        epilog="For more information: https://github.com/kelp/webdown",
+    )
+
+    # Add all argument groups
+    _add_basic_arguments(parser)
+    _add_io_arguments(parser)
+    _add_content_arguments(parser)
+    _add_formatting_arguments(parser)
+    _add_claude_xml_arguments(parser)
+    _add_meta_arguments(parser)
+
     return parser.parse_args(args)
+
+
+def _create_webdown_config(args: argparse.Namespace) -> WebdownConfig:
+    """Create a WebdownConfig object from command-line arguments.
+
+    Args:
+        args: Parsed command-line arguments
+
+    Returns:
+        Configured WebdownConfig object
+    """
+    return WebdownConfig(
+        url=args.url,
+        include_toc=args.toc,
+        include_links=not args.no_links,
+        include_images=not args.no_images,
+        css_selector=args.css,
+        compact_output=args.compact,
+        body_width=args.width,
+        show_progress=args.progress,
+    )
+
+
+def _convert_content(args: argparse.Namespace, config: WebdownConfig) -> str:
+    """Convert URL to selected output format based on arguments.
+
+    Args:
+        args: Parsed command-line arguments
+        config: WebdownConfig object
+
+    Returns:
+        Converted content as string
+    """
+    if args.claude_xml:
+        # Create Claude XML config from CLI arguments
+        claude_config = ClaudeXMLConfig(
+            include_metadata=args.metadata,
+            add_date=args.add_date,
+        )
+
+        # Convert to Claude XML format
+        return convert_url_to_claude_xml(config, claude_config)
+    else:
+        # Use standard markdown conversion
+        return convert_url_to_markdown(config)
+
+
+def _write_output(output: str, output_path: Optional[str]) -> None:
+    """Write output to file or stdout.
+
+    Args:
+        output: Content to write
+        output_path: Path to output file or None for stdout
+    """
+    if output_path:
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(output)
+    else:
+        sys.stdout.write(output)
+
+
+def _handle_error(e: Exception) -> int:
+    """Handle exceptions and write appropriate error messages.
+
+    Args:
+        e: Exception that was raised
+
+    Returns:
+        Exit code (always 1 for errors)
+    """
+    if isinstance(e, WebdownError):
+        sys.stderr.write(f"Web conversion error: {str(e)}\n")
+    elif isinstance(e, IOError):
+        sys.stderr.write(f"File I/O error: {str(e)}\n")
+    elif isinstance(e, ValueError):
+        sys.stderr.write(f"Value error: {str(e)}\n")
+    else:
+        sys.stderr.write(f"Unexpected error: {str(e)}\n")
+
+    return 1
 
 
 def main(args: Optional[List[str]] = None) -> int:
@@ -268,61 +393,18 @@ def main(args: Optional[List[str]] = None) -> int:
         # If no URL provided, show help
         if parsed_args.url is None:
             # This will print help and exit
-            parse_args(
-                ["-h"]
-            )  # pragma: no cover - this exits so coverage tools can't track it
+            parse_args(["-h"])  # pragma: no cover
             return 0  # pragma: no cover - unreachable after SystemExit
 
-        # Create a config object from command-line arguments
-        config = WebdownConfig(
-            url=parsed_args.url,
-            include_toc=parsed_args.toc,
-            include_links=not parsed_args.no_links,
-            include_images=not parsed_args.no_images,
-            css_selector=parsed_args.css,
-            compact_output=parsed_args.compact,
-            body_width=parsed_args.width,
-            show_progress=parsed_args.progress,
-        )
-
-        # Determine output format and convert
-        if parsed_args.claude_xml:
-            # Create Claude XML config from CLI arguments
-            claude_config = ClaudeXMLConfig(
-                include_metadata=parsed_args.metadata,
-                add_date=parsed_args.add_date,
-            )
-
-            # Convert to Claude XML format
-            output = convert_url_to_claude_xml(config, claude_config)
-        else:
-            # Use standard markdown conversion
-            output = convert_url_to_markdown(config)
-
-        # Write output to file or stdout
-        if parsed_args.output:
-            with open(parsed_args.output, "w", encoding="utf-8") as f:
-                f.write(output)
-        else:
-            sys.stdout.write(output)
+        # Process the URL with proper configuration
+        config = _create_webdown_config(parsed_args)
+        output = _convert_content(parsed_args, config)
+        _write_output(output, parsed_args.output)
 
         return 0
 
-    except WebdownError as e:
-        sys.stderr.write(f"Web conversion error: {str(e)}\n")
-        return 1
-    except requests.exceptions.RequestException as e:
-        sys.stderr.write(f"Network error: {str(e)}\n")
-        return 1
-    except IOError as e:
-        sys.stderr.write(f"File I/O error: {str(e)}\n")
-        return 1
-    except ValueError as e:
-        sys.stderr.write(f"Value error: {str(e)}\n")
-        return 1
     except Exception as e:
-        sys.stderr.write(f"Unexpected error: {str(e)}\n")
-        return 1
+        return _handle_error(e)
 
 
 if __name__ == "__main__":  # pragma: no cover - difficult to test main module block

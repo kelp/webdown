@@ -76,3 +76,15 @@ When making changes, choose the appropriate version increment based on the impac
 - Format code with Black before committing
 - Sort imports with isort before committing
 - Pre-commit hooks will enforce code quality standards
+
+### Function Design Guidelines
+- Keep functions under 30 lines for improved readability (50 absolute max)
+- Limit parameters to 5 or fewer; use configuration objects for complex parameter sets
+- Use underscore prefix for internal helper functions (e.g., `_validate_input`)
+- Follow Single Responsibility Principle - each function should do one thing well
+- Extract repeated code into dedicated helper functions
+- Prefer early returns for validation to avoid deeply nested conditions
+- Centralize validation logic rather than duplicating across functions
+- Use configuration objects (like `WebdownConfig`, `ClaudeXMLConfig`) for consistent parameter handling
+- Follow a "tell, don't ask" principle when designing function interactions
+- Keep public API surface minimal and clearly documented

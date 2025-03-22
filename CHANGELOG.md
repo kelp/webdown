@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2025-03-21
+
+### Added
+- Claude XML format support with `--claude-xml` flag
+- Optimized XML structure for use with Anthropic's Claude AI models
+- Metadata handling in Claude XML output with `--no-metadata` and `--no-date` options
+- New test suite for Claude XML functionality
+- Documentation for Claude XML format
+
+### Changed
+- Simplified streaming implementation with fixed 10MB threshold
+- Removed `stream_threshold` parameter from WebdownConfig
+- Removed advanced HTML2Text options to simplify the API
+- Improved README documentation for clarity and simplicity
+- Added code quality improvement tasks to TODO.md
+
+### Fixed
+- Improved streaming mode detection reliability
+- Better error handling in the streaming implementation
+
 ## [0.4.2] - 2025-03-16
 
 ### Improved

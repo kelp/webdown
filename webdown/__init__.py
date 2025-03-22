@@ -52,7 +52,7 @@ markdown = convert_url_to_markdown(config)
 See the API documentation for detailed descriptions of all options.
 """
 
-__version__ = "0.4.2"
+__version__ = "0.5.0"
 
 # Import CLI module
 from webdown import cli
