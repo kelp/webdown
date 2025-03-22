@@ -149,20 +149,37 @@ We follow [Semantic Versioning](https://semver.org/):
 
 Webdown uses GitHub Actions to automate the release process:
 
-1. Update version number in:
+1. Update version numbers in all files at once using the bump-version command:
+   ```bash
+   make bump-version VERSION=0.6.0
+   ```
+   This will automatically update:
    - `pyproject.toml`
    - `webdown/__init__.py`
-2. Update `CHANGELOG.md` with the new version and changes
-3. Commit the version bump changes
+
+2. Update `CHANGELOG.md` with the new version and changes (this must be done manually)
+
+3. Commit the version bump changes:
+   ```bash
+   git add pyproject.toml webdown/__init__.py CHANGELOG.md
+   git commit -m "Bump version to 0.6.0"
+   ```
+
 4. Run the release target to verify everything and create the tag:
    ```bash
    make release
    ```
-5. If the release target succeeds, push the tag to trigger the release:
+   If you're sure everything is correct and want to create the tag in one step:
    ```bash
-   git push origin v0.4.x
+   make release CONFIRM=yes
    ```
-6. The GitHub Actions workflow will:
+
+5. If the release target succeeds, push the tag to trigger the release workflow:
+   ```bash
+   git push origin v0.6.0
+   ```
+
+6. The GitHub Actions workflow will automatically:
    - Verify the version numbers match
    - Run tests
    - Build the package
@@ -172,6 +189,13 @@ Webdown uses GitHub Actions to automate the release process:
 For local testing before a release, you can use:
 - `make build` to build the package locally
 - `make publish-test` to publish to TestPyPI
+
+### Troubleshooting Release Issues
+
+If the release workflow fails due to version mismatch:
+1. Check that versions match in `pyproject.toml` and `webdown/__init__.py`
+2. If they don't match, use `make bump-version VERSION=x.y.z` to fix the discrepancy
+3. Commit the changes and try the release process again
 
 Note: PyPI publishing uses GitHub's OIDC and PyPI's Trusted Publishers feature for secure authentication without tokens.
 
