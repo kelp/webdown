@@ -51,10 +51,10 @@ This plan provides a prioritized approach to transform webdown into an exception
 - [x] Consolidate parameters for commonly used functions
 
 ### Phase 7: Testing Improvements (Priority: Medium)
-- [ ] Focus testing on our wrapper functionality instead of underlying html2text
-- [ ] Add targeted tests for the streaming mechanism with large documents
-- [ ] Fix the skipped integration tests in test_integration.py
-- [ ] Add tests for the new configuration structure with key parameter combinations
+- [x] Focus testing on our wrapper functionality instead of underlying html2text
+- [x] Add targeted tests for the streaming mechanism with large documents
+- [x] Fix the skipped integration tests in test_integration.py
+- [x] Add tests for the new configuration structure with key parameter combinations
 
 ### Phase 8: Documentation Enhancements (Priority: Low)
 - [ ] Improve error handling documentation
@@ -219,22 +219,22 @@ This plan provides a prioritized approach to transform webdown into an exception
   - [x] Create a comprehensive CLI cheat sheet
 # (Moved to Phase 8 in the prioritized plan above)
 
-## Test Improvements Details (Supporting Phase 7)
-- [ ] Pragmatic Test Coverage Improvements
-  - [ ] Add tests for common network failure scenarios (timeouts, connection errors)
-  - [ ] Test with a few representative HTML structures (not exhaustive edge cases)
-  - [ ] Add tests for invalid CSS selectors with helpful error messages
-  - [ ] Test TOC generation with basic heading variations
-  - [ ] Create simple mocked 10MB+ documents to verify streaming activation
-  - [ ] Test progress bar functionality with mock responses
-- [ ] Configuration Testing
-  - [ ] Test key configuration parameter combinations (not every possible combination)
-  - [ ] Verify backward compatibility with legacy function parameters
-  - [ ] Test error cases for invalid configuration values
-- [ ] Integration Test Fixes
-  - [ ] Fix the skipped integration tests or document why they should remain skipped
-  - [ ] Add 2-3 representative integration tests with stable websites
-  - [ ] Test CLI interface with different argument combinations
+## Test Improvements Details (Supporting Phase 7 - COMPLETED)
+- [x] Pragmatic Test Coverage Improvements
+  - [x] Add tests for common network failure scenarios (timeouts, connection errors)
+  - [x] Test with a few representative HTML structures (not exhaustive edge cases)
+  - [x] Add tests for invalid CSS selectors with helpful error messages
+  - [x] Test TOC generation with basic heading variations
+  - [x] Create simple mocked 10MB+ documents to verify streaming activation
+  - [x] Test progress bar functionality with mock responses
+- [x] Configuration Testing
+  - [x] Test key configuration parameter combinations (not every possible combination)
+  - [x] Verify backward compatibility with legacy function parameters
+  - [x] Test error cases for invalid configuration values
+- [x] Integration Test Fixes
+  - [x] Fix the skipped integration tests or document why they should remain skipped
+  - [x] Add representative integration tests with stable websites
+  - [x] Test CLI interface with different argument combinations
 
 ## Features to Consider
 - [x] Add a progress bar for downloads
