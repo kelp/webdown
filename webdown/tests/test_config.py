@@ -3,12 +3,8 @@
 import pytest
 import requests_mock
 
-from webdown.converter import (
-    WebdownConfig,
-    WebdownError,
-    convert_url_to_markdown,
-    html_to_markdown,
-)
+from webdown.config import DocumentOptions, WebdownConfig, WebdownError
+from webdown.converter import convert_url, html_to_markdown
 
 # Sample HTML content for testing
 SAMPLE_HTML = """<!DOCTYPE html>
@@ -37,12 +33,17 @@ class TestWebdownConfig:
 
     def test_html_to_markdown_with_config(self) -> None:
         """Test html_to_markdown with WebdownConfig object."""
-        config = WebdownConfig(
-            include_links=False,
-            include_images=False,
+        # Create doc options
+        doc_options = DocumentOptions(
             include_toc=True,
             compact_output=True,
             body_width=80,
+        )
+
+        config = WebdownConfig(
+            include_links=False,
+            include_images=False,
+            document_options=doc_options,
         )
 
         # Convert HTML to Markdown using config
@@ -56,24 +57,29 @@ class TestWebdownConfig:
         assert "[link](https://example.com)" not in markdown  # Links should be ignored
         assert "![image]" not in markdown  # Images should be ignored
 
-    def test_convert_url_to_markdown_with_config(self) -> None:
-        """Test convert_url_to_markdown with WebdownConfig object."""
+    def test_convert_url_with_config(self) -> None:
+        """Test convert_url with WebdownConfig object."""
         with requests_mock.Mocker() as m:
             # Use our sample HTML
             m.get("https://example.com", text=SAMPLE_HTML)
             m.head("https://example.com", headers={"content-length": "500"})
+
+            # Create doc options
+            doc_options = DocumentOptions(
+                body_width=80,
+            )
 
             # Create config object focusing on configuration options we want to test
             config = WebdownConfig(
                 url="https://example.com",
                 include_links=False,  # Should remove links
                 include_images=False,  # Should remove images
-                body_width=80,  # Set specific body width
                 show_progress=True,
+                document_options=doc_options,
             )
 
             # Convert using config object
-            markdown = convert_url_to_markdown(config)
+            markdown = convert_url(config)
 
             # No link brackets should be present since include_links=False
             assert "[link]" not in markdown
@@ -89,7 +95,7 @@ class TestWebdownConfig:
             with unittest.mock.patch(
                 "webdown.converter.html_to_markdown"
             ) as mock_html_to_md:
-                convert_url_to_markdown(config)
+                convert_url(config)
                 # Verify html_to_markdown was called with our config object
                 args, kwargs = mock_html_to_md.call_args
                 # Config should be passed as 2nd positional arg
@@ -101,6 +107,6 @@ class TestWebdownConfig:
         config = WebdownConfig()  # No URL provided
 
         with pytest.raises(WebdownError) as excinfo:
-            convert_url_to_markdown(config)
+            convert_url(config)
 
         assert "URL must be provided" in str(excinfo.value)

@@ -108,8 +108,8 @@ from typing import List, Optional, Tuple
 from urllib.parse import urlparse
 
 from webdown import __version__
-from webdown.config import ClaudeXMLConfig, WebdownConfig
-from webdown.converter import convert_url_to_claude_xml, convert_url_to_markdown
+from webdown.config import DocumentOptions, OutputFormat, WebdownConfig
+from webdown.converter import convert_url
 from webdown.error_utils import format_error_for_cli
 
 
@@ -257,7 +257,7 @@ def _convert_to_selected_format(
     This function handles the entire conversion process:
     1. Auto-fixing the URL (adding https:// if missing)
     2. Creating the WebdownConfig with all options from arguments
-    3. Converting the URL to either Markdown or Claude XML format
+    3. Converting the URL to the selected format (Markdown or Claude XML)
 
     Args:
         parsed_args: Parsed command-line arguments containing URL and conversion options
@@ -278,6 +278,7 @@ def _convert_to_selected_format(
         ...     width=80,
         ...     progress=True,
         ...     claude_xml=False,
+        ...     metadata=True,
         ...     output="output.md"
         ... )
         >>> content, out_path = _convert_to_selected_format(args)
@@ -292,27 +293,32 @@ def _convert_to_selected_format(
         url = auto_fix_url(url)
         parsed_args.url = url
 
+    # Create document options
+    doc_options = DocumentOptions(
+        include_toc=parsed_args.toc,
+        compact_output=parsed_args.compact,
+        body_width=parsed_args.width,
+        include_metadata=parsed_args.metadata,
+    )
+
+    # Set output format
+    output_format = (
+        OutputFormat.CLAUDE_XML if parsed_args.claude_xml else OutputFormat.MARKDOWN
+    )
+
     # Create configuration
     config = WebdownConfig(
         url=url,
-        include_toc=parsed_args.toc,
         include_links=not parsed_args.no_links,
         include_images=not parsed_args.no_images,
         css_selector=parsed_args.css,
-        compact_output=parsed_args.compact,
-        body_width=parsed_args.width,
         show_progress=parsed_args.progress,
+        format=output_format,
+        document_options=doc_options,
     )
 
-    # Convert content based on selected format
-    if parsed_args.claude_xml:
-        claude_config = ClaudeXMLConfig(
-            include_metadata=parsed_args.metadata,
-            add_date=parsed_args.add_date,
-        )
-        content = convert_url_to_claude_xml(config, claude_config)
-    else:
-        content = convert_url_to_markdown(config)
+    # Convert content using the unified convert_url function
+    content = convert_url(config)
 
     return content, parsed_args.output
 

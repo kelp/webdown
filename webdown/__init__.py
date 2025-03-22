@@ -6,11 +6,11 @@ for customizing the conversion process.
 
 ## Key Features
 
-- Convert web pages to clean, readable Markdown
+- Convert web pages to clean, readable Markdown or Claude XML
 - Extract specific content using CSS selectors
 - Generate table of contents from headings
 - Control link and image handling
-- Customize Markdown formatting style
+- Customize document formatting
 - Show progress bar for large downloads
 - Configure text wrapping and line breaks
 
@@ -35,18 +35,26 @@ webdown https://example.com -s "main" -I -c -w 80 -o output.md
 
 ```python
 # Simple conversion
-from webdown import convert_url_to_markdown
-markdown = convert_url_to_markdown("https://example.com")
+from webdown import convert_url
+markdown = convert_url("https://example.com")
 
-# Using the configuration object
-from webdown import WebdownConfig, convert_url_to_markdown
+# Using the configuration object with Markdown output
+from webdown import WebdownConfig, DocumentOptions, convert_url
+doc_options = DocumentOptions(include_toc=True, body_width=80)
 config = WebdownConfig(
     url="https://example.com",
-    include_toc=True,
     css_selector="main",
-    body_width=80
+    document_options=doc_options
 )
-markdown = convert_url_to_markdown(config)
+markdown = convert_url(config)
+
+# Convert to Claude XML format
+from webdown import WebdownConfig, OutputFormat, convert_url
+config = WebdownConfig(
+    url="https://example.com",
+    format=OutputFormat.CLAUDE_XML
+)
+xml_content = convert_url(config)
 ```
 
 See the API documentation for detailed descriptions of all options.
@@ -58,12 +66,10 @@ __version__ = "0.5.0"
 from webdown import cli
 
 # Import key classes and functions for easy access
-from webdown.config import ClaudeXMLConfig, WebdownConfig, WebdownError
-from webdown.converter import (
-    convert_url_to_claude_xml,
-    convert_url_to_markdown,
-    html_to_markdown,
-)
+from webdown.config import DocumentOptions, OutputFormat, WebdownConfig, WebdownError
+from webdown.converter import convert_url_to_claude_xml  # For backward compatibility
+from webdown.converter import convert_url_to_markdown  # For backward compatibility
+from webdown.converter import convert_url, html_to_markdown
 from webdown.error_utils import ErrorCode
 from webdown.html_parser import fetch_url
 from webdown.validation import validate_css_selector, validate_url
@@ -71,10 +77,12 @@ from webdown.validation import validate_css_selector, validate_url
 # Define public API
 __all__ = [
     "WebdownConfig",
-    "ClaudeXMLConfig",
+    "DocumentOptions",
+    "OutputFormat",
     "WebdownError",
-    "convert_url_to_markdown",
-    "convert_url_to_claude_xml",
+    "convert_url",
+    "convert_url_to_markdown",  # For backward compatibility
+    "convert_url_to_claude_xml",  # For backward compatibility
     "fetch_url",
     "html_to_markdown",
     "validate_url",

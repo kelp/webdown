@@ -7,6 +7,7 @@ import pytest
 import requests_mock
 
 from webdown.cli import main
+from webdown.config import DocumentOptions
 from webdown.converter import WebdownConfig, convert_url_to_markdown
 
 # Sample HTML content for testing
@@ -69,7 +70,10 @@ class TestIntegration:
             assert "## Section 2" in result
 
             # With table of contents
-            config = WebdownConfig(url="https://example.com", include_toc=True)
+            config = WebdownConfig(
+                url="https://example.com",
+                document_options=DocumentOptions(include_toc=True),
+            )
             result = convert_url_to_markdown(config)
             assert "# Table of Contents" in result
             assert "- [Test Page Title](#test-page-title)" in result

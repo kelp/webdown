@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from webdown.config import WebdownConfig, WebdownError
-from webdown.converter import convert_url_to_markdown
+from webdown.config import DocumentOptions, WebdownConfig, WebdownError
+from webdown.converter import convert_url
 from webdown.error_utils import ErrorCode
 from webdown.html_parser import fetch_url
 from webdown.markdown_converter import html_to_markdown
@@ -183,12 +183,14 @@ class TestHtmlToMarkdown:
         assert mock_html2text.body_width == 0
 
         # Test custom body_width
-        config = WebdownConfig(body_width=80)
+        doc_options = DocumentOptions(body_width=80)
+        config = WebdownConfig(document_options=doc_options)
         html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.body_width == 80
 
         # Test another custom body_width
-        config = WebdownConfig(body_width=72)
+        doc_options = DocumentOptions(body_width=72)
+        config = WebdownConfig(document_options=doc_options)
         html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.body_width == 72
 
@@ -233,7 +235,8 @@ class TestHtmlToMarkdown:
                 "# Title 1\n\nContent\n\n## Title 2\n\nMore content"
             )
 
-            config = WebdownConfig(include_toc=True)
+            doc_options = DocumentOptions(include_toc=True)
+            config = WebdownConfig(document_options=doc_options)
             result = html_to_markdown(html, config)
 
             # Verify table of contents was generated
@@ -254,12 +257,14 @@ class TestHtmlToMarkdown:
             mock_html2text.handle.return_value = "Test\n\n\n\n\nParagraph\n\n\n\nEnd"
 
             # Without compact option
-            config = WebdownConfig(compact_output=False)
+            doc_options = DocumentOptions(compact_output=False)
+            config = WebdownConfig(document_options=doc_options)
             result = html_to_markdown(html, config)
             assert "Test\n\n\n\n\nParagraph\n\n\n\nEnd" in result
 
             # With compact option
-            config = WebdownConfig(compact_output=True)
+            doc_options = DocumentOptions(compact_output=True)
+            config = WebdownConfig(document_options=doc_options)
             result = html_to_markdown(html, config)
             assert "Test\n\nParagraph\n\nEnd" in result
 
@@ -293,7 +298,7 @@ class TestHtmlToMarkdown:
 
 
 class TestConvertUrlToMarkdown:
-    """Tests for convert_url_to_markdown function."""
+    """Tests for convert_url function."""
 
     @patch("webdown.converter.fetch_url")
     @patch("webdown.converter.html_to_markdown")
@@ -304,43 +309,32 @@ class TestConvertUrlToMarkdown:
         mock_fetch_url.return_value = "<html><body>Test</body></html>"
         mock_html_to_markdown.return_value = "# Test\n\nContent"
 
+        doc_options = DocumentOptions(include_toc=True)
         config = WebdownConfig(
             url="https://example.com",
             include_links=True,
             include_images=False,
-            include_toc=True,
             css_selector="main",
+            document_options=doc_options,
         )
-        result = convert_url_to_markdown(config)
+        result = convert_url(config)
 
         # Verify fetch_url was called correctly
         mock_fetch_url.assert_called_once_with(
             "https://example.com", show_progress=False
         )
 
-        # Create expected config
-        expected_config = WebdownConfig(
-            url="https://example.com",
-            include_links=True,
-            include_images=False,
-            include_toc=True,
-            css_selector="main",
-            compact_output=False,
-            body_width=0,
-            show_progress=False,
-        )
-
         # Verify html_to_markdown was called with config object as positional arg
         args, kwargs = mock_html_to_markdown.call_args
         assert args[0] == "<html><body>Test</body></html>"  # First arg is HTML
         assert len(args) >= 2  # Should have at least 2 args
-        assert args[1].url == expected_config.url
-        assert args[1].include_links == expected_config.include_links
-        assert args[1].include_images == expected_config.include_images
-        assert args[1].include_toc == expected_config.include_toc
-        assert args[1].css_selector == expected_config.css_selector
-        assert args[1].compact_output == expected_config.compact_output
-        assert args[1].body_width == expected_config.body_width
+        assert args[1].url == config.url
+        assert args[1].include_links == config.include_links
+        assert args[1].include_images == config.include_images
+        assert (
+            args[1].document_options.include_toc == config.document_options.include_toc
+        )
+        assert args[1].css_selector == config.css_selector
 
         # Verify result is returned from html_to_markdown
         assert result == "# Test\n\nContent"
@@ -358,36 +352,20 @@ class TestConvertUrlToMarkdown:
             url="https://example.com",
             show_progress=True,
         )
-        result = convert_url_to_markdown(config)
+        result = convert_url(config)
 
         # Verify fetch_url was called with show_progress=True
         mock_fetch_url.assert_called_once_with(
             "https://example.com", show_progress=True
         )
 
-        # Create expected config
-        expected_config = WebdownConfig(
-            url="https://example.com",
-            include_links=True,
-            include_images=True,
-            include_toc=False,
-            css_selector=None,
-            compact_output=False,
-            body_width=0,
-            show_progress=False,
-        )
-
         # Verify html_to_markdown was called with config object as positional arg
         args, kwargs = mock_html_to_markdown.call_args
         assert args[0] == "<html><body>Test</body></html>"  # First arg is HTML
         assert len(args) >= 2  # Should have at least 2 args
-        assert args[1].url == expected_config.url
-        assert args[1].include_links == expected_config.include_links
-        assert args[1].include_images == expected_config.include_images
-        assert args[1].include_toc == expected_config.include_toc
-        assert args[1].css_selector == expected_config.css_selector
-        assert args[1].compact_output == expected_config.compact_output
-        assert args[1].body_width == expected_config.body_width
+        assert args[1].url == config.url
+        assert args[1].include_links == config.include_links
+        assert args[1].include_images == config.include_images
 
         # Verify result is returned from html_to_markdown
         assert result == "# Test\n\nContent"
@@ -401,35 +379,19 @@ class TestConvertUrlToMarkdown:
         mock_fetch_url.return_value = "<html><body>Test</body></html>"
         mock_html_to_markdown.return_value = "# Test\n\nContent"
 
+        doc_options = DocumentOptions(body_width=80)
         config = WebdownConfig(
             url="https://example.com",
-            body_width=80,
+            document_options=doc_options,
         )
-        result = convert_url_to_markdown(config)
-
-        # Create expected config
-        expected_config = WebdownConfig(
-            url="https://example.com",
-            include_links=True,
-            include_images=True,
-            include_toc=False,
-            css_selector=None,
-            compact_output=False,
-            body_width=80,
-            show_progress=False,
-        )
+        result = convert_url(config)
 
         # Verify html_to_markdown was called with config object as positional arg
         args, kwargs = mock_html_to_markdown.call_args
         assert args[0] == "<html><body>Test</body></html>"  # First arg is HTML
         assert len(args) >= 2  # Should have at least 2 args
-        assert args[1].url == expected_config.url
-        assert args[1].include_links == expected_config.include_links
-        assert args[1].include_images == expected_config.include_images
-        assert args[1].include_toc == expected_config.include_toc
-        assert args[1].css_selector == expected_config.css_selector
-        assert args[1].compact_output == expected_config.compact_output
-        assert args[1].body_width == expected_config.body_width
+        assert args[1].url == config.url
+        assert args[1].document_options.body_width == 80
 
         # Verify result is returned from html_to_markdown
         assert result == "# Test\n\nContent"
@@ -443,16 +405,21 @@ class TestConvertUrlToMarkdown:
         mock_fetch_url.return_value = "<html><body>Test</body></html>"
         mock_html_to_markdown.return_value = "# Test\n\nContent"
 
+        # Create document options
+        doc_options = DocumentOptions(
+            include_toc=True,
+            body_width=72,
+        )
+
         # Create config object with custom settings
         config = WebdownConfig(
             url="https://example.com",
-            include_toc=True,
             include_images=False,
-            body_width=72,
             show_progress=True,
+            document_options=doc_options,
         )
 
-        result = convert_url_to_markdown(config)
+        result = convert_url(config)
 
         # Verify fetch_url was called with show_progress=True from config
         mock_fetch_url.assert_called_once_with(
@@ -496,14 +463,17 @@ class TestConvertUrlToMarkdown:
         # Mock html_to_markdown
         mock_html_to_markdown.return_value = "# Test\n\nContent"
 
+        # Create document options
+        doc_options = DocumentOptions(include_toc=True)
+
         # Create a config for automated streaming (>10MB)
         config = WebdownConfig(
             url="https://example.com",
-            include_toc=True,
+            document_options=doc_options,
         )
 
         # Call the function
-        result = convert_url_to_markdown(config)
+        result = convert_url(config)
 
         # Verify the result
         assert result == "# Test\n\nContent"
@@ -516,10 +486,13 @@ class TestConvertUrlToMarkdown:
 
     def test_config_missing_url(self) -> None:
         """Test that WebdownConfig without URL raises an error."""
+        # Create document options
+        doc_options = DocumentOptions(include_toc=True, body_width=80)
+
         # Create config without URL
-        config = WebdownConfig(include_toc=True, body_width=80)
+        config = WebdownConfig(document_options=doc_options)
 
         with pytest.raises(WebdownError) as exc_info:
-            convert_url_to_markdown(config)
+            convert_url(config)
 
         assert "URL must be provided" in str(exc_info.value)

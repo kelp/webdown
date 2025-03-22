@@ -15,8 +15,6 @@ import re
 import xml.sax.saxutils as saxutils
 from typing import List, Match, Optional
 
-from webdown.config import ClaudeXMLConfig
-
 
 def escape_xml(text: str) -> str:
     """Escape XML special characters.
@@ -59,15 +57,12 @@ def extract_markdown_title(markdown: str) -> Optional[str]:
     return None
 
 
-def generate_metadata_xml(
-    title: Optional[str], source_url: Optional[str], add_date: bool
-) -> List[str]:
+def generate_metadata_xml(title: Optional[str], source_url: Optional[str]) -> List[str]:
     """Generate XML metadata section.
 
     Args:
         title: Document title
         source_url: Source URL
-        add_date: Whether to include current date
 
     Returns:
         List of XML strings for metadata section
@@ -80,9 +75,10 @@ def generate_metadata_xml(
         metadata_items.append(
             indent_xml(f"<source>{escape_xml(source_url)}</source>", 1)
         )
-    if add_date:
-        today = datetime.datetime.now().strftime("%Y-%m-%d")
-        metadata_items.append(indent_xml(f"<date>{today}</date>", 1))
+
+    # Always include date
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    metadata_items.append(indent_xml(f"<date>{today}</date>", 1))
 
     if not metadata_items:
         return []
@@ -185,7 +181,7 @@ def process_section(match: Match[str], level: int) -> List[str]:
 def markdown_to_claude_xml(
     markdown: str,
     source_url: Optional[str] = None,
-    config: Optional[ClaudeXMLConfig] = None,
+    include_metadata: bool = True,
 ) -> str:
     """Convert Markdown content to Claude XML format.
 
@@ -197,25 +193,25 @@ def markdown_to_claude_xml(
     Args:
         markdown: Markdown content to convert
         source_url: Source URL for the content (for metadata)
-        config: Configuration options for XML output
+        include_metadata: Whether to include metadata section (title, source, date)
 
     Returns:
         Claude XML formatted content
     """
-    if config is None:
-        config = ClaudeXMLConfig()
-
     xml_parts = []
 
+    # Use a fixed document tag - simplifying configuration
+    doc_tag = "claude_documentation"
+
     # Root element
-    xml_parts.append(f"<{config.doc_tag}>")
+    xml_parts.append(f"<{doc_tag}>")
 
     # Extract title
     title = extract_markdown_title(markdown)
 
     # Add metadata if requested
-    if config.include_metadata:
-        xml_parts.extend(generate_metadata_xml(title, source_url, config.add_date))
+    if include_metadata:
+        xml_parts.extend(generate_metadata_xml(title, source_url))
 
     # Begin content section
     xml_parts.append(indent_xml("<content>", 1))
@@ -301,6 +297,6 @@ def markdown_to_claude_xml(
 
     # Close content and root
     xml_parts.append(indent_xml("</content>", 1))
-    xml_parts.append(f"</{config.doc_tag}>")
+    xml_parts.append(f"</{doc_tag}>")
 
     return "\n".join(xml_parts)

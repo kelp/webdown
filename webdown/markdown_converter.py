@@ -191,7 +191,7 @@ def _configure_html2text(config: WebdownConfig) -> html2text.HTML2Text:
     # Set core options
     h.ignore_links = not config.include_links
     h.ignore_images = not config.include_images
-    h.body_width = config.body_width  # User-defined line width
+    h.body_width = config.document_options.body_width  # User-defined line width
 
     # Always use Unicode mode for better character representation
     h.unicode_snob = True
@@ -215,7 +215,7 @@ def _validate_config(config: WebdownConfig) -> None:
         WebdownError: If any configuration values are invalid
     """
     # Validate body width
-    _validate_body_width(config.body_width)
+    _validate_body_width(config.document_options.body_width)
 
     # Validate CSS selector if provided
     if config.css_selector:
@@ -264,10 +264,10 @@ def html_to_markdown(
     markdown = converter.handle(html)
 
     # Clean up the markdown
-    markdown = clean_markdown(markdown, config.compact_output)
+    markdown = clean_markdown(markdown, config.document_options.compact_output)
 
     # Add table of contents if requested
-    if config.include_toc:
+    if config.document_options.include_toc:
         markdown = generate_table_of_contents(markdown)
 
     return str(markdown)

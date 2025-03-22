@@ -17,7 +17,7 @@ from webdown.cli import (
     parse_args,
     write_output,
 )
-from webdown.converter import WebdownError
+from webdown.config import WebdownError
 
 
 class TestCreateArgumentParser:
@@ -253,7 +253,7 @@ class TestAutoFixUrl:
 class TestConvertToSelectedFormat:
     """Tests for _convert_to_selected_format function."""
 
-    @patch("webdown.cli.convert_url_to_markdown")
+    @patch("webdown.cli.convert_url")
     @patch("webdown.cli.auto_fix_url")
     def test_markdown_conversion(
         self, mock_auto_fix: MagicMock, mock_convert: MagicMock
@@ -274,6 +274,7 @@ class TestConvertToSelectedFormat:
             width=80,
             progress=True,
             claude_xml=False,
+            metadata=True,
             output="output.md",
         )
 
@@ -287,23 +288,27 @@ class TestConvertToSelectedFormat:
         # Verify auto_fix_url was called
         mock_auto_fix.assert_called_once_with("example.com")
 
-        # Verify convert_url_to_markdown was called with correct config
+        # Verify convert_url was called with correct config
         mock_convert.assert_called_once()
         config = mock_convert.call_args[0][0]
         assert config.url == "https://example.com"
-        assert config.include_toc is True
         assert config.include_links is True
         assert config.include_images is True
         assert config.css_selector is None
-        assert config.compact_output is True
-        assert config.body_width == 80
         assert config.show_progress is True
+        assert config.document_options.include_toc is True
+        assert config.document_options.compact_output is True
+        assert config.document_options.body_width == 80
 
-    @patch("webdown.cli.convert_url_to_claude_xml")
-    def test_claude_xml_conversion(self, mock_convert_xml: MagicMock) -> None:
+    @patch("webdown.cli.convert_url")
+    @patch("webdown.cli.auto_fix_url")
+    def test_claude_xml_conversion(
+        self, mock_auto_fix: MagicMock, mock_convert: MagicMock
+    ) -> None:
         """Test the _convert_to_selected_format function for Claude XML conversion."""
         # Setup mocks
-        mock_convert_xml.return_value = (
+        mock_auto_fix.return_value = "https://example.com"
+        mock_convert.return_value = (
             "<claude_documentation>Content</claude_documentation>"
         )
 
@@ -319,7 +324,6 @@ class TestConvertToSelectedFormat:
             progress=False,
             claude_xml=True,
             metadata=True,
-            add_date=True,
             output=None,  # stdout
         )
 
@@ -330,20 +334,16 @@ class TestConvertToSelectedFormat:
         assert content == "<claude_documentation>Content</claude_documentation>"
         assert output_path is None
 
-        # Verify convert_url_to_claude_xml was called
-        mock_convert_xml.assert_called_once()
+        # Verify convert_url was called
+        mock_convert.assert_called_once()
 
-        # Check configs
-        webdown_config = mock_convert_xml.call_args[0][0]
-        claude_config = mock_convert_xml.call_args[0][1]
-
-        assert webdown_config.url == "https://example.com"
-        assert webdown_config.include_links is False
-        assert webdown_config.include_images is False
-        assert webdown_config.css_selector == "main"
-
-        assert claude_config.include_metadata is True
-        assert claude_config.add_date is True
+        # Check config
+        config = mock_convert.call_args[0][0]
+        assert config.url == "https://example.com"
+        assert config.include_links is False
+        assert config.include_images is False
+        assert config.css_selector == "main"
+        assert config.document_options.include_metadata is True
 
 
 class TestWriteOutput:
