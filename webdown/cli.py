@@ -105,6 +105,7 @@ The entry point is the `main()` function, which is called when the command
 import argparse
 import sys
 from typing import List, Optional
+from urllib.parse import urlparse
 
 from webdown import __version__
 from webdown.converter import (
@@ -341,6 +342,40 @@ def _write_output(output: str, output_path: Optional[str]) -> None:
         sys.stdout.write(output)
 
 
+def _auto_fix_url(url: str) -> str:
+    """Attempt to fix common URL format issues.
+
+    This function tries to be user-friendly by fixing common URL mistakes,
+    particularly missing the protocol prefix.
+
+    Args:
+        url: URL string that might need fixing
+
+    Returns:
+        Fixed URL if possible, original URL otherwise
+    """
+    if not url:
+        return url
+
+    parsed = urlparse(url)
+
+    # Already has a scheme (http://, https://, etc.)
+    if parsed.scheme:
+        return url
+
+    # Looks like a domain without protocol
+    if "." in url and " " not in url and not parsed.netloc:
+        fixed_url = f"https://{url}"
+        # Verify it parses correctly after adding https://
+        if urlparse(fixed_url).netloc:
+            sys.stderr.write(
+                f"Note: Added https:// prefix to URL: {url} → {fixed_url}\n"
+            )
+            return fixed_url
+
+    return url
+
+
 def _handle_error(e: Exception) -> int:
     """Handle exceptions and write appropriate error messages.
 
@@ -351,7 +386,13 @@ def _handle_error(e: Exception) -> int:
         Exit code (always 1 for errors)
     """
     if isinstance(e, WebdownError):
-        sys.stderr.write(f"Web conversion error: {str(e)}\n")
+        # Special handling for URL format errors
+        if "Invalid URL format" in str(e):
+            url = str(e).split("Invalid URL format: ")[1].strip()
+            sys.stderr.write(f'Error: "{url}" is not a valid URL\n')
+            sys.stderr.write(f"Please include the protocol (e.g., https://{url})\n")
+        else:
+            sys.stderr.write(f"Web conversion error: {str(e)}\n")
     elif isinstance(e, IOError):
         sys.stderr.write(f"File I/O error: {str(e)}\n")
     elif isinstance(e, ValueError):
@@ -395,6 +436,9 @@ def main(args: Optional[List[str]] = None) -> int:
             # This will print help and exit
             parse_args(["-h"])  # pragma: no cover
             return 0  # pragma: no cover - unreachable after SystemExit
+
+        # Auto-fix URL format if needed (e.g., add missing https://)
+        parsed_args.url = _auto_fix_url(parsed_args.url)
 
         # Process the URL with proper configuration
         config = _create_webdown_config(parsed_args)
