@@ -366,8 +366,9 @@ def _auto_fix_url(url: str) -> str:
         fixed_url = f"https://{url}"
         # Verify it parses correctly after adding https://
         if urlparse(fixed_url).netloc:
-            # Print notification without trailing newline
-            sys.stderr.write(f"Note: Added https:// prefix to URL: {url} → {fixed_url}")
+            # Print notification with trailing newline
+            message = f"Note: Added https:// prefix to URL: {url} → {fixed_url}"
+            sys.stderr.write(f"{message}\n")
             return fixed_url
 
     return url
