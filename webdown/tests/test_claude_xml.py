@@ -115,14 +115,13 @@ class TestMarkdownToClaudeXML:
         assert "<custom_doc>" in xml
         assert "</custom_doc>" in xml
 
-    def test_no_beautify(self) -> None:
-        """Test output without beautification."""
+    def test_indented_output(self) -> None:
+        """Test output has proper indentation."""
         markdown = "# Test Document\n\nThis is a paragraph."
-        config = ClaudeXMLConfig(beautify=False)
-        xml = markdown_to_claude_xml(markdown, config=config)
+        xml = markdown_to_claude_xml(markdown)
 
-        # Without beautification, there should be minimal whitespace
-        assert "  <" not in xml  # No indentation
+        # With beautification, there should be indentation
+        assert "  <" in xml  # Check for indentation
 
 
 class TestConvertUrlToClaudeXML:

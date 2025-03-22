@@ -23,13 +23,11 @@ class ClaudeXMLConfig:
         include_metadata (bool): Include metadata section with title, source URL, date
         add_date (bool): Include current date in the metadata section
         doc_tag (str): Root document tag name
-        beautify (bool): Add indentation and newlines for human readability
     """
 
     include_metadata: bool = True
     add_date: bool = True
     doc_tag: str = "claude_documentation"
-    beautify: bool = True
 
 
 @dataclass

@@ -78,7 +78,8 @@ When making changes, choose the appropriate version increment based on the impac
 - Pre-commit hooks will enforce code quality standards
 
 ### Function Design Guidelines
-- Keep functions under 30 lines for improved readability (50 absolute max)
+- Keep functions under 30 lines of executable code for improved readability (50 absolute max)
+  - Comments and docstrings don't count toward line limits
 - Limit parameters to 5 or fewer; use configuration objects for complex parameter sets
 - Use underscore prefix for internal helper functions (e.g., `_validate_input`)
 - Follow Single Responsibility Principle - each function should do one thing well

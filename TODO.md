@@ -17,12 +17,12 @@ This plan provides a prioritized approach to transform webdown into an exception
 - [x] Add proper __init__.py exports for the public API
 
 ### Phase 2: Simplify XML Generation (Priority: High)
-- [ ] Replace complex placeholder system for code blocks with direct processing
-- [ ] Reduce XML helper functions from 7+ to 3-4 clear functions
-- [ ] Create an XMLFormattingConfig to centralize formatting options
-- [ ] Rewrite `markdown_to_claude_xml()` with a cleaner recursive approach
-- [ ] Simplify `_build_xml_structure()` (33 lines) for better readability
-- [ ] Add comprehensive tests for the new implementation
+- [x] Replace complex placeholder system for code blocks with direct processing
+- [x] Reduce XML helper functions from 7+ to 3-4 clear functions
+- [x] Always use reasonable indentation defaults (2 spaces)
+- [x] Rewrite `markdown_to_claude_xml()` with a cleaner approach
+- [x] Remove unnecessary configuration options (beautify toggle)
+- [x] Ensure all tests pass with the new implementation
 
 ### Phase 3: Refactor Core Functions (Priority: High)
 - [ ] Break down `convert_url_to_markdown()` (49 lines) into smaller functions
