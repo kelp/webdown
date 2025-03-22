@@ -9,8 +9,48 @@ import pytest
 
 # Used in test_main_module through fixture import
 import webdown.cli  # noqa: F401
-from webdown.cli import main, parse_args
+from webdown.cli import (
+    auto_fix_url,
+    create_argument_parser,
+    main,
+    parse_args,
+    process_url,
+    write_output,
+)
 from webdown.converter import WebdownError
+
+
+class TestCreateArgumentParser:
+    """Tests for create_argument_parser function."""
+
+    def test_parser_configuration(self) -> None:
+        """Test the configuration of the argument parser."""
+        parser = create_argument_parser()
+
+        # Test basic structure
+        assert parser.description is not None
+        assert parser.epilog is not None
+
+        # Check argument groups
+        arg_groups = [
+            group.title for group in parser._action_groups[2:]
+        ]  # Skip positional and optional
+        assert "Input/Output Options" in arg_groups
+        assert "Content Selection" in arg_groups
+        assert "Formatting Options" in arg_groups
+        assert "Output Format Options" in arg_groups
+        assert "Meta Options" in arg_groups
+
+        # Verify key arguments exist
+        args = parser.parse_args(["https://example.com"])
+        assert hasattr(args, "url")
+        assert hasattr(args, "output")
+        assert hasattr(args, "progress")
+        assert hasattr(args, "css")
+        assert hasattr(args, "toc")
+        assert hasattr(args, "compact")
+        assert hasattr(args, "width")
+        assert hasattr(args, "claude_xml")
 
 
 class TestParseArgs:
@@ -179,39 +219,201 @@ class TestParseArgs:
             parser.parse_args(["--version"])
 
 
-class TestMain:
-    """Tests for main function."""
+class TestAutoFixUrl:
+    """Tests for auto_fix_url function."""
+
+    def test_already_has_scheme(self) -> None:
+        """Test that URLs with scheme are left unchanged."""
+        # Test with http:// scheme
+        url = "http://example.com"
+        assert auto_fix_url(url) == url
+
+        # Test with https:// scheme
+        url = "https://example.com"
+        assert auto_fix_url(url) == url
+
+        # Test with other scheme
+        url = "ftp://example.com"
+        assert auto_fix_url(url) == url
+
+    def test_missing_scheme(self) -> None:
+        """Test that domain-like URLs without scheme get https:// added."""
+        with patch("sys.stderr", new=io.StringIO()) as fake_stderr:
+            fixed_url = auto_fix_url("example.com")
+            assert fixed_url == "https://example.com"
+            assert "Added https://" in fake_stderr.getvalue()
+
+    def test_not_a_url(self) -> None:
+        """Test that strings that don't look like URLs are left unchanged."""
+        assert auto_fix_url("not a url") == "not a url"
+        assert auto_fix_url("") == ""
+        assert auto_fix_url(None) is None  # type: ignore
+
+
+class TestProcessUrl:
+    """Tests for process_url function."""
 
     @patch("webdown.cli.convert_url_to_markdown")
-    def test_convert_to_stdout(self, mock_convert: MagicMock) -> None:
-        """Test converting URL to stdout."""
+    @patch("webdown.cli.auto_fix_url")
+    def test_markdown_conversion(
+        self, mock_auto_fix: MagicMock, mock_convert: MagicMock
+    ) -> None:
+        """Test the process_url function for Markdown conversion."""
+        # Setup mocks
+        mock_auto_fix.return_value = "https://example.com"
         mock_convert.return_value = "# Markdown Content"
 
-        # Redirect stdout for testing
-        stdout_backup = sys.stdout
-        try:
-            out = io.StringIO()
-            sys.stdout = out
-            exit_code = main(["https://example.com"])
-            assert exit_code == 0
-            assert out.getvalue() == "# Markdown Content\n"
-        finally:
-            sys.stdout = stdout_backup
+        # Create args
+        args = argparse.Namespace(
+            url="example.com",
+            toc=True,
+            no_links=False,
+            no_images=False,
+            css=None,
+            compact=True,
+            width=80,
+            progress=True,
+            claude_xml=False,
+            output="output.md",
+        )
 
-        # Verify convert_url_to_markdown was called with a WebdownConfig
-        # We only check that it was called once
-        assert mock_convert.call_count == 1
-        # Get the first argument (should be a WebdownConfig object)
+        # Call function
+        content, output_path = process_url(args)
+
+        # Verify results
+        assert content == "# Markdown Content"
+        assert output_path == "output.md"
+
+        # Verify auto_fix_url was called
+        mock_auto_fix.assert_called_once_with("example.com")
+
+        # Verify convert_url_to_markdown was called with correct config
+        mock_convert.assert_called_once()
         config = mock_convert.call_args[0][0]
-        # Verify the config has the expected values
         assert config.url == "https://example.com"
-        assert config.include_toc is False
+        assert config.include_toc is True
         assert config.include_links is True
         assert config.include_images is True
         assert config.css_selector is None
-        assert config.compact_output is False
-        assert config.body_width == 0
-        assert config.show_progress is False
+        assert config.compact_output is True
+        assert config.body_width == 80
+        assert config.show_progress is True
+
+    @patch("webdown.cli.convert_url_to_claude_xml")
+    def test_claude_xml_conversion(self, mock_convert_xml: MagicMock) -> None:
+        """Test the process_url function for Claude XML conversion."""
+        # Setup mocks
+        mock_convert_xml.return_value = (
+            "<claude_documentation>Content</claude_documentation>"
+        )
+
+        # Create args
+        args = argparse.Namespace(
+            url="https://example.com",  # Already has scheme
+            toc=False,
+            no_links=True,
+            no_images=True,
+            css="main",
+            compact=False,
+            width=0,
+            progress=False,
+            claude_xml=True,
+            metadata=True,
+            add_date=True,
+            output=None,  # stdout
+        )
+
+        # Call function
+        content, output_path = process_url(args)
+
+        # Verify results
+        assert content == "<claude_documentation>Content</claude_documentation>"
+        assert output_path is None
+
+        # Verify convert_url_to_claude_xml was called
+        mock_convert_xml.assert_called_once()
+
+        # Check configs
+        webdown_config = mock_convert_xml.call_args[0][0]
+        claude_config = mock_convert_xml.call_args[0][1]
+
+        assert webdown_config.url == "https://example.com"
+        assert webdown_config.include_links is False
+        assert webdown_config.include_images is False
+        assert webdown_config.css_selector == "main"
+
+        assert claude_config.include_metadata is True
+        assert claude_config.add_date is True
+
+
+class TestWriteOutput:
+    """Tests for write_output function."""
+
+    def test_write_to_stdout(self) -> None:
+        """Test writing output to stdout."""
+        content = "Test content"
+
+        # Capture stdout
+        with patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            write_output(content, None)
+            assert fake_stdout.getvalue() == "Test content\n"
+
+    def test_write_to_file(self) -> None:
+        """Test writing output to a file."""
+        content = "Test content"
+
+        # Mock file operations
+        with patch("builtins.open", new_callable=MagicMock) as mock_open:
+            mock_file = MagicMock()
+            mock_open.return_value.__enter__.return_value = mock_file
+
+            write_output(content, "output.md")
+
+            # Verify file was opened correctly
+            mock_open.assert_called_once_with("output.md", "w", encoding="utf-8")
+            mock_file.write.assert_called_once_with("Test content\n")
+
+    def test_trailing_newline_handling(self) -> None:
+        """Test handling of trailing newlines."""
+        # Without trailing newline
+        with patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            write_output("Content", None)
+            assert fake_stdout.getvalue() == "Content\n"
+
+        # With one trailing newline
+        with patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            write_output("Content\n", None)
+            assert fake_stdout.getvalue() == "Content\n"
+
+        # With multiple trailing newlines
+        with patch("sys.stdout", new=io.StringIO()) as fake_stdout:
+            write_output("Content\n\n\n", None)
+            assert fake_stdout.getvalue() == "Content\n"
+
+
+class TestMain:
+    """Tests for main function."""
+
+    @patch("webdown.cli.process_url")
+    @patch("webdown.cli.write_output")
+    def test_convert_to_stdout(
+        self, mock_write: MagicMock, mock_process: MagicMock
+    ) -> None:
+        """Test converting URL to stdout."""
+        # Setup mocks
+        mock_process.return_value = ("# Markdown Content", None)
+
+        # Call main function
+        exit_code = main(["https://example.com"])
+        assert exit_code == 0
+
+        # Verify process_url was called with parsed args containing our URL
+        assert mock_process.call_count == 1
+        args = mock_process.call_args[0][0]
+        assert args.url == "https://example.com"
+
+        # Verify write_output was called with correct content and None for stdout
+        mock_write.assert_called_once_with("# Markdown Content", None)
 
     @patch("webdown.cli.parse_args")
     def test_main_with_no_args(self, mock_parse_args: MagicMock) -> None:
@@ -239,94 +441,99 @@ class TestMain:
         assert mock_parse_args.call_args_list[0][0][0] == []
         assert mock_parse_args.call_args_list[1][0][0] == ["-h"]
 
-    @patch("webdown.cli.convert_url_to_markdown")
-    @patch("builtins.open", new_callable=MagicMock)
+    @patch("webdown.cli.process_url")
+    @patch("webdown.cli.write_output")
     def test_convert_to_file(
-        self, mock_open: MagicMock, mock_convert: MagicMock
+        self, mock_write: MagicMock, mock_process: MagicMock
     ) -> None:
         """Test converting URL to file."""
-        mock_convert.return_value = "# Markdown Content"
-        mock_file = MagicMock()
-        mock_open.return_value.__enter__.return_value = mock_file
+        # Setup mocks
+        mock_process.return_value = ("# Markdown Content", "output.md")
 
+        # Call main function
         exit_code = main(["https://example.com", "-o", "output.md"])
         assert exit_code == 0
 
-        # Verify file was opened and written to
-        mock_open.assert_called_once_with("output.md", "w", encoding="utf-8")
-        mock_file.write.assert_called_once_with("# Markdown Content\n")
+        # Verify process_url was called with parsed args containing our URL and output
+        assert mock_process.call_count == 1
+        args = mock_process.call_args[0][0]
+        assert args.url == "https://example.com"
+        assert args.output == "output.md"
 
-    @patch("webdown.cli.convert_url_to_claude_xml")
-    def test_claude_xml_conversion(self, mock_convert_to_xml: MagicMock) -> None:
+        # Verify write_output was called with correct content and output path
+        mock_write.assert_called_once_with("# Markdown Content", "output.md")
+
+    @patch("webdown.cli.process_url")
+    @patch("webdown.cli.write_output")
+    def test_claude_xml_conversion(
+        self, mock_write: MagicMock, mock_process: MagicMock
+    ) -> None:
         """Test converting to Claude XML."""
-        mock_convert_to_xml.return_value = (
-            "<claude_documentation>content</claude_documentation>"
+        # Setup mocks
+        mock_process.return_value = (
+            "<claude_documentation>content</claude_documentation>",
+            None,
         )
 
-        # Test with stdout
-        with patch("sys.stdout", new=io.StringIO()) as fake_out:
-            exit_code = main(["https://example.com", "--claude-xml"])
-            assert exit_code == 0
-            assert (
-                fake_out.getvalue()
-                == "<claude_documentation>content</claude_documentation>\n"
-            )
+        # Call main function
+        exit_code = main(["https://example.com", "--claude-xml"])
+        assert exit_code == 0
+
+        # Verify process_url was called with correct arguments
+        assert mock_process.call_count == 1
+        args = mock_process.call_args[0][0]
+        assert args.url == "https://example.com"
+        assert args.claude_xml is True
+
+        # Verify write_output was called with correct content
+        mock_write.assert_called_once_with(
+            "<claude_documentation>content</claude_documentation>", None
+        )
+
+        # Reset mocks
+        mock_process.reset_mock()
+        mock_write.reset_mock()
 
         # Test with file output
-        with patch("builtins.open", new_callable=MagicMock) as mock_open:
-            mock_file = MagicMock()
-            mock_open.return_value.__enter__.return_value = mock_file
+        mock_process.return_value = (
+            "<claude_documentation>content</claude_documentation>",
+            "output.xml",
+        )
 
-            exit_code = main(
-                ["https://example.com", "--claude-xml", "-o", "output.xml"]
-            )
-            assert exit_code == 0
+        exit_code = main(["https://example.com", "--claude-xml", "-o", "output.xml"])
+        assert exit_code == 0
 
-            # Verify file was opened and written to
-            mock_open.assert_called_once_with("output.xml", "w", encoding="utf-8")
-            mock_file.write.assert_called_once_with(
-                "<claude_documentation>content</claude_documentation>\n"
-            )
+        # Verify process_url was called with correct arguments
+        assert mock_process.call_count == 1
+        args = mock_process.call_args[0][0]
+        assert args.url == "https://example.com"
+        assert args.claude_xml is True
+        assert args.output == "output.xml"
 
-    @patch("webdown.cli.convert_url_to_markdown")
-    def test_error_handling(self, mock_convert: MagicMock) -> None:
+        # Verify write_output was called with correct content and output path
+        mock_write.assert_called_once_with(
+            "<claude_documentation>content</claude_documentation>", "output.xml"
+        )
+
+    def test_error_handling(self) -> None:
         """Test error handling."""
-        # Test URL format error
-        mock_convert.side_effect = WebdownError("Invalid URL: not_a_url")
+        # Test with different types of exceptions
+        exceptions = [
+            WebdownError("Invalid URL: not_a_url"),
+            WebdownError("Connection error"),
+            Exception("Unexpected error"),
+        ]
 
-        stderr_backup = sys.stderr
-        try:
-            err = io.StringIO()
-            sys.stderr = err
-            exit_code = main(["not_a_url"])
-            assert exit_code == 1
-            assert "Invalid URL: not_a_url" in err.getvalue()
-        finally:
-            sys.stderr = stderr_backup
+        # Create a mock for process_url that will raise the given exception
+        for exception in exceptions:
+            with patch("webdown.cli.process_url") as mock_process:
+                mock_process.side_effect = exception
 
-        # Test network error
-        mock_convert.side_effect = WebdownError("Connection error")
-
-        try:
-            err = io.StringIO()
-            sys.stderr = err
-            exit_code = main(["https://example.com"])
-            assert exit_code == 1
-            assert "Connection error" in err.getvalue()
-        finally:
-            sys.stderr = stderr_backup
-
-        # Test generic exception
-        mock_convert.side_effect = Exception("Unexpected error")
-
-        try:
-            err = io.StringIO()
-            sys.stderr = err
-            exit_code = main(["https://example.com"])
-            assert exit_code == 1
-            assert "Unexpected error" in err.getvalue()
-        finally:
-            sys.stderr = stderr_backup
+                # Capture stderr
+                with patch("sys.stderr", new=io.StringIO()) as fake_stderr:
+                    exit_code = main(["https://example.com"])
+                    assert exit_code == 1
+                    assert str(exception) in fake_stderr.getvalue()
 
     @patch("sys.exit")
     def test_main_module(self, mock_exit: MagicMock) -> None:

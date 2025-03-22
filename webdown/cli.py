@@ -104,97 +104,92 @@ The entry point is the `main()` function, which is called when the command
 
 import argparse
 import sys
-from typing import List, Optional
+from typing import List, Optional, Tuple
 from urllib.parse import urlparse
 
 from webdown import __version__
 from webdown.config import ClaudeXMLConfig, WebdownConfig
 from webdown.converter import convert_url_to_claude_xml, convert_url_to_markdown
+from webdown.error_utils import format_error_for_cli
 
-# No requests import needed in CLI module
 
+def create_argument_parser() -> argparse.ArgumentParser:
+    """Create and configure the argument parser for webdown CLI.
 
-def _add_basic_arguments(parser: argparse.ArgumentParser) -> None:
-    """Add basic URL argument to the parser.
+    Consolidates all argument configuration in one place for better maintainability.
 
-    Args:
-        parser: ArgumentParser to add arguments to
+    Returns:
+        Configured ArgumentParser ready to parse webdown CLI arguments
     """
+    parser = argparse.ArgumentParser(
+        description="Convert web pages to clean, readable Markdown format.",
+        epilog="For more information: https://github.com/kelp/webdown",
+    )
+
+    # Basic arguments
     parser.add_argument(
         "url",
         help="URL of the web page to convert (e.g., https://example.com)",
         nargs="?",
     )
 
+    # Organize arguments in logical groups
+    groups = {
+        "io": parser.add_argument_group("Input/Output Options"),
+        "content": parser.add_argument_group("Content Selection"),
+        "format": parser.add_argument_group("Formatting Options"),
+        "output_format": parser.add_argument_group("Output Format Options"),
+        "meta": parser.add_argument_group("Meta Options"),
+    }
 
-def _add_io_arguments(parser: argparse.ArgumentParser) -> None:
-    """Add input/output related arguments to the parser.
-
-    Args:
-        parser: ArgumentParser to add arguments to
-    """
-    io_group = parser.add_argument_group("Input/Output Options")
-    io_group.add_argument(
+    # Input/Output options
+    groups["io"].add_argument(
         "-o",
         "--output",
         metavar="FILE",
         help="Write Markdown output to FILE instead of stdout",
     )
-    io_group.add_argument(
+    groups["io"].add_argument(
         "-p",
         "--progress",
         action="store_true",
         help="Display a progress bar during download (useful for large pages)",
     )
 
-
-def _add_content_arguments(parser: argparse.ArgumentParser) -> None:
-    """Add content selection arguments to the parser.
-
-    Args:
-        parser: ArgumentParser to add arguments to
-    """
-    content_group = parser.add_argument_group("Content Selection")
-    content_group.add_argument(
+    # Content selection options
+    groups["content"].add_argument(
         "-s",
         "--css",
         metavar="SELECTOR",
         help="Extract content matching CSS selector (e.g., 'main', '.content')",
     )
-    content_group.add_argument(
+    groups["content"].add_argument(
         "-L",
         "--no-links",
         action="store_true",
         help="Convert hyperlinks to plain text (remove all link markup)",
     )
-    content_group.add_argument(
+    groups["content"].add_argument(
         "-I",
         "--no-images",
         action="store_true",
         help="Exclude images from the output completely",
     )
 
-
-def _add_formatting_arguments(parser: argparse.ArgumentParser) -> None:
-    """Add text formatting arguments to the parser.
-
-    Args:
-        parser: ArgumentParser to add arguments to
-    """
-    format_group = parser.add_argument_group("Formatting Options")
-    format_group.add_argument(
+    # Formatting options
+    groups["format"].add_argument(
         "-t",
         "--toc",
         action="store_true",
         help="Generate a table of contents based on headings in the document",
     )
-    format_group.add_argument(
+    groups["format"].add_argument(
         "-c",
         "--compact",
         action="store_true",
         help="Remove excessive blank lines for more compact output",
     )
-    format_group.add_argument(
+    groups["format"].add_argument(
         "-w",
         "--width",
         type=int,
@@ -203,32 +198,25 @@ def _add_formatting_arguments(parser: argparse.ArgumentParser) -> None:
         help="Set line width (0 disables wrapping, 80 recommended for readability)",
     )
 
-
-def _add_claude_xml_arguments(parser: argparse.ArgumentParser) -> None:
-    """Add Claude XML format arguments to the parser.
-
-    Args:
-        parser: ArgumentParser to add arguments to
-    """
-    format_group = parser.add_argument_group("Output Format Options")
-    format_group.add_argument(
+    # Output format options (Claude XML)
+    groups["output_format"].add_argument(
         "--claude-xml",
         action="store_true",
         help="Output in Claude XML format optimized for Claude AI models",
     )
-    format_group.add_argument(
+    groups["output_format"].add_argument(
         "--metadata",
         action="store_true",
         default=True,
         help="Include metadata in Claude XML output (default: True)",
     )
-    format_group.add_argument(
+    groups["output_format"].add_argument(
         "--no-metadata",
         action="store_false",
         dest="metadata",
         help="Exclude metadata from Claude XML output",
     )
-    format_group.add_argument(
+    groups["output_format"].add_argument(
         "--no-date",
         action="store_false",
         dest="add_date",
@@ -236,21 +224,16 @@ def _add_claude_xml_arguments(parser: argparse.ArgumentParser) -> None:
         help="Don't include current date in Claude XML metadata",
     )
 
-
-def _add_meta_arguments(parser: argparse.ArgumentParser) -> None:
-    """Add meta options to the parser.
-
-    Args:
-        parser: ArgumentParser to add arguments to
-    """
-    meta_group = parser.add_argument_group("Meta Options")
-    meta_group.add_argument(
+    # Meta options
+    groups["meta"].add_argument(
         "-V",
         "--version",
         action="version",
         version=f"%(prog)s {__version__}",
         help="Show version information and exit",
     )
+
+    return parser
 
 
 def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
@@ -262,76 +245,64 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
     Returns:
         Parsed arguments
     """
-    parser = argparse.ArgumentParser(
-        description="Convert web pages to clean, readable Markdown format.",
-        epilog="For more information: https://github.com/kelp/webdown",
-    )
-
-    # Add all argument groups
-    _add_basic_arguments(parser)
-    _add_io_arguments(parser)
-    _add_content_arguments(parser)
-    _add_formatting_arguments(parser)
-    _add_claude_xml_arguments(parser)
-    _add_meta_arguments(parser)
-
+    parser = create_argument_parser()
     return parser.parse_args(args)
 
 
-def _create_webdown_config(args: argparse.Namespace) -> WebdownConfig:
-    """Create a WebdownConfig object from command-line arguments.
+def process_url(parsed_args: argparse.Namespace) -> Tuple[str, Optional[str]]:
+    """Process URL and create output based on command-line arguments.
+
+    This function handles:
+    1. Auto-fixing the URL
+    2. Creating the WebdownConfig
+    3. Converting the URL to the selected output format
 
     Args:
-        args: Parsed command-line arguments
+        parsed_args: Parsed command-line arguments
 
     Returns:
-        Configured WebdownConfig object
+        A tuple containing (content, output_path)
     """
-    return WebdownConfig(
-        url=args.url,
-        include_toc=args.toc,
-        include_links=not args.no_links,
-        include_images=not args.no_images,
-        css_selector=args.css,
-        compact_output=args.compact,
-        body_width=args.width,
-        show_progress=args.progress,
+    # Auto-fix URL format if needed
+    url = parsed_args.url
+    if url:
+        url = auto_fix_url(url)
+        parsed_args.url = url
+
+    # Create configuration
+    config = WebdownConfig(
+        url=url,
+        include_toc=parsed_args.toc,
+        include_links=not parsed_args.no_links,
+        include_images=not parsed_args.no_images,
+        css_selector=parsed_args.css,
+        compact_output=parsed_args.compact,
+        body_width=parsed_args.width,
+        show_progress=parsed_args.progress,
     )
 
-
-def _convert_content(args: argparse.Namespace, config: WebdownConfig) -> str:
-    """Convert URL to selected output format based on arguments.
-
-    Args:
-        args: Parsed command-line arguments
-        config: WebdownConfig object
-
-    Returns:
-        Converted content as string
-    """
-    if args.claude_xml:
-        # Create Claude XML config from CLI arguments
+    # Convert content based on selected format
+    if parsed_args.claude_xml:
         claude_config = ClaudeXMLConfig(
-            include_metadata=args.metadata,
-            add_date=args.add_date,
+            include_metadata=parsed_args.metadata,
+            add_date=parsed_args.add_date,
         )
-
-        # Convert to Claude XML format
-        return convert_url_to_claude_xml(config, claude_config)
+        content = convert_url_to_claude_xml(config, claude_config)
     else:
-        # Use standard markdown conversion
-        return convert_url_to_markdown(config)
+        content = convert_url_to_markdown(config)
+
+    return content, parsed_args.output
 
 
-def _write_output(output: str, output_path: Optional[str]) -> None:
-    """Write output to file or stdout.
+def write_output(content: str, output_path: Optional[str]) -> None:
+    """Write content to file or stdout with consistent newline handling.
 
     Args:
-        output: Content to write
+        content: Content to write
         output_path: Path to output file or None for stdout
     """
     # Ensure exactly one trailing newline for consistent output
-    output_content = output.rstrip("\n") + "\n"
+    output_content = content.rstrip("\n") + "\n"
 
     if output_path:
         with open(output_path, "w", encoding="utf-8") as f:
@@ -340,17 +311,14 @@ def _write_output(output: str, output_path: Optional[str]) -> None:
         sys.stdout.write(output_content)
 
 
-def _auto_fix_url(url: str) -> str:
-    """Attempt to fix common URL format issues.
-
-    This function tries to be user-friendly by fixing common URL mistakes,
-    particularly missing the protocol prefix.
+def auto_fix_url(url: str) -> str:
+    """Add 'https://' prefix to URLs that are missing a scheme.
 
     Args:
         url: URL string that might need fixing
 
     Returns:
-        Fixed URL if possible, original URL otherwise
+        Fixed URL with 'https://' added if needed, original URL otherwise
     """
     if not url:
         return url
@@ -372,24 +340,6 @@ def _auto_fix_url(url: str) -> str:
             return fixed_url
 
     return url
-
-
-def _handle_error(e: Exception) -> int:
-    """Handle exceptions and write appropriate error messages.
-
-    Args:
-        e: Exception that was raised
-
-    Returns:
-        Exit code (always 1 for errors)
-    """
-    from webdown.error_utils import format_error_for_cli
-
-    # Use the centralized error formatting function
-    formatted_error = format_error_for_cli(e)
-    sys.stderr.write(f"{formatted_error}\n")
-
-    return 1
 
 
 def main(args: Optional[List[str]] = None) -> int:
@@ -418,6 +368,7 @@ def main(args: Optional[List[str]] = None) -> int:
         1
     """
     try:
+        # Parse command-line arguments
         parsed_args = parse_args(args)
 
         # If no URL provided, show help
@@ -426,18 +377,19 @@ def main(args: Optional[List[str]] = None) -> int:
             parse_args(["-h"])  # pragma: no cover
             return 0  # pragma: no cover - unreachable after SystemExit
 
-        # Auto-fix URL format if needed (e.g., add missing https://)
-        parsed_args.url = _auto_fix_url(parsed_args.url)
+        # Process URL and generate output content
+        content, output_path = process_url(parsed_args)
 
-        # Process the URL with proper configuration
-        config = _create_webdown_config(parsed_args)
-        output = _convert_content(parsed_args, config)
-        _write_output(output, parsed_args.output)
+        # Write output to file or stdout
+        write_output(content, output_path)
 
         return 0
 
     except Exception as e:
-        return _handle_error(e)
+        # Format and display error message
+        formatted_error = format_error_for_cli(e)
+        sys.stderr.write(f"{formatted_error}\n")
+        return 1
 
 
 if __name__ == "__main__":  # pragma: no cover - difficult to test main module block

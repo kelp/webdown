@@ -30,10 +30,10 @@ This plan provides a prioritized approach to transform webdown into an exception
 - [x] Create reusable error handling utilities
 
 ### Phase 4: Improve CLI Structure (Priority: Medium)
-- [ ] Consolidate argument parsing functions into a cleaner structure
-- [ ] Simplify parse_args() and related helper functions
-- [ ] Review CLI options for further simplification opportunities
-- [ ] Ensure tests cover all CLI options properly
+- [x] Consolidate argument parsing functions into a cleaner structure
+- [x] Simplify parse_args() and related helper functions
+- [x] Review CLI options for further simplification opportunities
+- [x] Ensure tests cover all CLI options properly
 
 ### Phase 5: Documentation Standardization (Priority: Medium)
 - [ ] Create a clear docstring template with consistent sections
