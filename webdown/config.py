@@ -63,13 +63,25 @@ class WebdownError(Exception):
     """Exception for webdown errors.
 
     This exception class is used for all errors raised by the webdown package.
-    The error type is indicated by a descriptive message and can be
-    distinguished by checking the message content.
+    The error type is indicated by a descriptive message and an error code,
+    allowing programmatic error handling.
 
     Error types include:
         URL format errors: When the URL doesn't follow standard format
         Network errors: Connection issues, timeouts, HTTP errors
         Parsing errors: Issues with processing the HTML content
+        Validation errors: Invalid parameters or configuration
+
+    Attributes:
+        code (str): Error code for programmatic error handling
     """
 
-    pass
+    def __init__(self, message: str, code: str = "UNEXPECTED_ERROR"):
+        """Initialize a WebdownError.
+
+        Args:
+            message: Error message
+            code: Error code for programmatic error handling
+        """
+        super().__init__(message)
+        self.code = code

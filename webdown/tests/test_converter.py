@@ -6,8 +6,10 @@ import pytest
 
 from webdown.config import WebdownConfig, WebdownError
 from webdown.converter import convert_url_to_markdown
-from webdown.html_parser import fetch_url, validate_url
+from webdown.error_utils import ErrorCode
+from webdown.html_parser import fetch_url
 from webdown.markdown_converter import html_to_markdown
+from webdown.validation import validate_url
 
 
 class TestValidateUrl:
@@ -15,18 +17,23 @@ class TestValidateUrl:
 
     def test_valid_url(self) -> None:
         """Test validation of valid URLs."""
-        assert validate_url("https://example.com") is True
-        assert validate_url("http://example.com") is True
-        assert validate_url("https://example.com/path") is True
-        assert validate_url("http://example.com/path?query=value") is True
+        # Validates without raising exception
+        assert validate_url("https://example.com") == "https://example.com"
+        assert validate_url("http://example.com") == "http://example.com"
+        assert validate_url("https://example.com/path") == "https://example.com/path"
+        assert (
+            validate_url("http://example.com/path?query=value")
+            == "http://example.com/path?query=value"
+        )
 
     def test_invalid_url(self) -> None:
         """Test validation of invalid URLs."""
-        assert validate_url("not_a_url") is False
-        assert validate_url("example.com") is False
-        assert (
-            validate_url("file:///path/to/file") is False
-        )  # File URLs should be rejected
+        with pytest.raises(ValueError):
+            validate_url("not_a_url")
+        with pytest.raises(ValueError):
+            validate_url("example.com")
+        with pytest.raises(ValueError):
+            validate_url("file:///path/to/file")  # File URLs should be rejected
 
 
 class TestFetchUrl:
@@ -36,7 +43,8 @@ class TestFetchUrl:
         """Test that invalid URLs raise WebdownError."""
         with pytest.raises(WebdownError) as exc_info:
             fetch_url("not_a_url")
-        assert "Invalid URL format" in str(exc_info.value)
+        assert "Invalid URL:" in str(exc_info.value)
+        assert exc_info.value.code == ErrorCode.URL_INVALID
 
     @patch("webdown.html_parser.requests.get")
     def test_request_exceptions_raise_webdown_error(self, mock_get: MagicMock) -> None:
@@ -47,7 +55,8 @@ class TestFetchUrl:
         mock_get.side_effect = requests.exceptions.Timeout
         with pytest.raises(WebdownError) as exc_info:
             fetch_url("https://example.com")
-        assert "timed out" in str(exc_info.value).lower()
+        assert "timeout error" in str(exc_info.value).lower()
+        assert exc_info.value.code == ErrorCode.NETWORK_TIMEOUT
 
         # Test connection error
         mock_get.side_effect = requests.exceptions.ConnectionError

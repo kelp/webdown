@@ -4,7 +4,10 @@ import pytest
 import requests
 import requests_mock
 
-from webdown.converter import WebdownError, fetch_url, validate_url
+from webdown.config import WebdownError
+from webdown.error_utils import ErrorCode
+from webdown.html_parser import fetch_url
+from webdown.validation import validate_url
 
 
 class TestErrorHandling:
@@ -13,21 +16,28 @@ class TestErrorHandling:
     def test_validate_url(self) -> None:
         """Test URL validation."""
         # Valid URLs
-        assert validate_url("https://example.com") is True
-        assert validate_url("http://example.com/page") is True
-        assert validate_url("https://subdomain.example.com/path?query=value") is True
+        assert validate_url("https://example.com") == "https://example.com"
+        assert validate_url("http://example.com/page") == "http://example.com/page"
+        assert (
+            validate_url("https://subdomain.example.com/path?query=value")
+            == "https://subdomain.example.com/path?query=value"
+        )
 
         # Invalid URLs
-        assert validate_url("not_a_url") is False
-        assert validate_url("example.com") is False  # No scheme
-        assert validate_url("https://") is False  # No host
+        with pytest.raises(ValueError):
+            validate_url("not_a_url")
+        with pytest.raises(ValueError):
+            validate_url("example.com")  # No scheme
+        with pytest.raises(ValueError):
+            validate_url("https://")  # No host
 
     def test_fetch_url_invalid_url(self) -> None:
         """Test fetch_url with invalid URL."""
         with pytest.raises(WebdownError) as excinfo:
             fetch_url("not_a_valid_url")
 
-        assert "Invalid URL format" in str(excinfo.value)
+        assert "Invalid URL:" in str(excinfo.value)
+        assert excinfo.value.code == ErrorCode.URL_INVALID
 
     def test_fetch_url_connection_timeout(self) -> None:
         """Test fetch_url with connection timeout."""
@@ -37,7 +47,8 @@ class TestErrorHandling:
             with pytest.raises(WebdownError) as excinfo:
                 fetch_url("https://example.com")
 
-            assert "Connection timed out" in str(excinfo.value)
+            assert "Timeout error" in str(excinfo.value)
+            assert excinfo.value.code == ErrorCode.NETWORK_TIMEOUT
 
     def test_fetch_url_connection_error(self) -> None:
         """Test fetch_url with connection error."""
@@ -48,6 +59,7 @@ class TestErrorHandling:
                 fetch_url("https://example.com")
 
             assert "Connection error" in str(excinfo.value)
+            assert excinfo.value.code == ErrorCode.NETWORK_CONNECTION
 
     def test_fetch_url_http_error(self) -> None:
         """Test fetch_url with HTTP error."""
@@ -57,7 +69,9 @@ class TestErrorHandling:
             with pytest.raises(WebdownError) as excinfo:
                 fetch_url("https://example.com")
 
-            assert "HTTP error 404" in str(excinfo.value)
+            assert "HTTP error fetching" in str(excinfo.value)
+            assert "Status code: 404" in str(excinfo.value)
+            assert excinfo.value.code == ErrorCode.HTTP_ERROR
 
     def test_fetch_url_request_exception(self) -> None:
         """Test fetch_url with generic request exception."""

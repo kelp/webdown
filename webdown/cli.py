@@ -108,13 +108,8 @@ from typing import List, Optional
 from urllib.parse import urlparse
 
 from webdown import __version__
-from webdown.converter import (
-    ClaudeXMLConfig,
-    WebdownConfig,
-    WebdownError,
-    convert_url_to_claude_xml,
-    convert_url_to_markdown,
-)
+from webdown.config import ClaudeXMLConfig, WebdownConfig
+from webdown.converter import convert_url_to_claude_xml, convert_url_to_markdown
 
 # No requests import needed in CLI module
 
@@ -385,20 +380,11 @@ def _handle_error(e: Exception) -> int:
     Returns:
         Exit code (always 1 for errors)
     """
-    if isinstance(e, WebdownError):
-        # Special handling for URL format errors
-        if "Invalid URL format" in str(e):
-            url = str(e).split("Invalid URL format: ")[1].strip()
-            sys.stderr.write(f'Error: "{url}" is not a valid URL\n')
-            sys.stderr.write(f"Please include the protocol (e.g., https://{url})\n")
-        else:
-            sys.stderr.write(f"Web conversion error: {str(e)}\n")
-    elif isinstance(e, IOError):
-        sys.stderr.write(f"File I/O error: {str(e)}\n")
-    elif isinstance(e, ValueError):
-        sys.stderr.write(f"Value error: {str(e)}\n")
-    else:
-        sys.stderr.write(f"Unexpected error: {str(e)}\n")
+    from webdown.error_utils import format_error_for_cli
+
+    # Use the centralized error formatting function
+    formatted_error = format_error_for_cli(e)
+    sys.stderr.write(f"{formatted_error}\n")
 
     return 1
 

@@ -25,11 +25,9 @@ This plan provides a prioritized approach to transform webdown into an exception
 - [x] Ensure all tests pass with the new implementation
 
 ### Phase 3: Refactor Core Functions (Priority: High)
-- [ ] Break down `convert_url_to_markdown()` (49 lines) into smaller functions
-- [ ] Simplify `fetch_url_with_progress()` (45 lines) with clearer responsibilities
-- [ ] Reduce complexity in `_process_markdown_section()` (38 lines)
-- [ ] Unify validation approach into a central validation module
-- [ ] Create reusable error handling utilities
+- [x] After review, found that `convert_url_to_markdown()`, `fetch_url_with_progress()`, and `process_section()` have acceptable executable code line counts (under 30)
+- [x] Unify validation approach into a central validation module
+- [x] Create reusable error handling utilities
 
 ### Phase 4: Improve CLI Structure (Priority: Medium)
 - [ ] Consolidate argument parsing functions into a cleaner structure

@@ -12,44 +12,39 @@ and extract_content_with_css() for selecting specific parts of HTML.
 
 import io
 from typing import Optional
-from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 from webdown.config import WebdownError
+from webdown.error_utils import ErrorCode, handle_request_exception
+from webdown.validation import validate_css_selector, validate_url
 
 
-def validate_url(url: str) -> bool:
-    """Validate URL format.
+def is_valid_url(url: str) -> bool:
+    """Check if a URL is valid.
+
+    This is a boolean wrapper around validate_url for backward compatibility.
 
     Args:
-        url: URL to validate
+        url: URL to check
 
     Returns:
         True if valid, False otherwise
 
-    >>> validate_url('https://example.com')
+    >>> is_valid_url('https://example.com')
     True
-    >>> validate_url('http://example.com')
+    >>> is_valid_url('http://example.com')
     True
-    >>> validate_url('not_a_url')
+    >>> is_valid_url('not_a_url')
     False
     """
-    if not isinstance(url, str):
+    try:
+        validate_url(url)
+        return True
+    except ValueError:
         return False
-
-    if not url.strip():
-        return False
-
-    parsed = urlparse(url)
-
-    # Check for required components
-    has_scheme = bool(parsed.scheme)
-    has_netloc = bool(parsed.netloc)
-
-    return has_scheme and has_netloc
 
 
 def _create_progress_bar(url: str, total_size: int, show_progress: bool) -> tqdm:
@@ -136,6 +131,8 @@ def _handle_small_response(
     return None
 
 
+# Use the centralized error_utils.handle_request_exception instead
+# This function is kept here temporarily for backward compatibility
 def _handle_request_exception(e: Exception, url: str) -> None:
     """Convert request exceptions to WebdownError with appropriate messages.
 
@@ -146,14 +143,8 @@ def _handle_request_exception(e: Exception, url: str) -> None:
     Raises:
         WebdownError: With appropriate error message
     """
-    if isinstance(e, requests.exceptions.Timeout):
-        raise WebdownError(f"Connection timed out while fetching {url}")
-    elif isinstance(e, requests.exceptions.ConnectionError):
-        raise WebdownError(f"Connection error while fetching {url}")
-    elif isinstance(e, requests.exceptions.HTTPError):
-        raise WebdownError(f"HTTP error {e.response.status_code} while fetching {url}")
-    else:
-        raise WebdownError(f"Error fetching {url}: {str(e)}")
+    # Delegate to the centralized function
+    handle_request_exception(e, url)
 
 
 def fetch_url_with_progress(
@@ -198,7 +189,7 @@ def fetch_url_with_progress(
         requests.exceptions.RequestException,
     ) as e:
         # This function raises a WebdownError with appropriate message
-        _handle_request_exception(e, url)
+        handle_request_exception(e, url)
         # The line below is never reached but needed for type checking
         raise RuntimeError("This should never be reached")
 
@@ -220,14 +211,18 @@ def fetch_url(url: str, show_progress: bool = False) -> str:
     """
     # Validate URL for backward compatibility with tests
     # In normal usage, URL is already validated by _get_normalized_config
-    if not validate_url(url):
-        raise WebdownError(f"Invalid URL format: {url}")
+    try:
+        validate_url(url)
+    except ValueError as e:
+        raise WebdownError(str(e), code=ErrorCode.URL_INVALID)
 
     return fetch_url_with_progress(url, show_progress, chunk_size=1024, timeout=10)
 
 
-def validate_css_selector(css_selector: str) -> None:
-    """Validate CSS selector format and syntax.
+# Use the centralized validation module instead
+# This function is kept here temporarily for backward compatibility
+def validate_css_selector_legacy(css_selector: str) -> None:
+    """Validate CSS selector format and syntax (legacy version).
 
     Args:
         css_selector: CSS selector to validate
@@ -235,15 +230,10 @@ def validate_css_selector(css_selector: str) -> None:
     Raises:
         WebdownError: If the selector is invalid
     """
-    if not isinstance(css_selector, str) or not css_selector.strip():
-        raise WebdownError("CSS selector must be a non-empty string")
-
-    # Basic validation to catch obvious syntax errors
-    invalid_chars = ["<", ">", "(", ")", "@"]
-    if any(char in css_selector for char in invalid_chars):
-        raise WebdownError(
-            f"Invalid CSS selector: '{css_selector}'. Contains invalid characters."
-        )
+    try:
+        validate_css_selector(css_selector)
+    except ValueError as e:
+        raise WebdownError(str(e), code=ErrorCode.CSS_SELECTOR_INVALID)
 
 
 def extract_content_with_css(html: str, css_selector: str) -> str:
@@ -275,7 +265,10 @@ def extract_content_with_css(html: str, css_selector: str) -> str:
             warnings.warn(f"CSS selector '{css_selector}' did not match any elements")
             return html
     except Exception as e:
-        raise WebdownError(f"Error applying CSS selector '{css_selector}': {str(e)}")
+        raise WebdownError(
+            f"Error applying CSS selector '{css_selector}': {str(e)}",
+            code=ErrorCode.CSS_SELECTOR_INVALID,
+        )
 
 
 def _check_streaming_needed(url: str) -> bool:

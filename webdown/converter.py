@@ -16,13 +16,9 @@ Key functions:
 from typing import Optional
 
 from webdown.config import ClaudeXMLConfig, WebdownConfig, WebdownError
-from webdown.html_parser import (
-    _check_streaming_needed,
-    fetch_url,
-    validate_css_selector,
-    validate_url,
-)
+from webdown.html_parser import _check_streaming_needed, fetch_url
 from webdown.markdown_converter import html_to_markdown
+from webdown.validation import validate_css_selector, validate_url
 from webdown.xml_converter import markdown_to_claude_xml
 
 __all__ = [
@@ -67,8 +63,10 @@ def _get_normalized_config(url_or_config: str | WebdownConfig) -> WebdownConfig:
     assert url is not None
 
     # Validate URL format - centralized validation for the entire module
-    if not validate_url(url):
-        raise WebdownError(f"Invalid URL format: {url}")
+    try:
+        validate_url(url)
+    except ValueError as e:
+        raise WebdownError(str(e), code="URL_INVALID")
 
     return config
 
@@ -121,7 +119,12 @@ def convert_url_to_markdown(url_or_config: str | WebdownConfig) -> str:
 
     except Exception as e:
         # This is a fallback for any other request exceptions
-        raise WebdownError(f"Error fetching {url}: {str(e)}")
+        # Import error_utils here to avoid circular imports
+        from webdown.error_utils import ErrorCode
+
+        raise WebdownError(
+            f"Error fetching {url}: {str(e)}", code=ErrorCode.UNEXPECTED_ERROR
+        )
 
 
 def convert_url_to_claude_xml(

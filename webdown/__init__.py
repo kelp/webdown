@@ -64,7 +64,9 @@ from webdown.converter import (
     convert_url_to_markdown,
     html_to_markdown,
 )
-from webdown.html_parser import fetch_url, validate_url
+from webdown.error_utils import ErrorCode
+from webdown.html_parser import fetch_url
+from webdown.validation import validate_css_selector, validate_url
 
 # Define public API
 __all__ = [
@@ -76,5 +78,7 @@ __all__ = [
     "fetch_url",
     "html_to_markdown",
     "validate_url",
+    "validate_css_selector",
+    "ErrorCode",
     "cli",
 ]

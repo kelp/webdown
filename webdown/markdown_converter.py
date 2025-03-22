@@ -17,7 +17,8 @@ from typing import List, Tuple
 import html2text
 
 from webdown.config import WebdownConfig, WebdownError
-from webdown.html_parser import extract_content_with_css, validate_css_selector
+from webdown.html_parser import extract_content_with_css
+from webdown.validation import validate_css_selector
 
 
 def _find_code_blocks(markdown: str) -> List[Tuple[int, int]]:
