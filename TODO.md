@@ -1,44 +1,73 @@
 # Webdown Project TODO
 
-## Code Quality Improvements
+> **Note:** This TODO list has been reorganized with our high-priority code architecture plan at the top. The plan addresses identified over-engineering and code quality issues to create a cleaner, more maintainable codebase while preserving all functionality.
 
-Based on code review (March 2025), here are needed improvements to enhance readability and maintainability:
+## High-Quality Code Architecture Plan
 
-### 1. Refactor Long Functions
-- [ ] Break down `convert_url_to_markdown()` (49 lines) into smaller functions
-- [ ] Refactor `fetch_url_with_progress()` (45 lines) to have clearer responsibilities
-- [ ] Split `_process_markdown_section()` (38 lines) into smaller units
+This plan provides a prioritized approach to transform webdown into an exceptionally well-organized, maintainable, and clean codebase.
+
+### Phase 1: Modular Architecture (Priority: Highest)
+- [x] Split converter.py into logical modules:
+  - [x] `webdown/config.py` - Configuration classes
+  - [x] `webdown/html_parser.py` - HTML fetching and validation
+  - [x] `webdown/markdown_converter.py` - HTML to Markdown conversion
+  - [x] `webdown/xml_converter.py` - Markdown to Claude XML conversion
+- [x] Update imports across the codebase
+- [x] Update test files to match the new structure
+- [x] Add proper __init__.py exports for the public API
+
+### Phase 2: Simplify XML Generation (Priority: High)
+- [ ] Replace complex placeholder system for code blocks with direct processing
+- [ ] Reduce XML helper functions from 7+ to 3-4 clear functions
+- [ ] Create an XMLFormattingConfig to centralize formatting options
+- [ ] Rewrite `markdown_to_claude_xml()` with a cleaner recursive approach
 - [ ] Simplify `_build_xml_structure()` (33 lines) for better readability
+- [ ] Add comprehensive tests for the new implementation
 
-### 2. Improve Parameter Management
-- [ ] Create configuration objects for parameter-heavy functions
-- [ ] Use XMLFormattingConfig for XML building and formatting functions
-- [ ] Consolidate parameters for `_process_markdown_paragraphs()`
-- [ ] Consolidate parameters for `indent_xml()`
+### Phase 3: Refactor Core Functions (Priority: High)
+- [ ] Break down `convert_url_to_markdown()` (49 lines) into smaller functions
+- [ ] Simplify `fetch_url_with_progress()` (45 lines) with clearer responsibilities
+- [ ] Reduce complexity in `_process_markdown_section()` (38 lines)
+- [ ] Unify validation approach into a central validation module
+- [ ] Create reusable error handling utilities
 
-### 3. Reduce Code Duplication
-- [ ] Extract common XML building patterns into helper functions
-- [ ] Create reusable utilities for error handling
-- [ ] Standardize validation approach across the codebase
+### Phase 4: Improve CLI Structure (Priority: Medium)
+- [ ] Consolidate argument parsing functions into a cleaner structure
+- [ ] Simplify parse_args() and related helper functions
+- [ ] Review CLI options for further simplification opportunities
+- [ ] Ensure tests cover all CLI options properly
 
-### 4. Standardize Docstrings
-- [ ] Create a template for all docstrings
-- [ ] Apply consistent docstring format across the codebase
-- [ ] Add examples to docstrings where missing
+### Phase 5: Documentation Standardization (Priority: Medium)
+- [ ] Create a clear docstring template with consistent sections
+- [ ] Apply consistent docstring format across all modules
+- [ ] Improve function naming for clarity and consistency:
+  - [ ] Rename `_get_normalized_config()` → `_validate_and_normalize_config()`
+  - [ ] Rename `_process_markdown_paragraphs()` → `_convert_paragraphs_to_xml_elements()`
+  - [ ] Rename `_process_content()` → `_convert_to_selected_format()`
 - [ ] Ensure return value documentation is complete
+- [ ] Add examples to docstrings where missing
 
-### 5. Improve Function Naming
-- [ ] Rename `_get_normalized_config()` → `_validate_and_normalize_config()`
-- [ ] Rename `_process_markdown_paragraphs()` → `_convert_paragraphs_to_xml_elements()`
-- [ ] Rename `_process_content()` → `_convert_to_selected_format()`
-- [ ] Improve other helper function names for clarity
+### Phase 6: Configuration Simplification (Priority: Medium)
+- [ ] Review WebdownConfig for further simplification
+- [ ] Simplify ClaudeXMLConfig options
+- [ ] Reduce parameter counts in key functions
+- [ ] Consolidate parameters for commonly used functions
 
-### 6. Improve Abstraction Layers
-- [ ] Consider splitting converter.py into logical modules:
-  - [ ] `webdown/html_parser.py` - HTML fetching and parsing
-  - [ ] `webdown/markdown_converter.py` - HTML to Markdown conversion
-  - [ ] `webdown/xml_converter.py` - Markdown to XML conversion
-  - [ ] `webdown/config.py` - Configuration classes
+### Phase 7: Testing Improvements (Priority: Medium)
+- [ ] Add tests for edge cases in HTML parsing and conversion
+- [ ] Ensure good test coverage for the new modular structure
+- [ ] Add performance tests for large documents
+- [ ] Test streaming functionality thoroughly
+
+### Phase 8: Documentation Enhancements (Priority: Low)
+- [ ] Improve error handling documentation
+  - [ ] Explain how users should handle common failures
+  - [ ] Add troubleshooting section for common issues
+- [ ] Document advanced TOC functionality
+  - [ ] Explain TOC link generation and limitations
+  - [ ] Provide examples of customized TOC formatting
+- [ ] Document automatic streaming for large files
+  - [ ] Explain 10MB threshold implementation
 
 ## Bug Fixes and Quality Issues (Completed)
 - [x] Fix stream decoding inconsistency in progress reporting
@@ -191,17 +220,9 @@ Based on code review (March 2025), here are needed improvements to enhance reada
   - [x] Document all available options including the missing WebdownConfig parameters
   - [x] Provide examples for each advanced option
   - [x] Create a comprehensive CLI cheat sheet
-- [ ] Improve error handling documentation
-  - [ ] Explain how users should handle common failures
-  - [ ] Add troubleshooting section for common issues
-  - [ ] Document common error scenarios and their resolution
-- [ ] Document advanced TOC functionality
-  - [ ] Explain TOC link generation and limitations
-  - [ ] Provide examples of customized TOC formatting
-- [ ] Document automatic streaming for large files
-  - [ ] Explain 10MB threshold implementation
+# (Moved to Phase 8 in the prioritized plan above)
 
-## Test Improvements
+## Test Improvements Details (Supporting Phase 7)
 - [ ] Complete edge case coverage
   - [ ] Add tests for network failure scenarios
   - [ ] Test different HTML edge cases and encoding issues

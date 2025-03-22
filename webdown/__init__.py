@@ -58,20 +58,23 @@ __version__ = "0.5.0"
 from webdown import cli
 
 # Import key classes and functions for easy access
+from webdown.config import ClaudeXMLConfig, WebdownConfig, WebdownError
 from webdown.converter import (
-    WebdownConfig,
-    WebdownError,
+    convert_url_to_claude_xml,
     convert_url_to_markdown,
-    fetch_url,
     html_to_markdown,
 )
+from webdown.html_parser import fetch_url, validate_url
 
 # Define public API
 __all__ = [
     "WebdownConfig",
+    "ClaudeXMLConfig",
     "WebdownError",
     "convert_url_to_markdown",
+    "convert_url_to_claude_xml",
     "fetch_url",
     "html_to_markdown",
+    "validate_url",
     "cli",
 ]

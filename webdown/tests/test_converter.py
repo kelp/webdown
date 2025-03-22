@@ -4,14 +4,10 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from webdown.converter import (
-    WebdownConfig,
-    WebdownError,
-    convert_url_to_markdown,
-    fetch_url,
-    html_to_markdown,
-    validate_url,
-)
+from webdown.config import WebdownConfig, WebdownError
+from webdown.converter import convert_url_to_markdown
+from webdown.html_parser import fetch_url, validate_url
+from webdown.markdown_converter import html_to_markdown
 
 
 class TestValidateUrl:
@@ -42,7 +38,7 @@ class TestFetchUrl:
             fetch_url("not_a_url")
         assert "Invalid URL format" in str(exc_info.value)
 
-    @patch("webdown.converter.requests.get")
+    @patch("webdown.html_parser.requests.get")
     def test_request_exceptions_raise_webdown_error(self, mock_get: MagicMock) -> None:
         """Test that request exceptions raise WebdownError."""
         import requests
@@ -75,7 +71,7 @@ class TestFetchUrl:
         assert "error fetching" in str(exc_info.value).lower()
         assert "generic error" in str(exc_info.value)
 
-    @patch("webdown.converter.requests.get")
+    @patch("webdown.html_parser.requests.get")
     def test_successful_fetch(self, mock_get: MagicMock) -> None:
         """Test successful fetch returns HTML content."""
         # Set up mock response with content-length for non-streaming path
@@ -90,8 +86,8 @@ class TestFetchUrl:
         assert result == "<html><body>Test</body></html>"
         mock_get.assert_called_once_with("https://example.com", timeout=10, stream=True)
 
-    @patch("webdown.converter.requests.get")
-    @patch("webdown.converter.tqdm")
+    @patch("webdown.html_parser.requests.get")
+    @patch("webdown.html_parser.tqdm")
     def test_fetch_url_with_progress_bar(
         self, mock_tqdm: MagicMock, mock_get: MagicMock
     ) -> None:
@@ -131,7 +127,7 @@ class TestHtmlToMarkdown:
         assert "# Title" in result
         assert "Paragraph" in result
 
-    @patch("webdown.converter.html2text.HTML2Text")
+    @patch("webdown.markdown_converter.html2text.HTML2Text")
     def test_link_options(self, mock_html2text_class: MagicMock) -> None:
         """Test link inclusion/exclusion options."""
         mock_html2text = MagicMock()
@@ -148,7 +144,7 @@ class TestHtmlToMarkdown:
         html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.ignore_links is True
 
-    @patch("webdown.converter.html2text.HTML2Text")
+    @patch("webdown.markdown_converter.html2text.HTML2Text")
     def test_image_options(self, mock_html2text_class: MagicMock) -> None:
         """Test image inclusion/exclusion options."""
         mock_html2text = MagicMock()
@@ -165,7 +161,7 @@ class TestHtmlToMarkdown:
         html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.ignore_images is True
 
-    @patch("webdown.converter.html2text.HTML2Text")
+    @patch("webdown.markdown_converter.html2text.HTML2Text")
     def test_body_width(self, mock_html2text_class: MagicMock) -> None:
         """Test body_width parameter."""
         mock_html2text = MagicMock()
@@ -187,8 +183,8 @@ class TestHtmlToMarkdown:
         html_to_markdown("<html><body>Test</body></html>", config)
         assert mock_html2text.body_width == 72
 
-    @patch("webdown.converter.BeautifulSoup")
-    @patch("webdown.converter.html2text.HTML2Text")
+    @patch("webdown.html_parser.BeautifulSoup")
+    @patch("webdown.markdown_converter.html2text.HTML2Text")
     def test_css_selector(
         self, mock_html2text_class: MagicMock, mock_beautiful_soup: MagicMock
     ) -> None:
@@ -219,7 +215,9 @@ class TestHtmlToMarkdown:
         html = "<h1>Title 1</h1><p>Content</p><h2>Title 2</h2><p>More content</p>"
 
         # Configure html2text to return markdown with headers
-        with patch("webdown.converter.html2text.HTML2Text") as mock_html2text_class:
+        with patch(
+            "webdown.markdown_converter.html2text.HTML2Text"
+        ) as mock_html2text_class:
             mock_html2text = MagicMock()
             mock_html2text_class.return_value = mock_html2text
             mock_html2text.handle.return_value = (
@@ -238,7 +236,9 @@ class TestHtmlToMarkdown:
         """Test compact output option removes excessive blank lines."""
         html = "<div>Test</div><p>Paragraph</p>"
 
-        with patch("webdown.converter.html2text.HTML2Text") as mock_html2text_class:
+        with patch(
+            "webdown.markdown_converter.html2text.HTML2Text"
+        ) as mock_html2text_class:
             mock_html2text = MagicMock()
             mock_html2text_class.return_value = mock_html2text
             # Simulate output with excessive blank lines
@@ -258,7 +258,9 @@ class TestHtmlToMarkdown:
         """Test that zero-width spaces are removed from markdown output."""
         html = "<p>Before\u200bAfter</p>"
 
-        with patch("webdown.converter.html2text.HTML2Text") as mock_html2text_class:
+        with patch(
+            "webdown.markdown_converter.html2text.HTML2Text"
+        ) as mock_html2text_class:
             mock_html2text = MagicMock()
             mock_html2text_class.return_value = mock_html2text
             # Simulate output with zero-width spaces
@@ -456,8 +458,8 @@ class TestConvertUrlToMarkdown:
         # Verify result is returned from html_to_markdown
         assert result == "# Test\n\nContent"
 
-    @patch("webdown.converter.requests.head")
-    @patch("webdown.converter.requests.get")
+    @patch("webdown.html_parser.requests.head")
+    @patch("webdown.html_parser.requests.get")
     @patch("webdown.converter.html_to_markdown")
     def test_streaming_mode(
         self,
