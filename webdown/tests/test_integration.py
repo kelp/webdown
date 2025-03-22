@@ -3,7 +3,6 @@
 import os
 import tempfile
 
-import pytest
 import requests_mock
 
 from webdown.cli import main
@@ -32,7 +31,6 @@ SAMPLE_HTML = """<!DOCTYPE html>
 </html>"""
 
 
-@pytest.mark.integration
 class TestIntegration:
     """Integration tests for webdown."""
 
@@ -40,6 +38,8 @@ class TestIntegration:
         """Test conversion with mocked HTTP requests."""
         with requests_mock.Mocker() as m:
             m.get("https://example.com", text=SAMPLE_HTML)
+            # Mock the HEAD request to simulate a content-length response
+            m.head("https://example.com", headers={"content-length": "5000"})
 
             # Basic conversion
             result = convert_url_to_markdown("https://example.com")
@@ -84,6 +84,8 @@ class TestIntegration:
         """Test CLI writing to file."""
         with requests_mock.Mocker() as m:
             m.get("https://example.com", text=SAMPLE_HTML)
+            # Mock the HEAD request to simulate a content-length response
+            m.head("https://example.com", headers={"content-length": "5000"})
 
             with tempfile.TemporaryDirectory() as tmp_dir:
                 output_file = os.path.join(tmp_dir, "output.md")

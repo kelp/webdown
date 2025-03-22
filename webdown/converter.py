@@ -187,9 +187,21 @@ def convert_url_to_markdown(url_or_config: str | WebdownConfig) -> str:
             show_progress=url_or_config.show_progress,
             format=OutputFormat.MARKDOWN,
             document_options=DocumentOptions(
-                include_toc=getattr(url_or_config, "include_toc", False),
-                compact_output=getattr(url_or_config, "compact_output", False),
-                body_width=getattr(url_or_config, "body_width", 0),
+                include_toc=(
+                    url_or_config.document_options.include_toc
+                    if hasattr(url_or_config, "document_options")
+                    else getattr(url_or_config, "include_toc", False)
+                ),
+                compact_output=(
+                    url_or_config.document_options.compact_output
+                    if hasattr(url_or_config, "document_options")
+                    else getattr(url_or_config, "compact_output", False)
+                ),
+                body_width=(
+                    url_or_config.document_options.body_width
+                    if hasattr(url_or_config, "document_options")
+                    else getattr(url_or_config, "body_width", 0)
+                ),
             ),
         )
     return convert_url(config)
@@ -228,9 +240,21 @@ def convert_url_to_claude_xml(
             show_progress=source_config.show_progress,
             format=OutputFormat.CLAUDE_XML,
             document_options=DocumentOptions(
-                include_toc=getattr(source_config, "include_toc", False),
-                compact_output=getattr(source_config, "compact_output", False),
-                body_width=getattr(source_config, "body_width", 0),
+                include_toc=(
+                    source_config.document_options.include_toc
+                    if hasattr(source_config, "document_options")
+                    else getattr(source_config, "include_toc", False)
+                ),
+                compact_output=(
+                    source_config.document_options.compact_output
+                    if hasattr(source_config, "document_options")
+                    else getattr(source_config, "compact_output", False)
+                ),
+                body_width=(
+                    source_config.document_options.body_width
+                    if hasattr(source_config, "document_options")
+                    else getattr(source_config, "body_width", 0)
+                ),
                 include_metadata=(
                     True
                     if claude_xml_config is None

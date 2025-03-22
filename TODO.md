@@ -45,16 +45,16 @@ This plan provides a prioritized approach to transform webdown into an exception
 - [x] Add examples to docstrings where missing
 
 ### Phase 6: Configuration Simplification (Priority: Medium)
-- [ ] Review WebdownConfig for further simplification
-- [ ] Simplify ClaudeXMLConfig options
-- [ ] Reduce parameter counts in key functions
-- [ ] Consolidate parameters for commonly used functions
+- [x] Review WebdownConfig for further simplification
+- [x] Simplify ClaudeXMLConfig options
+- [x] Reduce parameter counts in key functions
+- [x] Consolidate parameters for commonly used functions
 
 ### Phase 7: Testing Improvements (Priority: Medium)
-- [ ] Add tests for edge cases in HTML parsing and conversion
-- [ ] Ensure good test coverage for the new modular structure
-- [ ] Add performance tests for large documents
-- [ ] Test streaming functionality thoroughly
+- [ ] Focus testing on our wrapper functionality instead of underlying html2text
+- [ ] Add targeted tests for the streaming mechanism with large documents
+- [ ] Fix the skipped integration tests in test_integration.py
+- [ ] Add tests for the new configuration structure with key parameter combinations
 
 ### Phase 8: Documentation Enhancements (Priority: Low)
 - [ ] Improve error handling documentation
@@ -220,20 +220,21 @@ This plan provides a prioritized approach to transform webdown into an exception
 # (Moved to Phase 8 in the prioritized plan above)
 
 ## Test Improvements Details (Supporting Phase 7)
-- [ ] Complete edge case coverage
-  - [ ] Add tests for network failure scenarios
-  - [ ] Test different HTML edge cases and encoding issues
-  - [ ] Add tests for invalid CSS selectors
-  - [ ] Test TOC generation with malformed headings and special characters
-  - [ ] Test with very large HTML documents to verify memory usage
-  - [ ] Add tests for Unicode handling and invisible character removal
-  - [ ] Test automatic streaming threshold (10MB) with mocked files
-- [ ] Enhance integration tests
-  - [ ] Test against more diverse real-world websites
-  - [ ] Add performance testing for large documents
-  - [ ] Test with slow connections and timeout scenarios
-  - [ ] Test progress bar accuracy with different content-length responses
-  - [ ] Verify that progress bar works correctly with automatic streaming
+- [ ] Pragmatic Test Coverage Improvements
+  - [ ] Add tests for common network failure scenarios (timeouts, connection errors)
+  - [ ] Test with a few representative HTML structures (not exhaustive edge cases)
+  - [ ] Add tests for invalid CSS selectors with helpful error messages
+  - [ ] Test TOC generation with basic heading variations
+  - [ ] Create simple mocked 10MB+ documents to verify streaming activation
+  - [ ] Test progress bar functionality with mock responses
+- [ ] Configuration Testing
+  - [ ] Test key configuration parameter combinations (not every possible combination)
+  - [ ] Verify backward compatibility with legacy function parameters
+  - [ ] Test error cases for invalid configuration values
+- [ ] Integration Test Fixes
+  - [ ] Fix the skipped integration tests or document why they should remain skipped
+  - [ ] Add 2-3 representative integration tests with stable websites
+  - [ ] Test CLI interface with different argument combinations
 
 ## Features to Consider
 - [x] Add a progress bar for downloads
