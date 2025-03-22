@@ -140,7 +140,7 @@
   - [x] Remove low-value formatting options to simplify the interface - IMPLEMENTED: Removed advanced formatting options and simplified interface
 - [x] Optimize html2text usage
   - [x] Set Unicode mode to always on for better character representation
-  - [x] Simplify streaming implementation with fixed 10MB threshold
+  - [x] Simplify streaming implementation with fixed 10MB threshold - IMPLEMENTED: Removed configurable threshold in favor of automatic 10MB threshold
   - [ ] Benchmark and optimize performance for large documents
 
 ## Documentation Enhancements
@@ -165,6 +165,9 @@
 - [ ] Document advanced TOC functionality
   - [ ] Explain TOC link generation and limitations
   - [ ] Provide examples of customized TOC formatting
+- [ ] Document automatic streaming for large files
+  - [ ] Explain 10MB threshold implementation
+  - [ ] Add advice for users working with very large documents
 - [ ] Consider setting up ReadTheDocs or GitHub Pages for online documentation hosting
 
 ## Test Improvements
@@ -175,11 +178,13 @@
   - [ ] Test TOC generation with malformed headings and special characters
   - [ ] Test with very large HTML documents to verify memory usage
   - [ ] Add tests for Unicode handling and invisible character removal
+  - [ ] Test automatic streaming threshold (10MB) with mocked files
 - [ ] Enhance integration tests
   - [ ] Test against more diverse real-world websites
   - [ ] Add performance testing for large documents
   - [ ] Test with slow connections and timeout scenarios
   - [ ] Test progress bar accuracy with different content-length responses
+  - [ ] Verify that progress bar works correctly with automatic streaming
 
 ## Features to Consider
 - [x] Add a progress bar for downloads
@@ -200,17 +205,33 @@
 - [ ] Add option to preserve or transform HTML comments
 - [ ] Support for rendering math equations (MathJax/LaTeX)
 - [ ] Command-line option for output file format (Markdown, CommonMark, GitHub Flavored Markdown)
+
+## Future Interface Simplifications
+- [x] Simplify streaming with fixed 10MB threshold
+  - [x] Remove stream_threshold parameter from WebdownConfig
+  - [x] Update CLI parser to remove stream_threshold option
+  - [x] Implement fixed 10MB threshold for automatic streaming mode
+- [ ] Consider removing other low-value configuration options
+  - [ ] Evaluate remaining advanced options for potential removal
+  - [ ] Focus on making common use cases simple while preserving flexibility
+- [ ] Improve defaults for better out-of-the-box experience
+  - [ ] Set reasonable defaults for all options
+  - [ ] Consider environment detection to adapt defaults to terminal capabilities
+
+## Claude XML Format
 - [x] Add Anthropic Claude XML format support
   - [x] Implement converter for Claude XML format (content wrapped in XML tags)
   - [x] Add CLI option to output in Claude XML format (`--claude-xml`)
   - [x] Include options for metadata handling in XML output
   - [x] Support for code blocks with proper language tags
   - [x] Document Claude XML format usage and examples
-
 - [ ] Improve Claude XML format for better understanding
   - [ ] Fix code block detection and formatting in XML output
   - [ ] Enhance section hierarchy preservation (maintain h1/h2/h3 relationships)
   - [ ] Add preset CSS selectors for common documentation sites
+  - [ ] Add test cases for XML format edge cases
+
+## Additional Features
 - [ ] Interactive mode to select page sections to convert
 - [x] Option to compact output by removing excessive blank lines
 - [x] Remove zero-width spaces and other invisible characters
