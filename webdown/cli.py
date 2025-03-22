@@ -249,19 +249,42 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
     return parser.parse_args(args)
 
 
-def process_url(parsed_args: argparse.Namespace) -> Tuple[str, Optional[str]]:
-    """Process URL and create output based on command-line arguments.
+def _convert_to_selected_format(
+    parsed_args: argparse.Namespace,
+) -> Tuple[str, Optional[str]]:
+    """Convert URL to selected format based on command-line arguments.
 
-    This function handles:
-    1. Auto-fixing the URL
-    2. Creating the WebdownConfig
-    3. Converting the URL to the selected output format
+    This function handles the entire conversion process:
+    1. Auto-fixing the URL (adding https:// if missing)
+    2. Creating the WebdownConfig with all options from arguments
+    3. Converting the URL to either Markdown or Claude XML format
 
     Args:
-        parsed_args: Parsed command-line arguments
+        parsed_args: Parsed command-line arguments containing URL and conversion options
+                    Must include attributes for url, toc, no_links, no_images, css,
+                    compact, width, progress, and claude_xml
 
     Returns:
-        A tuple containing (content, output_path)
+        A tuple containing (converted_content, output_path)
+
+    Examples:
+        >>> args = argparse.Namespace(
+        ...     url="example.com",
+        ...     toc=True,
+        ...     no_links=False,
+        ...     no_images=False,
+        ...     css=None,
+        ...     compact=True,
+        ...     width=80,
+        ...     progress=True,
+        ...     claude_xml=False,
+        ...     output="output.md"
+        ... )
+        >>> content, out_path = _convert_to_selected_format(args)
+        >>> type(content)
+        <class 'str'>
+        >>> out_path
+        'output.md'
     """
     # Auto-fix URL format if needed
     url = parsed_args.url
@@ -378,7 +401,7 @@ def main(args: Optional[List[str]] = None) -> int:
             return 0  # pragma: no cover - unreachable after SystemExit
 
         # Process URL and generate output content
-        content, output_path = process_url(parsed_args)
+        content, output_path = _convert_to_selected_format(parsed_args)
 
         # Write output to file or stdout
         write_output(content, output_path)

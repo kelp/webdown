@@ -36,14 +36,13 @@ This plan provides a prioritized approach to transform webdown into an exception
 - [x] Ensure tests cover all CLI options properly
 
 ### Phase 5: Documentation Standardization (Priority: Medium)
-- [ ] Create a clear docstring template with consistent sections
-- [ ] Apply consistent docstring format across all modules
-- [ ] Improve function naming for clarity and consistency:
-  - [ ] Rename `_get_normalized_config()` → `_validate_and_normalize_config()`
-  - [ ] Rename `_process_markdown_paragraphs()` → `_convert_paragraphs_to_xml_elements()`
-  - [ ] Rename `_process_content()` → `_convert_to_selected_format()`
-- [ ] Ensure return value documentation is complete
-- [ ] Add examples to docstrings where missing
+- [x] Create a clear docstring template with consistent sections
+- [x] Apply consistent docstring format across all modules
+- [x] Improve function naming for clarity and consistency:
+  - [x] Rename `_get_normalized_config()` → `_validate_and_normalize_config()`
+  - [x] Rename `process_url()` → `_convert_to_selected_format()`
+- [x] Ensure return value documentation is complete
+- [x] Add examples to docstrings where missing
 
 ### Phase 6: Configuration Simplification (Priority: Medium)
 - [ ] Review WebdownConfig for further simplification

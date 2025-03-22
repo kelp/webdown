@@ -35,20 +35,32 @@ __all__ = [
 ]
 
 
-def _get_normalized_config(url_or_config: str | WebdownConfig) -> WebdownConfig:
-    """Get a normalized WebdownConfig object with validated URL.
+def _validate_and_normalize_config(url_or_config: str | WebdownConfig) -> WebdownConfig:
+    """Validate URL and normalize configuration into WebdownConfig object.
 
     This function centralizes URL validation logic for the entire converter module.
     All code paths that need a validated URL should go through this function.
 
     Args:
-        url_or_config: URL string or WebdownConfig object
+        url_or_config: URL string or WebdownConfig object. If a string is provided,
+                      it will be used to create a WebdownConfig object.
 
     Returns:
         Normalized WebdownConfig with validated URL
 
     Raises:
-        WebdownError: If URL is invalid or missing
+        WebdownError: If URL is invalid or missing. Error code will be "URL_INVALID"
+                     for format errors and "URL_MISSING" if no URL is provided.
+
+    Examples:
+        >>> config = _validate_and_normalize_config("https://example.com")
+        >>> config.url
+        'https://example.com'
+
+        >>> existing = WebdownConfig(url="https://example.com")
+        >>> config = _validate_and_normalize_config(existing)
+        >>> config.url
+        'https://example.com'
     """
     # Create config object if a URL string was provided
     if isinstance(url_or_config, str):
@@ -101,7 +113,7 @@ def convert_url_to_markdown(url_or_config: str | WebdownConfig) -> str:
         markdown = convert_url_to_markdown(config)
     """
     # Get normalized config with validated URL
-    config = _get_normalized_config(url_or_config)
+    config = _validate_and_normalize_config(url_or_config)
     # At this point, the URL has been validated and cannot be None
     url = config.url
     assert url is not None
