@@ -56,7 +56,7 @@ venv.bak/
 .DS_Store
 
 # Poetry
-poetry.lock
+# Lock file should be committed for reproducible builds
 
 # Type checking
 .mypy_cache/
