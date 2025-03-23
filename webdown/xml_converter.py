@@ -133,11 +133,11 @@ def process_paragraph(text: str, level: int) -> str:
 
 def _process_paragraphs(content: str, level: int) -> List[str]:
     """Process content into paragraphs, handling empty paragraphs and code blocks.
-    
+
     Args:
         content: The text content to process
         level: The indentation level for XML elements
-        
+
     Returns:
         List of XML strings representing the processed paragraphs
     """
@@ -146,14 +146,14 @@ def _process_paragraphs(content: str, level: int) -> List[str]:
     for para in paragraphs:
         if not para.strip():
             continue
-        
+
         # Check if it's a code block
         code_match = re.match(r"```(\w*)\n(.*?)```", para, re.DOTALL)
         if code_match:
             result.extend(process_code_block(code_match, level))
         else:
             result.append(process_paragraph(para, level))
-    
+
     return result
 
 

@@ -1,16 +1,15 @@
 """Extended tests for markdown converter to improve coverage."""
 
+# mypy: disable-error-code="no-untyped-def,arg-type"
 import pytest
 
-from webdown.config import WebdownConfig, WebdownError
+from webdown.config import WebdownError
 from webdown.markdown_converter import (
     _create_toc_link,
-    _find_code_blocks,
     _extract_headings,
-    _is_position_in_code_block,
+    _find_code_blocks,
     _validate_body_width,
     generate_table_of_contents,
-    html_to_markdown,
 )
 
 
@@ -36,11 +35,11 @@ Plain code block
 """
         blocks = _find_code_blocks(markdown)
         assert len(blocks) == 2
-        
+
         # Extract the actual code blocks to verify
-        block1 = markdown[blocks[0][0]:blocks[0][1]]
-        block2 = markdown[blocks[1][0]:blocks[1][1]]
-        
+        block1 = markdown[blocks[0][0] : blocks[0][1]]
+        block2 = markdown[blocks[1][0] : blocks[1][1]]
+
         assert "```python" in block1
         assert "def hello()" in block1
         assert "```" in block2
@@ -63,7 +62,7 @@ class TestHeadings:
 """
         code_blocks = _find_code_blocks(markdown)
         headings = _extract_headings(markdown, code_blocks)
-        
+
         # Should only find the real headings
         assert len(headings) == 2
         assert headings[0][1] == "Real Heading"

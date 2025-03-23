@@ -79,6 +79,11 @@ nav:
   - CLI:
     - Reference: cli-reference.md
     - Cheat Sheet: cli-cheatsheet.md
+  - Guides:
+    - Claude XML Format: claude-xml-format.md
+    - Table of Contents: toc-guide.md
+    - Streaming Large Files: streaming-guide.md
+    - Troubleshooting: troubleshooting.md
   - API Reference:
     - Overview: api/index.md
     - Core API: api/converter.md

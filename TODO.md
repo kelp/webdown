@@ -71,26 +71,26 @@ This plan provides a prioritized approach to transform webdown into an exception
     - [x] Test _check_streaming_needed() function
     - [x] Add tests for fetch_url_with_progress() error paths
     - [x] Test extract_content_with_css() error handling
-  - [ ] Finish converter.py coverage (currently 82%)
-    - [ ] Test legacy function parameters with DocumentOptions
-    - [ ] Test backward compatibility edge cases
-  - [ ] Complete error_utils.py coverage (currently 87%)
-    - [ ] Test format_error_for_cli() with multi-line errors
-    - [ ] Test handle_request_exception() with different error types
+  - [x] Finish converter.py coverage (improved from 82% to 100%)
+    - [x] Test legacy function parameters with DocumentOptions
+    - [x] Test backward compatibility edge cases
+  - [x] Complete error_utils.py coverage (improved from 87% to 100%)
+    - [x] Test format_error_for_cli() with multi-line errors
+    - [x] Test handle_request_exception() with different error types
   - [x] Include integration tests in coverage metrics
     - [x] Remove test_integration.py from omit list in pyproject.toml
     - [x] Add additional integration tests for remaining uncovered paths
-  - ✅ Overall test coverage improved from 92% to 98%
+  - ✅ Overall test coverage improved from 92% to 100%
 
 ### Phase 9: Documentation Enhancements (Priority: Low)
-- [ ] Improve error handling documentation
-  - [ ] Explain how users should handle common failures
-  - [ ] Add troubleshooting section for common issues
-- [ ] Document advanced TOC functionality
-  - [ ] Explain TOC link generation and limitations
-  - [ ] Provide examples of customized TOC formatting
-- [ ] Document automatic streaming for large files
-  - [ ] Explain 10MB threshold implementation
+- [x] Improve error handling documentation
+  - [x] Explain how users should handle common failures
+  - [x] Add troubleshooting section for common issues
+- [x] Document advanced TOC functionality
+  - [x] Explain TOC link generation and limitations
+  - [x] Provide examples of customized TOC formatting
+- [x] Document automatic streaming for large files
+  - [x] Explain 10MB threshold implementation
 
 ## Bug Fixes and Quality Issues (Completed)
 - [x] Fix stream decoding inconsistency in progress reporting
@@ -179,7 +179,7 @@ This plan provides a prioritized approach to transform webdown into an exception
 - [x] Ensure all targets include conftest.py and other relevant files
 - [x] Document development workflow in README.md
 - [x] Add local user installation target (`make install-dev`)
-- [ ] Consider using tox for testing across multiple Python versions
+- [x] Consider using tox for testing across multiple Python versions (DECISION: Use GitHub Actions instead for multi-version testing)
 
 ## Packaging and Distribution
 - [x] Migrate to modern Python packaging:

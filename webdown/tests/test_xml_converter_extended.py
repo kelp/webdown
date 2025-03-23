@@ -1,17 +1,11 @@
 """Extended tests for XML converter to improve coverage."""
 
-import datetime
-from unittest.mock import patch
-
-import pytest
+# mypy: disable-error-code="no-untyped-def,arg-type,var-annotated"
+import re
 
 from webdown.xml_converter import (
-    escape_xml,
-    generate_metadata_xml,
-    indent_xml,
     markdown_to_claude_xml,
     process_code_block,
-    process_paragraph,
     process_section,
 )
 
@@ -29,14 +23,14 @@ class TestGenerateMetadataXml:
             if not metadata_items:
                 return []
             return ["metadata"]  # pragma: no cover
-        
+
         result = mock_generate_metadata()
         assert result == []
 
 
 class TestProcessSection:
     """Tests for process_section function."""
-    
+
     def test_direct_section_empty_para(self):
         """Direct test for section empty paragraph check (line 166)."""
         para = "   "  # Just whitespace
@@ -48,18 +42,20 @@ class TestProcessSection:
         class MockMatch:
             def __init__(self):
                 pass
-                
+
             def group(self, index):
                 if index == 1:  # Heading markers
                     return "#"  # pragma: no cover
                 elif index == 2:  # Heading title
                     return "Title"
                 elif index == 3:  # Content
-                    return "Real content\n\n\n\nMore content"  # Multiple empty paragraphs
+                    return (
+                        "Real content\n\n\n\nMore content"  # Multiple empty paragraphs
+                    )
                 return None  # pragma: no cover
-        
+
         result = process_section(MockMatch(), 1)
-        
+
         # Check that empty paragraphs were skipped
         assert len(result) == 5  # Opening, heading, 2 paragraphs, closing
         assert result[0] == "  <section>"
@@ -67,7 +63,7 @@ class TestProcessSection:
         assert result[2] == "    <text>Real content</text>"
         assert result[3] == "    <text>More content</text>"
         assert result[4] == "  </section>"
-    
+
     def test_direct_paragraph_skip(self):
         """Direct test for paragraph skipping in process_section (line 253)."""
         # Simpler direct test for the line we want to cover
@@ -79,7 +75,7 @@ class TestProcessSection:
                     continue
                 result.append(para)
             return result
-        
+
         assert test_paragraph_skip() == ["content"]
 
 
@@ -88,25 +84,25 @@ class TestMarkdownToClaudeXml:
 
     def test_empty_paragraphs_in_pre_content(self):
         """Test pre-section content with empty paragraphs (line 274)."""
-        # Create markdown with content before first heading that includes empty paragraphs
+        # Create markdown with content before heading that includes empty paragraphs
         markdown = """Content before heading.
 
 
-        
-        
+
+
 # The heading"""
-        
+
         result = markdown_to_claude_xml(markdown)
-        
+
         # Check that the pre-content is included but empty paragraphs are skipped
         assert "<claude_documentation>" in result
         assert "<text>Content before heading.</text>" in result
         assert "<heading>The heading</heading>" in result
-        
+
         # Count occurrences of <text> to ensure only one pre-content paragraph
         pre_content_text_tags = result.split("<heading>")[0].count("<text>")
         assert pre_content_text_tags == 1
-    
+
     def test_direct_pre_content_para_skip(self):
         """Direct test for pre-content paragraph skipping (line 274)."""
         # Simpler direct test for the line we want to cover
@@ -118,7 +114,7 @@ class TestMarkdownToClaudeXml:
                     continue
                 result.append(para)
             return result
-        
+
         assert test_para_skip() == ["content"]
 
     def test_code_block_in_no_headings_content(self):
@@ -132,29 +128,27 @@ def hello():
 ```
 
 More text."""
-        
+
         result = markdown_to_claude_xml(markdown)
-        
+
         # Check that content is properly processed
         assert "<claude_documentation>" in result
         assert "<text>Just text.</text>" in result
         assert '<code language="python">' in result
         assert "def hello():" in result
-        assert "print(\"Hello\")" in result
+        assert 'print("Hello")' in result
         assert "<text>More text.</text>" in result
-    
+
     def test_direct_code_block_processing(self):
         """Direct test for code block processing in pre-content (line 279)."""
         # Create a mock match object for a code block
-        import re
-        
         markdown = """```python
 def hello():
     print("world")
 ```"""
         match = re.match(r"```(\w*)\n(.*?)```", markdown, re.DOTALL)
         assert match is not None
-        
+
         # This simulates processing a code block in pre-content
         result = process_code_block(match, 2)
         assert result[0] == '    <code language="python">'
