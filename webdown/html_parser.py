@@ -19,7 +19,7 @@ from tqdm import tqdm
 
 from webdown.config import WebdownError
 from webdown.error_utils import ErrorCode, handle_request_exception
-from webdown.validation import validate_css_selector, validate_url
+from webdown.validation import validate_url
 
 
 def is_valid_url(url: str) -> bool:
@@ -131,22 +131,6 @@ def _handle_small_response(
     return None
 
 
-# Use the centralized error_utils.handle_request_exception instead
-# This function is kept here temporarily for backward compatibility
-def _handle_request_exception(e: Exception, url: str) -> None:
-    """Convert request exceptions to WebdownError with appropriate messages.
-
-    Args:
-        e: The exception that was raised
-        url: The URL being fetched
-
-    Raises:
-        WebdownError: With appropriate error message
-    """
-    # Delegate to the centralized function
-    handle_request_exception(e, url)
-
-
 def fetch_url_with_progress(
     url: str, show_progress: bool = False, chunk_size: int = 1024, timeout: int = 10
 ) -> str:
@@ -191,7 +175,7 @@ def fetch_url_with_progress(
         # This function raises a WebdownError with appropriate message
         handle_request_exception(e, url)
         # The line below is never reached but needed for type checking
-        raise RuntimeError("This should never be reached")
+        raise RuntimeError("This should never be reached")  # pragma: no cover
 
 
 def fetch_url(url: str, show_progress: bool = False) -> str:
@@ -217,23 +201,6 @@ def fetch_url(url: str, show_progress: bool = False) -> str:
         raise WebdownError(str(e), code=ErrorCode.URL_INVALID)
 
     return fetch_url_with_progress(url, show_progress, chunk_size=1024, timeout=10)
-
-
-# Use the centralized validation module instead
-# This function is kept here temporarily for backward compatibility
-def validate_css_selector_legacy(css_selector: str) -> None:
-    """Validate CSS selector format and syntax (legacy version).
-
-    Args:
-        css_selector: CSS selector to validate
-
-    Raises:
-        WebdownError: If the selector is invalid
-    """
-    try:
-        validate_css_selector(css_selector)
-    except ValueError as e:
-        raise WebdownError(str(e), code=ErrorCode.CSS_SELECTOR_INVALID)
 
 
 def extract_content_with_css(html: str, css_selector: str) -> str:

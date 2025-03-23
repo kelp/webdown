@@ -56,7 +56,33 @@ This plan provides a prioritized approach to transform webdown into an exception
 - [x] Fix the skipped integration tests in test_integration.py
 - [x] Add tests for the new configuration structure with key parameter combinations
 
-### Phase 8: Documentation Enhancements (Priority: Low)
+### Phase 8: Test Coverage Improvement (Priority: Medium)
+- [x] Improve test coverage to reach 100% across all application code
+  - [x] Focus on validation.py (improved from 36% to 100%)
+    - [x] Add tests for validate_body_width()
+    - [x] Add tests for validate_numeric_parameter()
+    - [x] Add tests for validate_string_parameter()
+    - [x] Add tests for validate_boolean_parameter()
+  - [x] Improve xml_converter.py coverage (improved from 65% to 95%)
+    - [x] Add tests for process_section() edge cases
+    - [x] Test markdown_to_claude_xml() with varied input formats
+    - [x] Test empty content and complex heading structures
+  - [x] Complete html_parser.py coverage (improved from 78% to 99%)
+    - [x] Test _check_streaming_needed() function
+    - [x] Add tests for fetch_url_with_progress() error paths
+    - [x] Test extract_content_with_css() error handling
+  - [ ] Finish converter.py coverage (currently 82%)
+    - [ ] Test legacy function parameters with DocumentOptions
+    - [ ] Test backward compatibility edge cases
+  - [ ] Complete error_utils.py coverage (currently 87%)
+    - [ ] Test format_error_for_cli() with multi-line errors
+    - [ ] Test handle_request_exception() with different error types
+  - [x] Include integration tests in coverage metrics
+    - [x] Remove test_integration.py from omit list in pyproject.toml
+    - [x] Add additional integration tests for remaining uncovered paths
+  - ✅ Overall test coverage improved from 92% to 98%
+
+### Phase 9: Documentation Enhancements (Priority: Low)
 - [ ] Improve error handling documentation
   - [ ] Explain how users should handle common failures
   - [ ] Add troubleshooting section for common issues

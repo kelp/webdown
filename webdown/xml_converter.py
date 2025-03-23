@@ -80,9 +80,6 @@ def generate_metadata_xml(title: Optional[str], source_url: Optional[str]) -> Li
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     metadata_items.append(indent_xml(f"<date>{today}</date>", 1))
 
-    if not metadata_items:
-        return []
-
     result = [indent_xml("<metadata>", 1)]
     result.extend(metadata_items)
     result.append(indent_xml("</metadata>", 1))
@@ -134,6 +131,32 @@ def process_paragraph(text: str, level: int) -> str:
     return indent_xml(f"<text>{escape_xml(text)}</text>", level)
 
 
+def _process_paragraphs(content: str, level: int) -> List[str]:
+    """Process content into paragraphs, handling empty paragraphs and code blocks.
+    
+    Args:
+        content: The text content to process
+        level: The indentation level for XML elements
+        
+    Returns:
+        List of XML strings representing the processed paragraphs
+    """
+    result = []
+    paragraphs = re.split(r"\n\n+", content)
+    for para in paragraphs:
+        if not para.strip():
+            continue
+        
+        # Check if it's a code block
+        code_match = re.match(r"```(\w*)\n(.*?)```", para, re.DOTALL)
+        if code_match:
+            result.extend(process_code_block(code_match, level))
+        else:
+            result.append(process_paragraph(para, level))
+    
+    return result
+
+
 def process_section(match: Match[str], level: int) -> List[str]:
     """Process a section (heading + content) into XML.
 
@@ -159,18 +182,7 @@ def process_section(match: Match[str], level: int) -> List[str]:
 
     # Process content
     if content:
-        # Process paragraphs in this section's content
-        paragraphs = re.split(r"\n\n+", content)
-        for para in paragraphs:
-            if not para.strip():
-                continue
-
-            # Check if it's a code block
-            code_match = re.match(r"```(\w*)\n(.*?)```", para, re.DOTALL)
-            if code_match:
-                result.extend(process_code_block(code_match, level + 1))
-            else:
-                result.append(process_paragraph(para, level + 1))
+        result.extend(_process_paragraphs(content, level + 1))
 
     # Close section
     result.append(indent_xml("</section>", level))
@@ -247,17 +259,7 @@ def markdown_to_claude_xml(
 
             # Process content inside this section
             if content:
-                paragraphs = re.split(r"\n\n+", content)
-                for para in paragraphs:
-                    if not para.strip():
-                        continue
-
-                    # Check if it's a code block
-                    code_match = re.match(r"```(\w*)\n(.*?)```", para, re.DOTALL)
-                    if code_match:
-                        section_xml.extend(process_code_block(code_match, 3))
-                    else:
-                        section_xml.append(process_paragraph(para, 3))
+                section_xml.extend(_process_paragraphs(content, 3))
 
             section_xml.append(indent_xml("</section>", 2))
             xml_parts.extend(section_xml)
@@ -267,33 +269,12 @@ def markdown_to_claude_xml(
             pre_content = markdown[: section_matches[0].start()].strip()
             if pre_content:
                 # Add pre-heading content at the beginning
-                pre_parts = []
-                paragraphs = re.split(r"\n\n+", pre_content)
-                for para in paragraphs:
-                    if not para.strip():
-                        continue
-
-                    # Check if it's a code block
-                    code_match = re.match(r"```(\w*)\n(.*?)```", para, re.DOTALL)
-                    if code_match:
-                        pre_parts.extend(process_code_block(code_match, 2))
-                    else:
-                        pre_parts.append(process_paragraph(para, 2))
+                pre_parts = _process_paragraphs(pre_content, 2)
 
                 xml_parts = xml_parts[:2] + pre_parts + xml_parts[2:]
     else:
         # No headings - just process all content
-        paragraphs = re.split(r"\n\n+", markdown)
-        for para in paragraphs:
-            if not para.strip():
-                continue
-
-            # Check if it's a code block
-            code_match = re.match(r"```(\w*)\n(.*?)```", para, re.DOTALL)
-            if code_match:
-                xml_parts.extend(process_code_block(code_match, 2))
-            else:
-                xml_parts.append(process_paragraph(para, 2))
+        xml_parts.extend(_process_paragraphs(markdown, 2))
 
     # Close content and root
     xml_parts.append(indent_xml("</content>", 1))

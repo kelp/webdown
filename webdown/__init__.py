@@ -34,16 +34,18 @@ webdown https://example.com -s "main" -I -c -w 80 -o output.md
 ## Library Usage
 
 ```python
-# Simple conversion
-from webdown import convert_url
-markdown = convert_url("https://example.com")
+# Simple conversion to Markdown
+from webdown import convert_url, WebdownConfig, OutputFormat
+config = WebdownConfig(url="https://example.com", format=OutputFormat.MARKDOWN)
+markdown = convert_url(config)
 
-# Using the configuration object with Markdown output
-from webdown import WebdownConfig, DocumentOptions, convert_url
+# Using the configuration object with additional options
+from webdown import WebdownConfig, DocumentOptions, OutputFormat, convert_url
 doc_options = DocumentOptions(include_toc=True, body_width=80)
 config = WebdownConfig(
     url="https://example.com",
     css_selector="main",
+    format=OutputFormat.MARKDOWN,
     document_options=doc_options
 )
 markdown = convert_url(config)
@@ -67,8 +69,6 @@ from webdown import cli
 
 # Import key classes and functions for easy access
 from webdown.config import DocumentOptions, OutputFormat, WebdownConfig, WebdownError
-from webdown.converter import convert_url_to_claude_xml  # For backward compatibility
-from webdown.converter import convert_url_to_markdown  # For backward compatibility
 from webdown.converter import convert_url, html_to_markdown
 from webdown.error_utils import ErrorCode
 from webdown.html_parser import fetch_url
@@ -81,8 +81,6 @@ __all__ = [
     "OutputFormat",
     "WebdownError",
     "convert_url",
-    "convert_url_to_markdown",  # For backward compatibility
-    "convert_url_to_claude_xml",  # For backward compatibility
     "fetch_url",
     "html_to_markdown",
     "validate_url",

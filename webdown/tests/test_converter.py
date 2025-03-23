@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from webdown.config import DocumentOptions, WebdownConfig, WebdownError
+from webdown.config import DocumentOptions, OutputFormat, WebdownConfig, WebdownError
 from webdown.converter import convert_url
 from webdown.error_utils import ErrorCode
 from webdown.html_parser import fetch_url
@@ -496,3 +496,56 @@ class TestConvertUrlToMarkdown:
             convert_url(config)
 
         assert "URL must be provided" in str(exc_info.value)
+
+    @patch("webdown.converter._check_streaming_needed")
+    @patch("webdown.converter.fetch_url")
+    @patch("webdown.converter.html_to_markdown")
+    @patch("webdown.converter.markdown_to_claude_xml")
+    def test_claude_xml_format(
+        self,
+        mock_to_xml: MagicMock,
+        mock_html_to_md: MagicMock,
+        mock_fetch: MagicMock,
+        mock_check: MagicMock,
+    ) -> None:
+        """Test conversion with Claude XML format."""
+        # Setup mocks
+        mock_fetch.return_value = "<html><body>Content</body></html>"
+        mock_html_to_md.return_value = "# Test\n\nContent"
+        mock_to_xml.return_value = (
+            "<claude_documentation>XML content</claude_documentation>"
+        )
+
+        # Create config with Claude XML format
+        config = WebdownConfig(
+            url="https://example.com",
+            format=OutputFormat.CLAUDE_XML,
+        )
+
+        # Call the function
+        result = convert_url(config)
+
+        # Verify the Claude XML converter was called
+        mock_to_xml.assert_called_once()
+        assert result == "<claude_documentation>XML content</claude_documentation>"
+
+    @patch("webdown.converter.validate_url", side_effect=ValueError("Invalid URL"))
+    def test_url_validation_error(self, mock_validate: MagicMock) -> None:
+        """Test that validation error is properly converted to WebdownError."""
+        with pytest.raises(WebdownError) as exc_info:
+            convert_url("https://example.com")
+
+        assert "Invalid URL" in str(exc_info.value)
+        assert exc_info.value.code == "URL_INVALID"
+
+    @patch("webdown.converter.fetch_url")
+    def test_unexpected_exception_handling(self, mock_fetch: MagicMock) -> None:
+        """Test handling of unexpected exceptions in the converter."""
+        mock_fetch.side_effect = RuntimeError("Unexpected error")
+
+        with pytest.raises(WebdownError) as exc_info:
+            convert_url("https://example.com")
+
+        assert "Error fetching" in str(exc_info.value)
+        assert "Unexpected error" in str(exc_info.value)
+        assert exc_info.value.code == "UNEXPECTED_ERROR"

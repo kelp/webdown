@@ -7,7 +7,7 @@ import pytest  # noqa: F401
 import requests_mock
 
 from webdown.config import DocumentOptions, OutputFormat, WebdownConfig
-from webdown.converter import convert_url, convert_url_to_claude_xml
+from webdown.converter import convert_url
 from webdown.xml_converter import markdown_to_claude_xml
 
 
@@ -38,7 +38,10 @@ class TestMarkdownToClaudeXML:
             m.head("https://example.com", headers={"content-length": "500"})
 
             # Convert to Claude XML
-            xml = convert_url_to_claude_xml("https://example.com")
+            config = WebdownConfig(
+                url="https://example.com", format=OutputFormat.CLAUDE_XML
+            )
+            xml = convert_url(config)
 
             # Check XML structure
             assert "<claude_documentation>" in xml
@@ -100,12 +103,12 @@ class TestMarkdownToClaudeXML:
         assert "  <" in xml  # Check for indentation
 
 
-class TestConvertUrlToClaudeXML:
+class TestConvertUrlToXML:
     """Tests for Claude XML conversion using convert_url function."""
 
     @patch("webdown.converter.html_to_markdown")
     @patch("webdown.converter.markdown_to_claude_xml")
-    def test_convert_url_to_claude_xml(
+    def test_convert_url_xml_format(
         self, mock_to_xml: MagicMock, mock_html_to_md: MagicMock
     ) -> None:
         """Test that convert_url with Claude XML format calls the right functions."""
@@ -129,7 +132,7 @@ class TestConvertUrlToClaudeXML:
 
     @patch("webdown.converter.html_to_markdown")
     @patch("webdown.converter.markdown_to_claude_xml")
-    def test_convert_url_to_claude_xml_with_options(
+    def test_convert_url_xml_with_options(
         self, mock_to_xml: MagicMock, mock_html_to_md: MagicMock
     ) -> None:
         """Test conversion with document options."""

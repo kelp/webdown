@@ -6,8 +6,8 @@ import tempfile
 import requests_mock
 
 from webdown.cli import main
-from webdown.config import DocumentOptions
-from webdown.converter import WebdownConfig, convert_url_to_markdown
+from webdown.config import DocumentOptions, OutputFormat
+from webdown.converter import WebdownConfig, convert_url
 
 # Sample HTML content for testing
 SAMPLE_HTML = """<!DOCTYPE html>
@@ -42,29 +42,44 @@ class TestIntegration:
             m.head("https://example.com", headers={"content-length": "5000"})
 
             # Basic conversion
-            result = convert_url_to_markdown("https://example.com")
+            config = WebdownConfig(
+                url="https://example.com", format=OutputFormat.MARKDOWN
+            )
+            result = convert_url(config)
             assert "# Test Page Title" in result
             assert "## Section 1" in result
             assert "link" in result
             assert "image" in result
 
             # With no links
-            config = WebdownConfig(url="https://example.com", include_links=False)
-            result = convert_url_to_markdown(config)
+            config = WebdownConfig(
+                url="https://example.com",
+                include_links=False,
+                format=OutputFormat.MARKDOWN,
+            )
+            result = convert_url(config)
             assert "# Test Page Title" in result
             assert (
                 "[link](https://example.com)" not in result
             )  # Link should be plain text, not hyperlink
 
             # With no images
-            config = WebdownConfig(url="https://example.com", include_images=False)
-            result = convert_url_to_markdown(config)
+            config = WebdownConfig(
+                url="https://example.com",
+                include_images=False,
+                format=OutputFormat.MARKDOWN,
+            )
+            result = convert_url(config)
             assert "# Test Page Title" in result
             assert "image.jpg" not in result
 
             # With CSS selector
-            config = WebdownConfig(url="https://example.com", css_selector="main")
-            result = convert_url_to_markdown(config)
+            config = WebdownConfig(
+                url="https://example.com",
+                css_selector="main",
+                format=OutputFormat.MARKDOWN,
+            )
+            result = convert_url(config)
             assert "Test Page Title" not in result  # Header is outside <main>
             assert "## Section 1" in result
             assert "## Section 2" in result
@@ -72,9 +87,10 @@ class TestIntegration:
             # With table of contents
             config = WebdownConfig(
                 url="https://example.com",
+                format=OutputFormat.MARKDOWN,
                 document_options=DocumentOptions(include_toc=True),
             )
-            result = convert_url_to_markdown(config)
+            result = convert_url(config)
             assert "# Table of Contents" in result
             assert "- [Test Page Title](#test-page-title)" in result
             assert "  - [Section 1](#section-1)" in result

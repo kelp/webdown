@@ -12,8 +12,6 @@ Key functions:
 - convert_url: Main conversion function supporting multiple output formats
 """
 
-from typing import Any, Optional
-
 from webdown.config import DocumentOptions, OutputFormat, WebdownConfig, WebdownError
 from webdown.html_parser import _check_streaming_needed, fetch_url
 from webdown.markdown_converter import html_to_markdown
@@ -129,8 +127,7 @@ def convert_url(url_or_config: str | WebdownConfig) -> str:
     assert url is not None
 
     try:
-        # Check if streaming is needed based on content size
-        # This is mainly for compatibility with tests that expect this behavior
+        # Perform streaming check for large documents
         _check_streaming_needed(url)
 
         # Fetch the HTML content (URL already validated)
@@ -157,109 +154,3 @@ def convert_url(url_or_config: str | WebdownConfig) -> str:
         raise WebdownError(
             f"Error fetching {url}: {str(e)}", code=ErrorCode.UNEXPECTED_ERROR
         )
-
-
-# Legacy functions for backward compatibility
-def convert_url_to_markdown(url_or_config: str | WebdownConfig) -> str:
-    """Convert a web page to markdown (legacy function).
-
-    This function maintains backward compatibility with previous versions.
-    New code should use convert_url() with the appropriate OutputFormat.
-
-    Args:
-        url_or_config: URL of the web page or a WebdownConfig object
-
-    Returns:
-        Markdown content
-
-    Raises:
-        WebdownError: If URL is invalid or cannot be fetched
-    """
-    if isinstance(url_or_config, str):
-        config = WebdownConfig(url=url_or_config, format=OutputFormat.MARKDOWN)
-    else:
-        # Ensure Markdown format for this legacy function
-        config = WebdownConfig(
-            url=url_or_config.url,
-            include_links=url_or_config.include_links,
-            include_images=url_or_config.include_images,
-            css_selector=url_or_config.css_selector,
-            show_progress=url_or_config.show_progress,
-            format=OutputFormat.MARKDOWN,
-            document_options=DocumentOptions(
-                include_toc=(
-                    url_or_config.document_options.include_toc
-                    if hasattr(url_or_config, "document_options")
-                    else getattr(url_or_config, "include_toc", False)
-                ),
-                compact_output=(
-                    url_or_config.document_options.compact_output
-                    if hasattr(url_or_config, "document_options")
-                    else getattr(url_or_config, "compact_output", False)
-                ),
-                body_width=(
-                    url_or_config.document_options.body_width
-                    if hasattr(url_or_config, "document_options")
-                    else getattr(url_or_config, "body_width", 0)
-                ),
-            ),
-        )
-    return convert_url(config)
-
-
-def convert_url_to_claude_xml(
-    url_or_config: str | WebdownConfig,
-    claude_xml_config: Optional[Any] = None,
-) -> str:
-    """Convert a web page directly to Claude XML format (legacy function).
-
-    This function maintains backward compatibility with previous versions.
-    New code should use convert_url() with OutputFormat.CLAUDE_XML.
-
-    Args:
-        url_or_config: URL to fetch or WebdownConfig object
-        claude_xml_config: Legacy parameter maintained for backward compatibility
-            (use document_options in WebdownConfig instead)
-
-    Returns:
-        Claude XML formatted content
-
-    Raises:
-        WebdownError: If URL is invalid or cannot be fetched
-    """
-    if isinstance(url_or_config, str):
-        config = WebdownConfig(url=url_or_config, format=OutputFormat.CLAUDE_XML)
-    else:
-        # Create copy with Claude XML format
-        source_config = url_or_config
-        config = WebdownConfig(
-            url=source_config.url,
-            include_links=source_config.include_links,
-            include_images=source_config.include_images,
-            css_selector=source_config.css_selector,
-            show_progress=source_config.show_progress,
-            format=OutputFormat.CLAUDE_XML,
-            document_options=DocumentOptions(
-                include_toc=(
-                    source_config.document_options.include_toc
-                    if hasattr(source_config, "document_options")
-                    else getattr(source_config, "include_toc", False)
-                ),
-                compact_output=(
-                    source_config.document_options.compact_output
-                    if hasattr(source_config, "document_options")
-                    else getattr(source_config, "compact_output", False)
-                ),
-                body_width=(
-                    source_config.document_options.body_width
-                    if hasattr(source_config, "document_options")
-                    else getattr(source_config, "body_width", 0)
-                ),
-                include_metadata=(
-                    True
-                    if claude_xml_config is None
-                    else getattr(claude_xml_config, "include_metadata", True)
-                ),
-            ),
-        )
-    return convert_url(config)

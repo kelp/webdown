@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, patch
 
 import requests_mock
 
-from webdown.config import WebdownConfig
-from webdown.converter import convert_url_to_markdown
+from webdown.config import OutputFormat, WebdownConfig
+from webdown.converter import convert_url
 from webdown.html_parser import _check_streaming_needed, fetch_url
 
 
@@ -100,8 +100,10 @@ class TestStreamingFunctionality:
         ):
 
             # Test the full pipeline
-            config = WebdownConfig(url="https://example.com/large")
-            result = convert_url_to_markdown(config)
+            config = WebdownConfig(
+                url="https://example.com/large", format=OutputFormat.MARKDOWN
+            )
+            result = convert_url(config)
 
             # Verify the function was called with the correct HTML
             mock_fetch.assert_called_once_with(
