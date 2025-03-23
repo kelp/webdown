@@ -42,9 +42,10 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.cache/pypoetry/virtualenvs
-        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+        key: ${{ runner.os }}-poetry-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}-${{ github.run_id }}
         restore-keys: |
-          ${{ runner.os }}-poetry-
+          ${{ runner.os }}-poetry-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}-
+          ${{ runner.os }}-poetry-${{ matrix.python-version }}-
 
     - name: Install dependencies
       run: |
