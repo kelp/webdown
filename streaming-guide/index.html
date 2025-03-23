@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://tcole.net/webdown/cli-reference/">
+        <link rel="canonical" href="https://tcole.net/webdown/streaming-guide/">
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../toc-guide/">
       
       
-        <link rel="next" href="../cli-cheatsheet/">
+        <link rel="next" href="../troubleshooting/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Reference - Webdown Documentation</title>
+        <title>Streaming Large Files - Webdown Documentation</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cli-reference" class="md-skip">
+        <a href="#automatic-streaming-for-large-web-pages" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Reference
+              Streaming Large Files
             
           </span>
         </div>
@@ -247,10 +247,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -261,11 +259,13 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -280,7 +280,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             CLI
@@ -291,31 +291,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Reference
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cli-reference/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -325,200 +304,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Basic Usage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#complete-options-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complete Options Reference
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Complete Options Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#inputoutput-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Input/Output Options
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#content-selection" class="md-nav__link">
-    <span class="md-ellipsis">
-      Content Selection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#formatting-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Formatting Options
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#claude-xml-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Claude XML Options
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#meta-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Meta Options
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#examples-with-explanations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Examples with Explanations
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Examples with Explanations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic-conversion" class="md-nav__link">
-    <span class="md-ellipsis">
-      Basic Conversion
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#save-to-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      Save to File
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generate-table-of-contents" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generate Table of Contents
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#extract-main-content" class="md-nav__link">
-    <span class="md-ellipsis">
-      Extract Main Content
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#plain-text-no-links-or-images" class="md-nav__link">
-    <span class="md-ellipsis">
-      Plain Text (No Links or Images)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#compact-output-with-custom-width" class="md-nav__link">
-    <span class="md-ellipsis">
-      Compact Output with Custom Width
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#show-progress-for-large-pages" class="md-nav__link">
-    <span class="md-ellipsis">
-      Show Progress for Large Pages
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#claude-xml-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      Claude XML Format
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#complete-example-with-multiple-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complete Example with Multiple Options
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cli-cheat-sheet" class="md-nav__link">
-    <span class="md-ellipsis">
-      CLI Cheat Sheet
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -557,8 +342,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -573,13 +360,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -594,7 +379,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Guides
@@ -649,10 +434,31 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../streaming-guide/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Streaming Large Files
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -662,6 +468,140 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-streaming-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Streaming Mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-10mb-threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      The 10MB Threshold
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-streaming-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Streaming Works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#progress-reporting-in-streaming-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Progress Reporting in Streaming Mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Implementation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-is-10mb-the-fixed-threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why is 10MB the fixed threshold?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-streaming-affect-the-output-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does streaming affect the output quality?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-streaming-slower-than-regular-downloading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is streaming slower than regular downloading?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-disable-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I disable streaming?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-cases-for-large-page-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Cases for Large Page Handling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -874,64 +814,91 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
+  <a href="#understanding-streaming-mode" class="md-nav__link">
     <span class="md-ellipsis">
-      Basic Usage
+      Understanding Streaming Mode
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#complete-options-reference" class="md-nav__link">
+  <a href="#the-10mb-threshold" class="md-nav__link">
     <span class="md-ellipsis">
-      Complete Options Reference
+      The 10MB Threshold
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Complete Options Reference">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-streaming-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Streaming Works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#progress-reporting-in-streaming-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Progress Reporting in Streaming Mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Implementation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Questions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#inputoutput-options" class="md-nav__link">
+  <a href="#why-is-10mb-the-fixed-threshold" class="md-nav__link">
     <span class="md-ellipsis">
-      Input/Output Options
+      Why is 10MB the fixed threshold?
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#content-selection" class="md-nav__link">
+  <a href="#does-streaming-affect-the-output-quality" class="md-nav__link">
     <span class="md-ellipsis">
-      Content Selection
+      Does streaming affect the output quality?
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#formatting-options" class="md-nav__link">
+  <a href="#is-streaming-slower-than-regular-downloading" class="md-nav__link">
     <span class="md-ellipsis">
-      Formatting Options
+      Is streaming slower than regular downloading?
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#claude-xml-options" class="md-nav__link">
+  <a href="#can-i-disable-streaming" class="md-nav__link">
     <span class="md-ellipsis">
-      Claude XML Options
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#meta-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Meta Options
+      Can I disable streaming?
     </span>
   </a>
   
@@ -943,105 +910,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#examples-with-explanations" class="md-nav__link">
+  <a href="#use-cases-for-large-page-handling" class="md-nav__link">
     <span class="md-ellipsis">
-      Examples with Explanations
+      Use Cases for Large Page Handling
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Examples with Explanations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic-conversion" class="md-nav__link">
-    <span class="md-ellipsis">
-      Basic Conversion
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#save-to-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      Save to File
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generate-table-of-contents" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generate Table of Contents
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#extract-main-content" class="md-nav__link">
-    <span class="md-ellipsis">
-      Extract Main Content
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#plain-text-no-links-or-images" class="md-nav__link">
-    <span class="md-ellipsis">
-      Plain Text (No Links or Images)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#compact-output-with-custom-width" class="md-nav__link">
-    <span class="md-ellipsis">
-      Compact Output with Custom Width
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#show-progress-for-large-pages" class="md-nav__link">
-    <span class="md-ellipsis">
-      Show Progress for Large Pages
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#claude-xml-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      Claude XML Format
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#complete-example-with-multiple-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complete Example with Multiple Options
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cli-cheat-sheet" class="md-nav__link">
+  <a href="#limitations" class="md-nav__link">
     <span class="md-ellipsis">
-      CLI Cheat Sheet
+      Limitations
     </span>
   </a>
   
@@ -1066,210 +946,75 @@
   
 
 
-<h1 id="cli-reference">CLI Reference<a class="headerlink" href="#cli-reference" title="Permanent link">&para;</a></h1>
-<p>Webdown offers a straightforward command-line interface for converting web pages to Markdown or Claude XML format.</p>
-<h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>webdown<span class="w"> </span>URL<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
-</code></pre></div>
-<p>Where <code>URL</code> is the web page you want to convert (e.g., <code>https://example.com</code>).</p>
-<h2 id="complete-options-reference">Complete Options Reference<a class="headerlink" href="#complete-options-reference" title="Permanent link">&para;</a></h2>
-<h3 id="inputoutput-options">Input/Output Options<a class="headerlink" href="#inputoutput-options" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-o FILE, --output FILE</code></td>
-<td>Write Markdown output to FILE instead of stdout</td>
-</tr>
-<tr>
-<td><code>-p, --progress</code></td>
-<td>Display a progress bar during download (useful for large pages)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="content-selection">Content Selection<a class="headerlink" href="#content-selection" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-s SELECTOR, --css SELECTOR</code></td>
-<td>Extract content matching CSS selector (e.g., 'main', '.content')</td>
-</tr>
-<tr>
-<td><code>-L, --no-links</code></td>
-<td>Convert hyperlinks to plain text (remove all link markup)</td>
-</tr>
-<tr>
-<td><code>-I, --no-images</code></td>
-<td>Exclude images from the output completely</td>
-</tr>
-</tbody>
-</table>
-<h3 id="formatting-options">Formatting Options<a class="headerlink" href="#formatting-options" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-t, --toc</code></td>
-<td>Generate a table of contents based on headings in the document</td>
-</tr>
-<tr>
-<td><code>-c, --compact</code></td>
-<td>Remove excessive blank lines for more compact output</td>
-</tr>
-<tr>
-<td><code>-w N, --width N</code></td>
-<td>Set line width (0 disables wrapping, 80 recommended for readability)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="claude-xml-options">Claude XML Options<a class="headerlink" href="#claude-xml-options" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--claude-xml</code></td>
-<td>Output in Claude XML format instead of Markdown</td>
-</tr>
-<tr>
-<td><code>--metadata</code></td>
-<td>Include metadata section in XML (default)</td>
-</tr>
-<tr>
-<td><code>--no-metadata</code></td>
-<td>Exclude metadata section from XML</td>
-</tr>
-</tbody>
-</table>
-<h3 id="meta-options">Meta Options<a class="headerlink" href="#meta-options" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-V, --version</code></td>
-<td>Show version information and exit</td>
-</tr>
-<tr>
-<td><code>-h, --help</code></td>
-<td>Show help message and exit</td>
-</tr>
-</tbody>
-</table>
-<h2 id="examples-with-explanations">Examples with Explanations<a class="headerlink" href="#examples-with-explanations" title="Permanent link">&para;</a></h2>
-<h3 id="basic-conversion">Basic Conversion<a class="headerlink" href="#basic-conversion" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>webdown<span class="w"> </span>https://example.com
-</code></pre></div>
-Converts the web page at example.com to Markdown and outputs to the terminal.</p>
-<h3 id="save-to-file">Save to File<a class="headerlink" href="#save-to-file" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-o<span class="w"> </span>example.md
-</code></pre></div>
-Converts the web page and saves the output to example.md.</p>
-<h3 id="generate-table-of-contents">Generate Table of Contents<a class="headerlink" href="#generate-table-of-contents" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-t
-</code></pre></div>
-Adds a table of contents based on the headings found in the document.</p>
-<h3 id="extract-main-content">Extract Main Content<a class="headerlink" href="#extract-main-content" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span>
-</code></pre></div>
-Extracts only the content inside the <code>&lt;main&gt;</code> tag, ignoring headers, footers, sidebars, etc.</p>
-<h3 id="plain-text-no-links-or-images">Plain Text (No Links or Images)<a class="headerlink" href="#plain-text-no-links-or-images" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-L<span class="w"> </span>-I
-</code></pre></div>
-Creates a plain text version by removing hyperlinks and images.</p>
-<h3 id="compact-output-with-custom-width">Compact Output with Custom Width<a class="headerlink" href="#compact-output-with-custom-width" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span>
-</code></pre></div>
-Removes excessive blank lines and wraps text at 80 characters.</p>
-<h3 id="show-progress-for-large-pages">Show Progress for Large Pages<a class="headerlink" href="#show-progress-for-large-pages" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-p
-</code></pre></div>
-Displays a progress bar during download, useful for large pages.</p>
-<h3 id="claude-xml-format">Claude XML Format<a class="headerlink" href="#claude-xml-format" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
-</code></pre></div>
-Outputs the page content in Claude XML format, optimized for use with Anthropic's Claude AI.</p>
-<h3 id="complete-example-with-multiple-options">Complete Example with Multiple Options<a class="headerlink" href="#complete-example-with-multiple-options" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>example.md
-</code></pre></div>
-This example:
-- Extracts content from the <code>&lt;main&gt;</code> tag
-- Generates a table of contents
-- Removes excessive blank lines
-- Wraps text at 80 characters
-- Shows a progress bar during download
-- Saves output to example.md</p>
-<h2 id="cli-cheat-sheet">CLI Cheat Sheet<a class="headerlink" href="#cli-cheat-sheet" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Task</th>
-<th>Command</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Basic conversion</td>
-<td><code>webdown https://example.com</code></td>
-</tr>
-<tr>
-<td>Save to file</td>
-<td><code>webdown https://example.com -o file.md</code></td>
-</tr>
-<tr>
-<td>Add table of contents</td>
-<td><code>webdown https://example.com -t</code></td>
-</tr>
-<tr>
-<td>Extract main content</td>
-<td><code>webdown https://example.com -s "main"</code></td>
-</tr>
-<tr>
-<td>Plain text version</td>
-<td><code>webdown https://example.com -L -I</code></td>
-</tr>
-<tr>
-<td>Compact output</td>
-<td><code>webdown https://example.com -c</code></td>
-</tr>
-<tr>
-<td>Set text width</td>
-<td><code>webdown https://example.com -w 80</code></td>
-</tr>
-<tr>
-<td>Show progress</td>
-<td><code>webdown https://example.com -p</code></td>
-</tr>
-<tr>
-<td>Claude XML format</td>
-<td><code>webdown https://example.com --claude-xml</code></td>
-</tr>
-</tbody>
-</table>
+<h1 id="automatic-streaming-for-large-web-pages">Automatic Streaming for Large Web Pages<a class="headerlink" href="#automatic-streaming-for-large-web-pages" title="Permanent link">&para;</a></h1>
+<p>Webdown includes built-in support for handling large web pages through an automatic streaming mechanism. This guide explains how streaming works and when it's activated.</p>
+<h2 id="understanding-streaming-mode">Understanding Streaming Mode<a class="headerlink" href="#understanding-streaming-mode" title="Permanent link">&para;</a></h2>
+<p>For most web pages, Webdown downloads the entire HTML content at once before processing it. However, for very large web pages, this approach could use excessive memory and potentially cause issues on systems with limited resources.</p>
+<p>To address this, Webdown automatically switches to a streaming mode when handling large web pages.</p>
+<h2 id="the-10mb-threshold">The 10MB Threshold<a class="headerlink" href="#the-10mb-threshold" title="Permanent link">&para;</a></h2>
+<p>Webdown uses a fixed 10MB threshold to determine when to activate streaming mode:</p>
+<ol>
+<li>When requesting a web page, Webdown first checks its size</li>
+<li>If the page size is less than 10MB, the entire page is downloaded at once</li>
+<li>If the page size is 10MB or larger, streaming mode is activated</li>
+</ol>
+<h2 id="how-streaming-works">How Streaming Works<a class="headerlink" href="#how-streaming-works" title="Permanent link">&para;</a></h2>
+<p>When streaming mode is activated:</p>
+<ol>
+<li>Webdown downloads the page in chunks rather than all at once</li>
+<li>Each chunk is processed as it's received</li>
+<li>Progress is reported based on the amount of data downloaded</li>
+<li>Memory usage remains controlled even for extremely large pages</li>
+</ol>
+<p>The streaming implementation uses Python's requests library with <code>stream=True</code> and processes the response in iterations.</p>
+<h2 id="progress-reporting-in-streaming-mode">Progress Reporting in Streaming Mode<a class="headerlink" href="#progress-reporting-in-streaming-mode" title="Permanent link">&para;</a></h2>
+<p>When streaming large pages, you'll notice the progress bar behaves slightly differently:</p>
+<ul>
+<li>For regular downloads, the progress bar shows both the download and processing phases</li>
+<li>In streaming mode, the progress bar primarily reflects the download progress</li>
+</ul>
+<p>Example terminal output for a streaming download:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Downloading and processing https://example.com/largepage
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>[████████████████████] 100% | 15.8 MB | 00:04 remaining
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Converting to Markdown... Done!
+</code></pre></div></p>
+<h2 id="technical-implementation">Technical Implementation<a class="headerlink" href="#technical-implementation" title="Permanent link">&para;</a></h2>
+<p>The streaming functionality is implemented through these key components:</p>
+<ol>
+<li><strong>Size checking</strong>: Before downloading, Webdown sends a HEAD request to determine the content size</li>
+<li><strong>Threshold decision</strong>: Based on the 10MB threshold, Webdown decides whether to stream</li>
+<li><strong>Chunked download</strong>: For streaming, content is downloaded in reasonable chunks (8KB by default)</li>
+<li><strong>Incremental processing</strong>: Each chunk is decoded and added to the processing buffer</li>
+</ol>
+<p>This implementation balances memory efficiency with processing speed.</p>
+<h2 id="common-questions">Common Questions<a class="headerlink" href="#common-questions" title="Permanent link">&para;</a></h2>
+<h3 id="why-is-10mb-the-fixed-threshold">Why is 10MB the fixed threshold?<a class="headerlink" href="#why-is-10mb-the-fixed-threshold" title="Permanent link">&para;</a></h3>
+<p>The 10MB threshold was chosen based on:
+- Testing with a wide range of web pages
+- Balancing memory usage and performance
+- Ensuring compatibility with most systems</p>
+<p>This threshold works well for the vast majority of web pages while protecting against memory issues with extremely large pages.</p>
+<h3 id="does-streaming-affect-the-output-quality">Does streaming affect the output quality?<a class="headerlink" href="#does-streaming-affect-the-output-quality" title="Permanent link">&para;</a></h3>
+<p>No. The streaming mode only changes how the content is downloaded and processed internally. The final Markdown or Claude XML output is identical regardless of whether streaming was used.</p>
+<h3 id="is-streaming-slower-than-regular-downloading">Is streaming slower than regular downloading?<a class="headerlink" href="#is-streaming-slower-than-regular-downloading" title="Permanent link">&para;</a></h3>
+<p>Streaming can be slightly slower for pages just above the threshold because of the additional processing overhead. However, for very large pages, streaming is often more efficient and prevents potential out-of-memory errors.</p>
+<h3 id="can-i-disable-streaming">Can I disable streaming?<a class="headerlink" href="#can-i-disable-streaming" title="Permanent link">&para;</a></h3>
+<p>No, the streaming feature is automatically activated based on the page size and cannot be disabled. This design decision ensures Webdown remains robust when handling pages of any size.</p>
+<h2 id="use-cases-for-large-page-handling">Use Cases for Large Page Handling<a class="headerlink" href="#use-cases-for-large-page-handling" title="Permanent link">&para;</a></h2>
+<p>The automatic streaming capability makes Webdown suitable for:</p>
+<ol>
+<li><strong>Documentation sites</strong>: Handling large technical documentation</li>
+<li><strong>Academic papers</strong>: Processing lengthy scientific publications</li>
+<li><strong>Legal documents</strong>: Converting extensive legal texts</li>
+<li><strong>Data-heavy reports</strong>: Working with pages containing large tables or datasets</li>
+</ol>
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
+<p>While streaming handles large pages well, be aware of these limitations:</p>
+<ol>
+<li>Progress reporting is less precise in streaming mode</li>
+<li>For extremely large pages (100MB+), processing may still take significant time</li>
+<li>Some websites might not report their content size correctly, affecting the streaming decision</li>
+</ol>
 
 
 

@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://tcole.net/webdown/cli-reference/">
+        <link rel="canonical" href="https://tcole.net/webdown/troubleshooting/">
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../streaming-guide/">
       
       
-        <link rel="next" href="../cli-cheatsheet/">
+        <link rel="next" href="../api/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Reference - Webdown Documentation</title>
+        <title>Troubleshooting - Webdown Documentation</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cli-reference" class="md-skip">
+        <a href="#webdown-troubleshooting-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Reference
+              Troubleshooting
             
           </span>
         </div>
@@ -247,10 +247,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -261,11 +259,13 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -280,7 +280,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             CLI
@@ -291,31 +291,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Reference
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cli-reference/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -325,200 +304,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Basic Usage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#complete-options-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complete Options Reference
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Complete Options Reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#inputoutput-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Input/Output Options
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#content-selection" class="md-nav__link">
-    <span class="md-ellipsis">
-      Content Selection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#formatting-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Formatting Options
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#claude-xml-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Claude XML Options
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#meta-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Meta Options
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#examples-with-explanations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Examples with Explanations
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Examples with Explanations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic-conversion" class="md-nav__link">
-    <span class="md-ellipsis">
-      Basic Conversion
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#save-to-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      Save to File
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generate-table-of-contents" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generate Table of Contents
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#extract-main-content" class="md-nav__link">
-    <span class="md-ellipsis">
-      Extract Main Content
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#plain-text-no-links-or-images" class="md-nav__link">
-    <span class="md-ellipsis">
-      Plain Text (No Links or Images)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#compact-output-with-custom-width" class="md-nav__link">
-    <span class="md-ellipsis">
-      Compact Output with Custom Width
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#show-progress-for-large-pages" class="md-nav__link">
-    <span class="md-ellipsis">
-      Show Progress for Large Pages
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#claude-xml-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      Claude XML Format
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#complete-example-with-multiple-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complete Example with Multiple Options
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cli-cheat-sheet" class="md-nav__link">
-    <span class="md-ellipsis">
-      CLI Cheat Sheet
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -557,8 +342,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -573,13 +360,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -594,7 +379,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Guides
@@ -671,10 +456,31 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../troubleshooting/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -684,6 +490,176 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#common-errors-and-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Errors and Solutions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Errors and Solutions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network Errors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connection-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connection Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeout-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timeout Errors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invalid-url-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Invalid URL Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#css-selector-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      CSS Selector Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#content-extraction-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Content Extraction Errors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#large-file-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Large File Handling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#markdown-formatting-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Markdown Formatting Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Markdown Formatting Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-of-contents-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents Problems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-block-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Block Formatting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#claude-xml-specific-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Claude XML Specific Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Claude XML Specific Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xml-validation-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      XML Validation Errors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Help
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -874,64 +850,70 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
+  <a href="#common-errors-and-solutions" class="md-nav__link">
     <span class="md-ellipsis">
-      Basic Usage
+      Common Errors and Solutions
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#complete-options-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complete Options Reference
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Complete Options Reference">
+    <nav class="md-nav" aria-label="Common Errors and Solutions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#inputoutput-options" class="md-nav__link">
+  <a href="#network-errors" class="md-nav__link">
     <span class="md-ellipsis">
-      Input/Output Options
+      Network Errors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Errors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connection-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connection Errors
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#content-selection" class="md-nav__link">
+  <a href="#timeout-errors" class="md-nav__link">
     <span class="md-ellipsis">
-      Content Selection
+      Timeout Errors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invalid-url-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Invalid URL Errors
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#formatting-options" class="md-nav__link">
+  <a href="#css-selector-errors" class="md-nav__link">
     <span class="md-ellipsis">
-      Formatting Options
+      CSS Selector Errors
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#claude-xml-options" class="md-nav__link">
+  <a href="#content-extraction-errors" class="md-nav__link">
     <span class="md-ellipsis">
-      Claude XML Options
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#meta-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Meta Options
+      Content Extraction Errors
     </span>
   </a>
   
@@ -943,91 +925,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#examples-with-explanations" class="md-nav__link">
+  <a href="#large-file-handling" class="md-nav__link">
     <span class="md-ellipsis">
-      Examples with Explanations
+      Large File Handling
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Examples with Explanations">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#markdown-formatting-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Markdown Formatting Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Markdown Formatting Issues">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#basic-conversion" class="md-nav__link">
+  <a href="#table-of-contents-problems" class="md-nav__link">
     <span class="md-ellipsis">
-      Basic Conversion
+      Table of Contents Problems
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#save-to-file" class="md-nav__link">
+  <a href="#code-block-formatting" class="md-nav__link">
     <span class="md-ellipsis">
-      Save to File
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generate-table-of-contents" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generate Table of Contents
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#extract-main-content" class="md-nav__link">
-    <span class="md-ellipsis">
-      Extract Main Content
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#plain-text-no-links-or-images" class="md-nav__link">
-    <span class="md-ellipsis">
-      Plain Text (No Links or Images)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#compact-output-with-custom-width" class="md-nav__link">
-    <span class="md-ellipsis">
-      Compact Output with Custom Width
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#show-progress-for-large-pages" class="md-nav__link">
-    <span class="md-ellipsis">
-      Show Progress for Large Pages
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#claude-xml-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      Claude XML Format
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#complete-example-with-multiple-options" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complete Example with Multiple Options
+      Code Block Formatting
     </span>
   </a>
   
@@ -1039,9 +967,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cli-cheat-sheet" class="md-nav__link">
+  <a href="#claude-xml-specific-issues" class="md-nav__link">
     <span class="md-ellipsis">
-      CLI Cheat Sheet
+      Claude XML Specific Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Claude XML Specific Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xml-validation-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      XML Validation Errors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Help
     </span>
   </a>
   
@@ -1066,210 +1018,113 @@
   
 
 
-<h1 id="cli-reference">CLI Reference<a class="headerlink" href="#cli-reference" title="Permanent link">&para;</a></h1>
-<p>Webdown offers a straightforward command-line interface for converting web pages to Markdown or Claude XML format.</p>
-<h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>webdown<span class="w"> </span>URL<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+<h1 id="webdown-troubleshooting-guide">Webdown Troubleshooting Guide<a class="headerlink" href="#webdown-troubleshooting-guide" title="Permanent link">&para;</a></h1>
+<p>This guide helps you understand and handle common issues when using Webdown.</p>
+<h2 id="common-errors-and-solutions">Common Errors and Solutions<a class="headerlink" href="#common-errors-and-solutions" title="Permanent link">&para;</a></h2>
+<h3 id="network-errors">Network Errors<a class="headerlink" href="#network-errors" title="Permanent link">&para;</a></h3>
+<h4 id="connection-errors">Connection Errors<a class="headerlink" href="#connection-errors" title="Permanent link">&para;</a></h4>
+<p><strong>Error Message</strong>: "Failed to establish a connection to the URL: Connection refused"</p>
+<p><strong>Possible Causes</strong>:
+- The website is down
+- Your internet connection is unstable
+- The website is blocking requests with our default User-Agent</p>
+<p><strong>Solutions</strong>:
+1. Check if the website is accessible in your browser
+2. Try again in a few minutes if the site might be temporarily down
+3. Use a custom User-Agent with the <code>--user-agent</code> flag:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>webdown<span class="w"> </span>--user-agent<span class="w"> </span><span class="s2">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36&quot;</span><span class="w"> </span>https://example.com
+</code></pre></div></p>
+<h4 id="timeout-errors">Timeout Errors<a class="headerlink" href="#timeout-errors" title="Permanent link">&para;</a></h4>
+<p><strong>Error Message</strong>: "Request timed out after X seconds"</p>
+<p><strong>Possible Causes</strong>:
+- The website is slow to respond
+- The website has large resources that take time to load
+- Your internet connection is slow</p>
+<p><strong>Solutions</strong>:
+1. Increase the timeout with the <code>--timeout</code> flag:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>webdown<span class="w"> </span>--timeout<span class="w"> </span><span class="m">60</span><span class="w"> </span>https://example.com
 </code></pre></div>
-<p>Where <code>URL</code> is the web page you want to convert (e.g., <code>https://example.com</code>).</p>
-<h2 id="complete-options-reference">Complete Options Reference<a class="headerlink" href="#complete-options-reference" title="Permanent link">&para;</a></h2>
-<h3 id="inputoutput-options">Input/Output Options<a class="headerlink" href="#inputoutput-options" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-o FILE, --output FILE</code></td>
-<td>Write Markdown output to FILE instead of stdout</td>
-</tr>
-<tr>
-<td><code>-p, --progress</code></td>
-<td>Display a progress bar during download (useful for large pages)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="content-selection">Content Selection<a class="headerlink" href="#content-selection" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-s SELECTOR, --css SELECTOR</code></td>
-<td>Extract content matching CSS selector (e.g., 'main', '.content')</td>
-</tr>
-<tr>
-<td><code>-L, --no-links</code></td>
-<td>Convert hyperlinks to plain text (remove all link markup)</td>
-</tr>
-<tr>
-<td><code>-I, --no-images</code></td>
-<td>Exclude images from the output completely</td>
-</tr>
-</tbody>
-</table>
-<h3 id="formatting-options">Formatting Options<a class="headerlink" href="#formatting-options" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-t, --toc</code></td>
-<td>Generate a table of contents based on headings in the document</td>
-</tr>
-<tr>
-<td><code>-c, --compact</code></td>
-<td>Remove excessive blank lines for more compact output</td>
-</tr>
-<tr>
-<td><code>-w N, --width N</code></td>
-<td>Set line width (0 disables wrapping, 80 recommended for readability)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="claude-xml-options">Claude XML Options<a class="headerlink" href="#claude-xml-options" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--claude-xml</code></td>
-<td>Output in Claude XML format instead of Markdown</td>
-</tr>
-<tr>
-<td><code>--metadata</code></td>
-<td>Include metadata section in XML (default)</td>
-</tr>
-<tr>
-<td><code>--no-metadata</code></td>
-<td>Exclude metadata section from XML</td>
-</tr>
-</tbody>
-</table>
-<h3 id="meta-options">Meta Options<a class="headerlink" href="#meta-options" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-V, --version</code></td>
-<td>Show version information and exit</td>
-</tr>
-<tr>
-<td><code>-h, --help</code></td>
-<td>Show help message and exit</td>
-</tr>
-</tbody>
-</table>
-<h2 id="examples-with-explanations">Examples with Explanations<a class="headerlink" href="#examples-with-explanations" title="Permanent link">&para;</a></h2>
-<h3 id="basic-conversion">Basic Conversion<a class="headerlink" href="#basic-conversion" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>webdown<span class="w"> </span>https://example.com
+2. Try again when your internet connection is more stable</p>
+<h3 id="invalid-url-errors">Invalid URL Errors<a class="headerlink" href="#invalid-url-errors" title="Permanent link">&para;</a></h3>
+<p><strong>Error Message</strong>: "Invalid URL: The URL must begin with http:// or https://"</p>
+<p><strong>Solution</strong>:
+Ensure your URL starts with either <code>http://</code> or <code>https://</code>. Webdown requires fully-formed URLs.</p>
+<h3 id="css-selector-errors">CSS Selector Errors<a class="headerlink" href="#css-selector-errors" title="Permanent link">&para;</a></h3>
+<p><strong>Error Message</strong>: "Invalid CSS selector: Not a valid CSS selector" or "CSS selector did not match any elements"</p>
+<p><strong>Possible Causes</strong>:
+- The CSS selector syntax is invalid
+- The selector doesn't match any elements on the page
+- The page structure has changed since you last used the selector</p>
+<p><strong>Solutions</strong>:
+1. Check the syntax of your CSS selector
+2. Use browser developer tools to verify your selector matches elements on the current page
+3. Try a broader selector:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>webdown<span class="w"> </span>--css<span class="w"> </span><span class="s2">&quot;main, article, .content&quot;</span><span class="w"> </span>https://example.com
+</code></pre></div></p>
+<h3 id="content-extraction-errors">Content Extraction Errors<a class="headerlink" href="#content-extraction-errors" title="Permanent link">&para;</a></h3>
+<p><strong>Error Message</strong>: "Failed to extract content" or "No content found after extraction"</p>
+<p><strong>Possible Causes</strong>:
+- The page uses JavaScript to render content (Webdown doesn't execute JavaScript)
+- The CSS selector didn't match any content-containing elements
+- The page structure is unusual</p>
+<p><strong>Solutions</strong>:
+1. Try without a CSS selector to get the entire page
+2. Use a browser developer tool to find a better CSS selector
+3. For JavaScript-heavy sites, consider using a different tool that can execute JavaScript</p>
+<h2 id="large-file-handling">Large File Handling<a class="headerlink" href="#large-file-handling" title="Permanent link">&para;</a></h2>
+<p>When processing very large web pages (&gt;10MB), Webdown automatically switches to streaming mode. You might notice:</p>
+<ul>
+<li>Progress reporting is less precise</li>
+<li>Memory usage is optimized but processing might be slower</li>
+</ul>
+<p>This behavior is normal and helps handle large sites without excessive memory usage.</p>
+<h2 id="markdown-formatting-issues">Markdown Formatting Issues<a class="headerlink" href="#markdown-formatting-issues" title="Permanent link">&para;</a></h2>
+<h3 id="table-of-contents-problems">Table of Contents Problems<a class="headerlink" href="#table-of-contents-problems" title="Permanent link">&para;</a></h3>
+<p><strong>Issue</strong>: Table of contents links are not working correctly</p>
+<p><strong>Possible Causes</strong>:
+- Special characters in headings
+- Duplicate heading names
+- Complex formatting in headings</p>
+<p><strong>Solutions</strong>:
+1. Use the <code>--toc-depth</code> flag to limit TOC depth:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webdown<span class="w"> </span>--toc<span class="w"> </span>--toc-depth<span class="w"> </span><span class="m">2</span><span class="w"> </span>https://example.com
 </code></pre></div>
-Converts the web page at example.com to Markdown and outputs to the terminal.</p>
-<h3 id="save-to-file">Save to File<a class="headerlink" href="#save-to-file" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-o<span class="w"> </span>example.md
+2. For files with many similar headings, try post-processing with a text editor</p>
+<h3 id="code-block-formatting">Code Block Formatting<a class="headerlink" href="#code-block-formatting" title="Permanent link">&para;</a></h3>
+<p><strong>Issue</strong>: Code blocks are not formatted correctly</p>
+<p><strong>Possible Causes</strong>:
+- The original HTML doesn't use standard code tags
+- The code has special formatting that's lost in conversion</p>
+<p><strong>Solutions</strong>:
+1. Use <code>--preserve-emphasis</code> to maintain more formatting:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>webdown<span class="w"> </span>--preserve-emphasis<span class="w"> </span>https://example.com
 </code></pre></div>
-Converts the web page and saves the output to example.md.</p>
-<h3 id="generate-table-of-contents">Generate Table of Contents<a class="headerlink" href="#generate-table-of-contents" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-t
+2. For Claude XML output, code blocks are automatically wrapped in <code>&lt;answer&gt;</code> tags with language information preserved</p>
+<h2 id="claude-xml-specific-issues">Claude XML Specific Issues<a class="headerlink" href="#claude-xml-specific-issues" title="Permanent link">&para;</a></h2>
+<h3 id="xml-validation-errors">XML Validation Errors<a class="headerlink" href="#xml-validation-errors" title="Permanent link">&para;</a></h3>
+<p><strong>Issue</strong>: Output XML is not recognized by Claude</p>
+<p><strong>Possible Causes</strong>:
+- Unclosed XML tags in the content
+- Malformed XML due to special characters
+- Invalid HTML in the source document</p>
+<p><strong>Solutions</strong>:
+1. Use the <code>--compact</code> option to reduce extraneous whitespace:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>--claude-xml<span class="w"> </span>--compact<span class="w"> </span>https://example.com
 </code></pre></div>
-Adds a table of contents based on the headings found in the document.</p>
-<h3 id="extract-main-content">Extract Main Content<a class="headerlink" href="#extract-main-content" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span>
-</code></pre></div>
-Extracts only the content inside the <code>&lt;main&gt;</code> tag, ignoring headers, footers, sidebars, etc.</p>
-<h3 id="plain-text-no-links-or-images">Plain Text (No Links or Images)<a class="headerlink" href="#plain-text-no-links-or-images" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-L<span class="w"> </span>-I
-</code></pre></div>
-Creates a plain text version by removing hyperlinks and images.</p>
-<h3 id="compact-output-with-custom-width">Compact Output with Custom Width<a class="headerlink" href="#compact-output-with-custom-width" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span>
-</code></pre></div>
-Removes excessive blank lines and wraps text at 80 characters.</p>
-<h3 id="show-progress-for-large-pages">Show Progress for Large Pages<a class="headerlink" href="#show-progress-for-large-pages" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-p
-</code></pre></div>
-Displays a progress bar during download, useful for large pages.</p>
-<h3 id="claude-xml-format">Claude XML Format<a class="headerlink" href="#claude-xml-format" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
-</code></pre></div>
-Outputs the page content in Claude XML format, optimized for use with Anthropic's Claude AI.</p>
-<h3 id="complete-example-with-multiple-options">Complete Example with Multiple Options<a class="headerlink" href="#complete-example-with-multiple-options" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>example.md
-</code></pre></div>
-This example:
-- Extracts content from the <code>&lt;main&gt;</code> tag
-- Generates a table of contents
-- Removes excessive blank lines
-- Wraps text at 80 characters
-- Shows a progress bar during download
-- Saves output to example.md</p>
-<h2 id="cli-cheat-sheet">CLI Cheat Sheet<a class="headerlink" href="#cli-cheat-sheet" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Task</th>
-<th>Command</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Basic conversion</td>
-<td><code>webdown https://example.com</code></td>
-</tr>
-<tr>
-<td>Save to file</td>
-<td><code>webdown https://example.com -o file.md</code></td>
-</tr>
-<tr>
-<td>Add table of contents</td>
-<td><code>webdown https://example.com -t</code></td>
-</tr>
-<tr>
-<td>Extract main content</td>
-<td><code>webdown https://example.com -s "main"</code></td>
-</tr>
-<tr>
-<td>Plain text version</td>
-<td><code>webdown https://example.com -L -I</code></td>
-</tr>
-<tr>
-<td>Compact output</td>
-<td><code>webdown https://example.com -c</code></td>
-</tr>
-<tr>
-<td>Set text width</td>
-<td><code>webdown https://example.com -w 80</code></td>
-</tr>
-<tr>
-<td>Show progress</td>
-<td><code>webdown https://example.com -p</code></td>
-</tr>
-<tr>
-<td>Claude XML format</td>
-<td><code>webdown https://example.com --claude-xml</code></td>
-</tr>
-</tbody>
-</table>
+2. Check if the source HTML has valid structure
+3. For complex pages, try extracting specific sections with CSS selectors:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>--claude-xml<span class="w"> </span>--css<span class="w"> </span><span class="s2">&quot;main, article&quot;</span><span class="w"> </span>https://example.com
+</code></pre></div></p>
+<h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
+<p>If you continue to experience issues not covered in this guide:</p>
+<ol>
+<li>Check the <a href="https://github.com/kelp-labs/webdown/issues">GitHub Issues</a> to see if your problem has been reported</li>
+<li>If not, create a new issue with:</li>
+<li>The command you ran</li>
+<li>The complete error message</li>
+<li>The URL you were trying to process (if not private)</li>
+<li>Your operating system and Python version</li>
+</ol>
 
 
 

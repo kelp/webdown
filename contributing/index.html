@@ -346,7 +346,7 @@
     
       
         
-          
+      
         
       
         
@@ -365,6 +365,149 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-xml-format/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Claude XML Format
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../toc-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Table of Contents
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streaming-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Streaming Large Files
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
           
           <div class="md-nav__link md-nav__container">
             <a href="../api/" class="md-nav__link ">
@@ -379,14 +522,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             API Reference
           </label>
@@ -668,18 +811,39 @@
 <h2 id="publishing-to-pypi-maintainers-only">Publishing to PyPI (Maintainers Only)<a class="headerlink" href="#publishing-to-pypi-maintainers-only" title="Permanent link">&para;</a></h2>
 <p>Webdown uses GitHub Actions to automate the release process:</p>
 <ol>
-<li>Update version number in:</li>
+<li>Update version numbers in all files at once using the bump-version command:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>bump-version<span class="w"> </span><span class="nv">VERSION</span><span class="o">=</span><span class="m">0</span>.6.0
+</code></pre></div>
+   This will automatically update:</li>
 <li><code>pyproject.toml</code></li>
-<li><code>webdown/__init__.py</code></li>
-<li>Update <code>CHANGELOG.md</code> with the new version and changes</li>
-<li>Commit the version bump changes</li>
-<li>Run the release target to verify everything and create the tag:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>release
-</code></pre></div></li>
-<li>If the release target succeeds, push the tag to trigger the release:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v0.4.x
-</code></pre></div></li>
-<li>The GitHub Actions workflow will:</li>
+<li>
+<p><code>webdown/__init__.py</code></p>
+</li>
+<li>
+<p>Update <code>CHANGELOG.md</code> with the new version and changes (this must be done manually)</p>
+</li>
+<li>
+<p>Commit the version bump changes:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git<span class="w"> </span>add<span class="w"> </span>pyproject.toml<span class="w"> </span>webdown/__init__.py<span class="w"> </span>CHANGELOG.md
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Bump version to 0.6.0&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Run the release target to verify everything and create the tag:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>make<span class="w"> </span>release
+</code></pre></div>
+   If you're sure everything is correct and want to create the tag in one step:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>make<span class="w"> </span>release<span class="w"> </span><span class="nv">CONFIRM</span><span class="o">=</span>yes
+</code></pre></div></p>
+</li>
+<li>
+<p>If the release target succeeds, push the tag to trigger the release workflow:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v0.6.0
+</code></pre></div></p>
+</li>
+<li>
+<p>The GitHub Actions workflow will automatically:</p>
+</li>
 <li>Verify the version numbers match</li>
 <li>Run tests</li>
 <li>Build the package</li>
@@ -689,6 +853,11 @@
 <p>For local testing before a release, you can use:
 - <code>make build</code> to build the package locally
 - <code>make publish-test</code> to publish to TestPyPI</p>
+<h3 id="troubleshooting-release-issues">Troubleshooting Release Issues<a class="headerlink" href="#troubleshooting-release-issues" title="Permanent link">&para;</a></h3>
+<p>If the release workflow fails due to version mismatch:
+1. Check that versions match in <code>pyproject.toml</code> and <code>webdown/__init__.py</code>
+2. If they don't match, use <code>make bump-version VERSION=x.y.z</code> to fix the discrepancy
+3. Commit the changes and try the release process again</p>
 <p>Note: PyPI publishing uses GitHub's OIDC and PyPI's Trusted Publishers feature for secure authentication without tokens.</p>
 <h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
 <p>By contributing to this project, you agree that your contributions will be licensed under the project's MIT License (see LICENSE file).</p>
