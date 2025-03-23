@@ -15,6 +15,7 @@ class TestGenerateMetadataXml:
 
     def test_empty_metadata_items(self):
         """Test the case where metadata_items would be empty (line 84)."""
+
         # Directly test the conditional by mocking the function
         # Create a mock function that simulates the empty metadata_items case
         def mock_generate_metadata():
@@ -38,6 +39,7 @@ class TestProcessSection:
 
     def test_empty_paragraph_in_section(self):
         """Test section with empty paragraphs (line 166/253)."""
+
         # Create a section match with content containing empty paragraphs
         class MockMatch:
             def __init__(self):
@@ -66,6 +68,7 @@ class TestProcessSection:
 
     def test_direct_paragraph_skip(self):
         """Direct test for paragraph skipping in process_section (line 253)."""
+
         # Simpler direct test for the line we want to cover
         def test_paragraph_skip():
             paragraphs = ["content", "", "   ", "\t\n"]
@@ -105,6 +108,7 @@ class TestMarkdownToClaudeXml:
 
     def test_direct_pre_content_para_skip(self):
         """Direct test for pre-content paragraph skipping (line 274)."""
+
         # Simpler direct test for the line we want to cover
         def test_para_skip():
             paragraphs = ["content", "", "   ", "\t\n"]
