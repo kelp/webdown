@@ -67,7 +67,7 @@ When making changes, choose the appropriate version increment based on the impac
 - Follow PEP 8 conventions (enforced by Black and flake8)
 - Use type hints consistently (imports from `typing` module)
 - Use docstrings with Args/Returns/Raises sections
-- Error handling: use custom exception classes in `converter.py`
+- Error handling: use custom exception classes with descriptive error codes
 - Class naming: CamelCase (e.g., `WebdownError`)
 - Function naming: snake_case (e.g., `convert_url_to_markdown`)
 - Imports order: standard lib, third-party, local modules (enforced by isort)
@@ -76,6 +76,8 @@ When making changes, choose the appropriate version increment based on the impac
 - Format code with Black before committing
 - Sort imports with isort before committing
 - Pre-commit hooks will enforce code quality standards
+- Commit poetry.lock file for reproducible builds
+- Use precise version pinning for security-critical dependencies
 
 ### Function Design Guidelines
 - Keep functions under 30 lines of executable code for improved readability (50 absolute max)
@@ -89,3 +91,64 @@ When making changes, choose the appropriate version increment based on the impac
 - Use configuration objects (like `WebdownConfig`, `ClaudeXMLConfig`) for consistent parameter handling
 - Follow a "tell, don't ask" principle when designing function interactions
 - Keep public API surface minimal and clearly documented
+
+## Architectural Principles
+
+### Modular Design
+- Keep modules focused on a single responsibility
+- Favor logical separation over convenience of implementation
+- Main modules should be:
+  - `config.py`: Configuration classes and constants
+  - `html_parser.py`: Fetching and processing HTML
+  - `markdown_converter.py`: Converting HTML to Markdown
+  - `xml_converter.py`: Transforming Markdown to structured formats
+  - `error_utils.py`: Error handling and user-friendly messages
+  - `validation.py`: Input validation and parameter checking
+  - `cli.py`: Command-line interface handling
+
+### Interface Design
+- Public functions should have stable signatures
+- Use configuration objects for complex parameter sets
+- Provide backward compatibility for API changes
+- Allow sensible defaults for all optional parameters
+- Validate inputs near the entry points, not deep in the call stack
+
+### Error Handling Strategy
+- Use structured error hierarchy with descriptive error codes
+- Provide user-friendly error messages for CLI users
+- Include contextual information in error messages
+- Centralize error formatting and handling logic
+- Add testing for error cases to ensure good coverage
+
+## Testing Best Practices
+- Aim for 100% test coverage of application code
+- Test both success paths and error paths
+- Use appropriate mocking to isolate components
+- Include integration tests for key workflows
+- Test edge cases like empty content, large files, etc.
+- Separate slow integration tests from fast unit tests
+- Add test cases for all bug fixes to prevent regressions
+- Use the `# pragma: no cover` comment sparingly and only for truly unreachable code
+- Test with multiple Python versions in CI/CD pipeline
+- Add type hints to test files and run mypy on them
+
+## GitHub Actions Workflow
+- Run tests on multiple Python versions (3.10-3.13)
+- Include separate job for security scanning
+- Use proper caching for dependencies to speed up builds
+- Add cache-dependency-path for avoiding cache conflicts
+- Store detailed test reports as artifacts
+
+## Documentation Practices
+- Provide both API reference and conceptual guides
+- Include specific documentation for advanced features:
+  - Troubleshooting guide with common errors and solutions
+  - Feature-specific guides (e.g., TOC generation, streaming)
+  - Format-specific documentation (e.g., Claude XML)
+- Maintain a detailed CHANGELOG following Keep a Changelog format
+- Include usage examples in README and docstrings
+- Document both CLI and API usage patterns
+- Use mkdocs with Material theme for documentation site
+- Document error codes and their meaning
+- Add docstrings to all public functions, classes, and modules
+- Keep documentation in sync with code changes
