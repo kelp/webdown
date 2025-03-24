@@ -7,7 +7,7 @@ name = "webdown"
 version = "0.6.3"
 description = "Convert web pages to markdown and Claude XML formats"
 authors = ["Travis Cole <kelp@plek.org>"]
-readme = {file = "README.md", content-type = "text/markdown"}
+readme = "README.md"
 repository = "https://github.com/kelp/webdown"
 homepage = "https://tcole.net/webdown"
 documentation = "https://tcole.net/webdown/"
