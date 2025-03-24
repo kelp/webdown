@@ -36,7 +36,17 @@ jobs:
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           # Extract content from CHANGELOG.md for this version
-          CHANGELOG_CONTENT=$(awk -v ver="## [$VERSION]" 'BEGIN{flag=0} /^'"$ver"'/{flag=1;next} /^## \[[0-9]+\.[0-9]+\.[0-9]+\]/{flag=0} flag' CHANGELOG.md)
+          echo "Searching for version: ## [$VERSION]"
+          # Include the version header in extracted content
+          CHANGELOG_CONTENT=$(awk -v ver="## \\[$VERSION\\]" '
+            $0 ~ ver {print; flag=1; next}
+            /^## \[[0-9]+\.[0-9]+\.[0-9]+\]/ {flag=0}
+            flag {print}
+          ' CHANGELOG.md)
+
+          # Log extracted content for debugging
+          echo "Extracted changelog content:"
+          echo "$CHANGELOG_CONTENT"
           # Handle empty changelog case
           if [ -z "$CHANGELOG_CONTENT" ]; then
             CHANGELOG_CONTENT="Release version $VERSION"
