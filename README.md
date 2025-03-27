@@ -41,6 +41,16 @@ webdown https://api.example.com/docs -s "main" -I -c -w 80 -o api_context.md
 pip install webdown
 ```
 
+### With Homebrew
+
+```bash
+# Add the tap
+brew tap kelp/tools
+
+# Install webdown
+brew install webdown
+```
+
 ### Install from Source
 
 ```bash
