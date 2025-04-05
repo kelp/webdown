@@ -30,7 +30,7 @@ Webdown is particularly useful for preparing documentation to use with AI-assist
 
 ```bash
 # Example: Convert API docs and store for AI coding context
-webdown https://api.example.com/docs -s "main" -I -c -w 80 -o api_context.md
+webdown -u https://api.example.com/docs -s "main" -I -c -w 80 -o api_context.md
 ```
 
 ## Installation
@@ -70,13 +70,13 @@ poetry install
 Basic usage:
 
 ```bash
-webdown https://example.com/page.html -o output.md
+webdown -u https://example.com/page.html -o output.md
 ```
 
 Output to stdout:
 
 ```bash
-webdown https://example.com/page.html
+webdown -u https://example.com/page.html
 ```
 
 ### Options
@@ -102,43 +102,43 @@ For large web pages (over 10MB), streaming mode is automatically used to optimiz
 Generate markdown with a table of contents:
 
 ```bash
-webdown https://example.com -t -o output.md
+webdown -u https://example.com -t -o output.md
 ```
 
 Extract only main content:
 
 ```bash
-webdown https://example.com -s "main" -o output.md
+webdown -u https://example.com -s "main" -o output.md
 ```
 
 Strip links and images:
 
 ```bash
-webdown https://example.com -L -I -o output.md
+webdown -u https://example.com -L -I -o output.md
 ```
 
 Compact output with progress bar and line wrapping:
 
 ```bash
-webdown https://example.com -c -p -w 80 -o output.md
+webdown -u https://example.com -c -p -w 80 -o output.md
 ```
 
 Generate Claude XML format for use with Claude AI:
 
 ```bash
-webdown https://example.com --claude-xml -o doc.xml
+webdown -u https://example.com --claude-xml -o doc.xml
 ```
 
 Claude XML with no metadata section:
 
 ```bash
-webdown https://example.com --claude-xml --no-metadata -o doc.xml
+webdown -u https://example.com --claude-xml --no-metadata -o doc.xml
 ```
 
 Claude XML without the current date in metadata:
 
 ```bash
-webdown https://example.com --claude-xml --no-date -o doc.xml
+webdown -u https://example.com --claude-xml --no-date -o doc.xml
 ```
 
 For complete documentation, use the `--help` flag:
@@ -262,39 +262,56 @@ poetry build
 Webdown can also be used as a Python library in your own projects:
 
 ```python
-from webdown.converter import convert_url_to_markdown, WebdownConfig
+from webdown.converter import convert_url, convert_file, WebdownConfig
+from webdown.config import OutputFormat, DocumentOptions
 
-# Basic conversion
-markdown = convert_url_to_markdown("https://example.com")
+# Basic URL conversion
+markdown = convert_url("https://example.com")
 
-# Using the Config object for more options
+# Basic file conversion
+markdown = convert_file("page.html")
+
+# Using the Config object for URL conversion with more options
+doc_options = DocumentOptions(
+    include_toc=True,
+    compact_output=True,
+    body_width=80
+)
 config = WebdownConfig(
     url="https://example.com",
-    include_toc=True,
     css_selector="main",
-    compact_output=True,
-    body_width=80,
-    show_progress=True
+    show_progress=True,
+    document_options=doc_options
 )
-markdown = convert_url_to_markdown(config)
+markdown = convert_url(config)
+
+# Using the Config object for file conversion with options
+file_config = WebdownConfig(
+    file_path="page.html",
+    css_selector="main",
+    document_options=doc_options
+)
+markdown = convert_file(file_config)
 
 # Save to file
 with open("output.md", "w") as f:
     f.write(markdown)
 
-# Convert to Claude XML format (optimized for Anthropic's Claude AI)
-from webdown.converter import convert_url_to_claude_xml, ClaudeXMLConfig
-
-# Basic Claude XML conversion
-xml = convert_url_to_claude_xml("https://example.com")
-
-# With custom XML configuration
-claude_config = ClaudeXMLConfig(
-    include_metadata=True,   # Include title, URL, and date (default: True)
-    add_date=True,           # Include current date in metadata (default: True)
-    doc_tag="claude_documentation"  # Root document tag name (default)
+# Convert URL to Claude XML format
+config = WebdownConfig(
+    url="https://example.com",
+    format=OutputFormat.CLAUDE_XML,
+    document_options=DocumentOptions(include_metadata=True)
 )
-xml = convert_url_to_claude_xml("https://example.com", claude_config)
+xml = convert_url(config)
+
+# Convert local file to Claude XML format
+file_config = WebdownConfig(
+    file_path="page.html",
+    format=OutputFormat.CLAUDE_XML,
+    document_options=DocumentOptions(include_metadata=True)
+)
+xml = convert_file(file_config)
 
 # Save XML output
 with open("output.xml", "w") as f:

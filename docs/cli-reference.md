@@ -5,12 +5,25 @@ Webdown offers a straightforward command-line interface for converting web pages
 ## Basic Usage
 
 ```bash
-webdown URL [options]
+webdown -u URL [options]
 ```
 
-Where `URL` is the web page you want to convert (e.g., `https://example.com`).
+or
+
+```bash
+webdown -f FILE [options]
+```
+
+Where `-u URL` is the web page you want to convert (e.g., `-u https://example.com`) or `-f FILE` is the local HTML file you want to convert (e.g., `-f ./page.html`).
 
 ## Complete Options Reference
+
+### Source Options
+
+| Option | Description |
+|--------|-------------|
+| `-u URL, --url URL` | URL of the web page to convert |
+| `-f FILE, --file FILE` | Path to local HTML file to convert |
 
 ### Input/Output Options
 
@@ -55,63 +68,63 @@ Where `URL` is the web page you want to convert (e.g., `https://example.com`).
 ### Basic Conversion
 
 ```bash
-webdown https://example.com
+webdown -u https://example.com
 ```
 Converts the web page at example.com to Markdown and outputs to the terminal.
 
 ### Save to File
 
 ```bash
-webdown https://example.com -o example.md
+webdown -u https://example.com -o example.md
 ```
 Converts the web page and saves the output to example.md.
 
 ### Generate Table of Contents
 
 ```bash
-webdown https://example.com -t
+webdown -u https://example.com -t
 ```
 Adds a table of contents based on the headings found in the document.
 
 ### Extract Main Content
 
 ```bash
-webdown https://example.com -s "main"
+webdown -u https://example.com -s "main"
 ```
 Extracts only the content inside the `<main>` tag, ignoring headers, footers, sidebars, etc.
 
 ### Plain Text (No Links or Images)
 
 ```bash
-webdown https://example.com -L -I
+webdown -u https://example.com -L -I
 ```
 Creates a plain text version by removing hyperlinks and images.
 
 ### Compact Output with Custom Width
 
 ```bash
-webdown https://example.com -c -w 80
+webdown -u https://example.com -c -w 80
 ```
 Removes excessive blank lines and wraps text at 80 characters.
 
 ### Show Progress for Large Pages
 
 ```bash
-webdown https://example.com -p
+webdown -u https://example.com -p
 ```
 Displays a progress bar during download, useful for large pages.
 
 ### Claude XML Format
 
 ```bash
-webdown https://example.com --claude-xml -o output.xml
+webdown -u https://example.com --claude-xml -o output.xml
 ```
 Outputs the page content in Claude XML format, optimized for use with Anthropic's Claude AI.
 
 ### Complete Example with Multiple Options
 
 ```bash
-webdown https://example.com -s "main" -t -c -w 80 -p -o example.md
+webdown -u https://example.com -s "main" -t -c -w 80 -p -o example.md
 ```
 This example:
 - Extracts content from the `<main>` tag
@@ -125,12 +138,13 @@ This example:
 
 | Task | Command |
 |------|---------|
-| Basic conversion | `webdown https://example.com` |
-| Save to file | `webdown https://example.com -o file.md` |
-| Add table of contents | `webdown https://example.com -t` |
-| Extract main content | `webdown https://example.com -s "main"` |
-| Plain text version | `webdown https://example.com -L -I` |
-| Compact output | `webdown https://example.com -c` |
-| Set text width | `webdown https://example.com -w 80` |
-| Show progress | `webdown https://example.com -p` |
-| Claude XML format | `webdown https://example.com --claude-xml` |
+| Basic URL conversion | `webdown -u https://example.com` |
+| Basic file conversion | `webdown -f ./page.html` |
+| Save to file | `webdown -u https://example.com -o file.md` |
+| Add table of contents | `webdown -u https://example.com -t` |
+| Extract main content | `webdown -u https://example.com -s "main"` |
+| Plain text version | `webdown -u https://example.com -L -I` |
+| Compact output | `webdown -u https://example.com -c` |
+| Set text width | `webdown -u https://example.com -w 80` |
+| Show progress | `webdown -u https://example.com -p` |
+| Claude XML format | `webdown -u https://example.com --claude-xml` |

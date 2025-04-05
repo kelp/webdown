@@ -5,60 +5,66 @@ Quick reference guide for the Webdown command-line interface.
 ## Basic Commands
 
 ```bash
-# Basic conversion
-webdown https://example.com
+# Basic URL conversion
+webdown -u https://example.com
 
-# Save to file
-webdown https://example.com -o output.md
+# Basic file conversion
+webdown -f ./page.html
+
+# Save to file (URL)
+webdown -u https://example.com -o output.md
+
+# Save to file (local HTML)
+webdown -f ./page.html -o output.md
 
 # Generate table of contents
-webdown https://example.com -t
+webdown -u https://example.com -t
 
 # Show progress bar
-webdown https://example.com -p
+webdown -u https://example.com -p
 
 # Extract specific content
-webdown https://example.com -s "main"
+webdown -u https://example.com -s "main"
 
 # Plain text version (no links/images)
-webdown https://example.com -L -I
+webdown -u https://example.com -L -I
 
 # Compact output with width of 80 chars
-webdown https://example.com -c -w 80
+webdown -u https://example.com -c -w 80
 ```
 
 ## Advanced Usage
 
 ```bash
 # Single line breaks (more compact)
-webdown https://example.com --single-line-break
+webdown -u https://example.com --single-line-break
 
 # Unicode support
-webdown https://example.com --unicode
+webdown -u https://example.com --unicode
 
 # Custom emphasis markers
-webdown https://example.com --emphasis-mark "*" --strong-mark "__"
+webdown -u https://example.com --emphasis-mark "*" --strong-mark "__"
 
 # Keep tables as HTML
-webdown https://example.com --tables-as-html
+webdown -u https://example.com --tables-as-html
 
 # Streaming mode for large documents (5MB threshold)
-webdown https://example.com --stream-threshold 5242880
+webdown -u https://example.com --stream-threshold 5242880
 
 # Protect links from wrapping
-webdown https://example.com --protect-links
+webdown -u https://example.com --protect-links
 
 # Images as HTML
-webdown https://example.com --images-as-html
+webdown -u https://example.com --images-as-html
 
 # Default alt text for images
-webdown https://example.com --default-image-alt "image"
+webdown -u https://example.com --default-image-alt "image"
 
 # Add padding to tables
-webdown https://example.com --pad-tables
+webdown -u https://example.com --pad-tables
 
 # Wrap list items
-webdown https://example.com --wrap-list-items
+webdown -u https://example.com --wrap-list-items
 ```
 
 ## Complete Example
@@ -66,7 +72,7 @@ webdown https://example.com --wrap-list-items
 ```bash
 # Extract main content, add TOC, compact output, 80 char width,
 # show progress, use Unicode, and single line breaks
-webdown https://example.com -s "main" -t -c -w 80 -p \
+webdown -u https://example.com -s "main" -t -c -w 80 -p \
   --unicode --single-line-break -o output.md
 ```
 
