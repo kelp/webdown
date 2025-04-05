@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New `read_html_file` function for reading HTML from the local filesystem
 - Added error codes for file-related errors (FILE_NOT_FOUND, PERMISSION_DENIED, IO_ERROR)
 - Comprehensive documentation with examples for local file conversion
+- Comprehensive CLI test script (`scripts/test_cli.sh`) for testing all CLI options with real websites
 
 ## [0.6.3] - 2025-03-22
 
