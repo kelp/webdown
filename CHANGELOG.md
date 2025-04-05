@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2025-04-05
+
+### Breaking Changes
+- CLI interface now requires explicit `-u/--url` or `-f/--file` flags for source input
+- URL must now be specified with `-u/--url` flag instead of as a positional argument
+- All CLI examples in documentation have been updated to reflect the new syntax
+
+### Added
+- Support for converting local HTML files to Markdown with `-f/--file` option
+- New `convert_file` function in the Python API for local HTML file conversion
+- New `read_html_file` function for reading HTML from the local filesystem
+- Added error codes for file-related errors (FILE_NOT_FOUND, PERMISSION_DENIED, IO_ERROR)
+- Comprehensive documentation with examples for local file conversion
+
 ## [0.6.3] - 2025-03-22
 
 ### Changed

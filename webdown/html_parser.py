@@ -3,14 +3,17 @@
 This module handles fetching web content and basic HTML parsing:
 - URL validation and verification
 - HTML fetching with proper error handling and progress tracking
+- HTML file reading from local filesystem
 - Content extraction with CSS selectors
 - Streaming support for large web pages
 
-The primary functions are fetch_url() for retrieving HTML content
+The primary functions are fetch_url() for retrieving HTML content from web,
+read_html_file() for reading HTML from local files,
 and extract_content_with_css() for selecting specific parts of HTML.
 """
 
 import io
+import os
 from typing import Optional
 
 import requests
@@ -235,6 +238,46 @@ def extract_content_with_css(html: str, css_selector: str) -> str:
         raise WebdownError(
             f"Error applying CSS selector '{css_selector}': {str(e)}",
             code=ErrorCode.CSS_SELECTOR_INVALID,
+        )
+
+
+def read_html_file(file_path: str) -> str:
+    """Read HTML content from a local file.
+
+    Args:
+        file_path: Path to the HTML file
+
+    Returns:
+        HTML content as string
+
+    Raises:
+        WebdownError: If the file does not exist or cannot be read
+    """
+    try:
+        # Check if file exists before attempting to open it
+        if not os.path.exists(file_path):
+            raise WebdownError(
+                f"File not found: {file_path}", code=ErrorCode.FILE_NOT_FOUND
+            )
+
+        # Read the file content
+        with open(file_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+            return html_content
+
+    except FileNotFoundError:
+        # Handles file deletion between os.path.exists check and file open
+        raise WebdownError(
+            f"File not found: {file_path}", code=ErrorCode.FILE_NOT_FOUND
+        )
+    except PermissionError:
+        raise WebdownError(
+            f"Permission denied when reading {file_path}",
+            code=ErrorCode.PERMISSION_DENIED,
+        )
+    except IOError as e:
+        raise WebdownError(
+            f"Error reading file {file_path}: {str(e)}", code=ErrorCode.IO_ERROR
         )
 
 

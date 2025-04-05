@@ -58,6 +58,7 @@ class WebdownConfig:
 
     Attributes:
         url (Optional[str]): URL of the web page to convert
+        file_path (Optional[str]): Path to local HTML file to convert
         include_links (bool): Whether to include hyperlinks (True) or plain text (False)
         include_images (bool): Whether to include images (True) or exclude them
         css_selector (Optional[str]): CSS selector to extract specific content
@@ -68,6 +69,7 @@ class WebdownConfig:
 
     # Source options
     url: Optional[str] = None
+    file_path: Optional[str] = None
     show_progress: bool = False
 
     # Content options

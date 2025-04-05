@@ -1,40 +1,53 @@
 """Command-line interface for webdown.
 
 This module provides the command-line interface (CLI) for Webdown, a tool for
-converting web pages to clean, readable Markdown format. The CLI allows users to
-customize various aspects of the conversion process, from content selection to
-formatting options.
+converting web pages or local HTML files to clean, readable Markdown format.
+The CLI allows users to customize various aspects of the conversion process,
+from content selection to formatting options.
 
 For a complete reference, see the [CLI Reference](../cli-reference.md) documentation.
 
 ## Basic Usage
 
-The most basic usage is to simply provide a URL:
+The most basic usage is to convert a URL:
 
 ```bash
-webdown https://example.com
+webdown -u https://example.com
 ```
 
-This will fetch the web page and convert it to Markdown,
-displaying the result to stdout.
+Or convert a local HTML file:
+
+```bash
+webdown -f ./page.html
+```
+
+This will convert the content to Markdown, displaying the result to stdout.
 To save the output to a file:
 
 ```bash
-webdown https://example.com -o output.md
+webdown -u https://example.com -o output.md
+webdown -f ./page.html -o output.md
 ```
 
 ## Common Options
 
 The CLI offers various options to customize the conversion:
 
+### Source Options
+* `-u, --url URL`: URL of the web page to convert
+* `-f, --file FILE`: Path to local HTML file to convert
+
+### Input/Output Options
 * `-o, --output FILE`: Write output to FILE instead of stdout
+* `-p, --progress`: Show download progress bar (only for URL downloads)
+
+### Content Options
 * `-t, --toc`: Generate a table of contents based on headings
 * `-L, --no-links`: Strip hyperlinks, converting them to plain text
 * `-I, --no-images`: Exclude images from the output
 * `-s, --css SELECTOR`: Extract only content matching the CSS selector (e.g., "main")
 * `-c, --compact`: Remove excessive blank lines from the output
 * `-w, --width N`: Set line width for wrapped text (0 for no wrapping)
-* `-p, --progress`: Show download progress bar
 * `-V, --version`: Show version information and exit
 * `-h, --help`: Show help message and exit
 
@@ -53,49 +66,83 @@ Options for generating Claude XML format, optimized for use with Claude AI:
 
 ## Example Scenarios
 
+### Web Page Conversion Examples
+
 1. Basic conversion with a table of contents:
    ```bash
-   webdown https://example.com -t -o output.md
+   webdown -u https://example.com -t -o output.md
    ```
 
 2. Extract only the main content area with compact output and text wrapping:
    ```bash
-   webdown https://example.com -s "main" -c -w 80 -o output.md
+   webdown -u https://example.com -s "main" -c -w 80 -o output.md
    ```
 
 3. Create a plain text version (no links or images):
    ```bash
-   webdown https://example.com -L -I -o text_only.md
+   webdown -u https://example.com -L -I -o text_only.md
    ```
 
 4. Show download progress for large pages:
    ```bash
-   webdown https://example.com -p -o output.md
+   webdown -u https://example.com -p -o output.md
    ```
 
 5. Extract content from a specific div:
    ```bash
-   webdown https://example.com -s "#content" -o output.md
+   webdown -u https://example.com -s "#content" -o output.md
    ```
 
 6. Process a large webpage with progress bar (streaming is automatic for large pages):
    ```bash
-   webdown https://example.com -p
+   webdown -u https://example.com -p
    ```
 
 7. Generate output in Claude XML format for use with Claude AI:
    ```bash
-   webdown https://example.com -s "main" --claude-xml -o output.xml
+   webdown -u https://example.com -s "main" --claude-xml -o output.xml
    ```
 
 8. Create Claude XML without metadata:
    ```bash
-   webdown https://example.com --claude-xml --no-metadata -o output.xml
+   webdown -u https://example.com --claude-xml --no-metadata -o output.xml
    ```
 
 9. Complete example with multiple options:
    ```bash
-   webdown https://example.com -s "main" -t -c -w 80 -p -o output.md
+   webdown -u https://example.com -s "main" -t -c -w 80 -p -o output.md
+   ```
+
+### Local HTML File Conversion Examples
+
+1. Convert a local HTML file to Markdown:
+   ```bash
+   webdown -f ./page.html -o output.md
+   ```
+
+2. Convert a local file with table of contents:
+   ```bash
+   webdown -f ./page.html -t -o output.md
+   ```
+
+3. Extract only main content from a local file:
+   ```bash
+   webdown -f ./page.html -s "main" -o output.md
+   ```
+
+4. Create plain text from a local file (no links or images):
+   ```bash
+   webdown -f ./page.html -L -I -o text_only.md
+   ```
+
+5. Convert local file to Claude XML format:
+   ```bash
+   webdown -f ./page.html --claude-xml -o output.xml
+   ```
+
+6. Complete local file example with multiple options:
+   ```bash
+   webdown -f ./page.html -s "main" -t -c -w 80 -o output.md
    ```
 
 The entry point is the `main()` function, which is called when the command
@@ -109,7 +156,7 @@ from urllib.parse import urlparse
 
 from webdown import __version__
 from webdown.config import DocumentOptions, OutputFormat, WebdownConfig
-from webdown.converter import convert_url
+from webdown.converter import convert_file, convert_url
 from webdown.error_utils import format_error_for_cli
 
 
@@ -122,15 +169,21 @@ def create_argument_parser() -> argparse.ArgumentParser:
         Configured ArgumentParser ready to parse webdown CLI arguments
     """
     parser = argparse.ArgumentParser(
-        description="Convert web pages to clean, readable Markdown format.",
+        description="Convert web pages or local HTML files to clean Markdown format.",
         epilog="For more information: https://github.com/kelp/webdown",
     )
 
-    # Basic arguments
-    parser.add_argument(
-        "url",
+    # Source arguments (mutually exclusive)
+    source_group = parser.add_mutually_exclusive_group()
+    source_group.add_argument(
+        "-u",
+        "--url",
         help="URL of the web page to convert (e.g., https://example.com)",
-        nargs="?",
+    )
+    source_group.add_argument(
+        "-f",
+        "--file",
+        help="Path to local HTML file to convert (e.g., ./page.html)",
     )
 
     # Organize arguments in logical groups
@@ -252,16 +305,17 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
 def _convert_to_selected_format(
     parsed_args: argparse.Namespace,
 ) -> Tuple[str, Optional[str]]:
-    """Convert URL to selected format based on command-line arguments.
+    """Convert content to selected format based on command-line arguments.
 
     This function handles the entire conversion process:
-    1. Auto-fixing the URL (adding https:// if missing)
-    2. Creating the WebdownConfig with all options from arguments
-    3. Converting the URL to the selected format (Markdown or Claude XML)
+    1. Determining the input source (URL or file)
+    2. Auto-fixing the URL if needed (adding https:// if missing)
+    3. Creating the WebdownConfig with all options from arguments
+    4. Converting the content to the selected format (Markdown or Claude XML)
 
     Args:
-        parsed_args: Parsed command-line arguments containing URL and conversion options
-                    Must include attributes for url, toc, no_links, no_images, css,
+        parsed_args: Arguments containing input source and conversion options.
+                    Must include url, file, toc, no_links, no_images, css,
                     compact, width, progress, and claude_xml
 
     Returns:
@@ -270,6 +324,7 @@ def _convert_to_selected_format(
     Examples:
         >>> args = argparse.Namespace(
         ...     url="example.com",
+        ...     file=None,
         ...     toc=True,
         ...     no_links=False,
         ...     no_images=False,
@@ -287,12 +342,6 @@ def _convert_to_selected_format(
         >>> out_path
         'output.md'
     """
-    # Auto-fix URL format if needed
-    url = parsed_args.url
-    if url:
-        url = auto_fix_url(url)
-        parsed_args.url = url
-
     # Create document options
     doc_options = DocumentOptions(
         include_toc=parsed_args.toc,
@@ -306,19 +355,38 @@ def _convert_to_selected_format(
         OutputFormat.CLAUDE_XML if parsed_args.claude_xml else OutputFormat.MARKDOWN
     )
 
-    # Create configuration
-    config = WebdownConfig(
-        url=url,
-        include_links=not parsed_args.no_links,
-        include_images=not parsed_args.no_images,
-        css_selector=parsed_args.css,
-        show_progress=parsed_args.progress,
-        format=output_format,
-        document_options=doc_options,
-    )
+    # Content options common to URL and file
+    content_options = {
+        "include_links": not parsed_args.no_links,
+        "include_images": not parsed_args.no_images,
+        "css_selector": parsed_args.css,
+        "format": output_format,
+        "document_options": doc_options,
+    }
 
-    # Convert content using the unified convert_url function
-    content = convert_url(config)
+    # Determine the source type and create appropriate config
+    if parsed_args.url:
+        # Auto-fix URL format if needed
+        url = auto_fix_url(parsed_args.url)
+        parsed_args.url = url
+
+        # Create URL-specific configuration
+        config = WebdownConfig(
+            url=url, show_progress=parsed_args.progress, **content_options
+        )
+
+        # Convert content using convert_url function
+        content = convert_url(config)
+    elif parsed_args.file:
+        # Create file-specific configuration
+        config = WebdownConfig(file_path=parsed_args.file, **content_options)
+
+        # Convert content using convert_file function
+        content = convert_file(config)
+    else:
+        # This should not happen since we're calling parse_args(["-h"])
+        # when no source is provided, but just in case:
+        raise ValueError("Either URL or file path must be provided")
 
     return content, parsed_args.output
 
@@ -377,7 +445,7 @@ def main(args: Optional[List[str]] = None) -> int:
     This function is the main entry point for the webdown command-line tool.
     It handles the entire workflow:
     1. Parsing command-line arguments
-    2. Converting the URL to Markdown with the specified options
+    2. Converting the content (URL or file) to Markdown with the specified options
     3. Writing the output to a file or stdout
     4. Error handling and reporting
 
@@ -389,24 +457,28 @@ def main(args: Optional[List[str]] = None) -> int:
         Exit code: 0 for success, 1 for errors
 
     Examples:
-        >>> main(['https://example.com'])  # Convert and print to stdout
+        >>> main(['-u', 'https://example.com'])  # Convert URL and print to stdout
         0
-        >>> main(['https://example.com', '-o', 'output.md'])  # Write to file
+        >>> main(['-u', 'https://example.com', '-o', 'output.md'])  # Write URL to file
         0
-        >>> main(['invalid-url'])  # Handle error
+        >>> main(['-f', 'page.html'])  # Convert file and print to stdout
+        0
+        >>> main(['-f', 'page.html', '-o', 'output.md'])  # Write file to file
+        0
+        >>> main(['-u', 'invalid-url'])  # Handle error
         1
     """
     try:
         # Parse command-line arguments
         parsed_args = parse_args(args)
 
-        # If no URL provided, show help
-        if parsed_args.url is None:
+        # If neither URL nor file provided, show help
+        if parsed_args.url is None and parsed_args.file is None:
             # This will print help and exit
             parse_args(["-h"])  # pragma: no cover
             return 0  # pragma: no cover - unreachable after SystemExit
 
-        # Process URL and generate output content
+        # Process content and generate output
         content, output_path = _convert_to_selected_format(parsed_args)
 
         # Write output to file or stdout
