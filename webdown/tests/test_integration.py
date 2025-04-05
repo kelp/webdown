@@ -106,8 +106,8 @@ class TestIntegration:
             with tempfile.TemporaryDirectory() as tmp_dir:
                 output_file = os.path.join(tmp_dir, "output.md")
 
-                # Run CLI with output to file
-                exit_code = main(["https://example.com", "-o", output_file])
+                # Run CLI with output to file (using new -u/--url flag)
+                exit_code = main(["-u", "https://example.com", "-o", output_file])
                 assert exit_code == 0
 
                 # Check file exists and contains expected content
@@ -117,3 +117,26 @@ class TestIntegration:
                     assert "# Test Page Title" in content
                     assert "## Section 1" in content
                     assert "## Section 2" in content
+
+    def test_cli_file_to_file(self) -> None:
+        """Test CLI converting local HTML file to markdown file."""
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            # Create a temporary HTML file with the sample content
+            input_file = os.path.join(tmp_dir, "input.html")
+            with open(input_file, "w", encoding="utf-8") as f:
+                f.write(SAMPLE_HTML)
+
+            # Create output path
+            output_file = os.path.join(tmp_dir, "output.md")
+
+            # Run CLI with file input and output
+            exit_code = main(["-f", input_file, "-o", output_file])
+            assert exit_code == 0
+
+            # Check file exists and contains expected content
+            assert os.path.exists(output_file)
+            with open(output_file, "r", encoding="utf-8") as f:
+                content = f.read()
+                assert "# Test Page Title" in content
+                assert "## Section 1" in content
+                assert "## Section 2" in content
