@@ -63,14 +63,14 @@ extras = ["regex"]
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.13.3"
+version = "4.13.4"
 description = "Screen-scraping library"
 optional = false
 python-versions = ">=3.7.0"
 groups = ["main"]
 files = [
-    {file = "beautifulsoup4-4.13.3-py3-none-any.whl", hash = "sha256:99045d7d3f08f91f0d656bc9b7efbae189426cd913d830294a15eefa0ea4df16"},
-    {file = "beautifulsoup4-4.13.3.tar.gz", hash = "sha256:1bd32405dacc920b42b83ba01644747ed77456a65760e285fbc47633ceddaf8b"},
+    {file = "beautifulsoup4-4.13.4-py3-none-any.whl", hash = "sha256:9bbbb14bfde9d79f38b8cd5f8c7c85f4b8f2523190ebed90e950a8dea4cb1c4b"},
+    {file = "beautifulsoup4-4.13.4.tar.gz", hash = "sha256:dbb3c4e1ceae6aefebdaf2423247260cd062430a410e38c66f2baa50a8437195"},
 ]
 
 [package.dependencies]
@@ -954,14 +954,14 @@ pyyaml = ">=5.1"
 
 [[package]]
 name = "mkdocs-material"
-version = "9.6.11"
+version = "9.6.14"
 description = "Documentation that simply works"
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "mkdocs_material-9.6.11-py3-none-any.whl", hash = "sha256:47f21ef9cbf4f0ebdce78a2ceecaa5d413581a55141e4464902224ebbc0b1263"},
-    {file = "mkdocs_material-9.6.11.tar.gz", hash = "sha256:0b7f4a0145c5074cdd692e4362d232fb25ef5b23328d0ec1ab287af77cc0deff"},
+    {file = "mkdocs_material-9.6.14-py3-none-any.whl", hash = "sha256:3b9cee6d3688551bf7a8e8f41afda97a3c39a12f0325436d76c86706114b721b"},
+    {file = "mkdocs_material-9.6.14.tar.gz", hash = "sha256:39d795e90dce6b531387c255bd07e866e027828b7346d3eba5ac3de265053754"},
 ]
 
 [package.dependencies]
@@ -1021,14 +1021,14 @@ python-legacy = ["mkdocstrings-python-legacy (>=0.2.1)"]
 
 [[package]]
 name = "mkdocstrings-python"
-version = "1.16.10"
+version = "1.16.11"
 description = "A Python handler for mkdocstrings."
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "mkdocstrings_python-1.16.10-py3-none-any.whl", hash = "sha256:63bb9f01f8848a644bdb6289e86dc38ceddeaa63ecc2e291e3b2ca52702a6643"},
-    {file = "mkdocstrings_python-1.16.10.tar.gz", hash = "sha256:f9eedfd98effb612ab4d0ed6dd2b73aff6eba5215e0a65cea6d877717f75502e"},
+    {file = "mkdocstrings_python-1.16.11-py3-none-any.whl", hash = "sha256:25d96cc9c1f9c272ea1bd8222c900b5f852bf46c984003e9c7c56eaa4696190f"},
+    {file = "mkdocstrings_python-1.16.11.tar.gz", hash = "sha256:935f95efa887f99178e4a7becaaa1286fb35adafffd669b04fd611d97c00e5ce"},
 ]
 
 [package.dependencies]
@@ -1183,14 +1183,14 @@ files = [
 
 [[package]]
 name = "pdoc"
-version = "15.0.1"
+version = "15.0.3"
 description = "API Documentation for Python Projects"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "pdoc-15.0.1-py3-none-any.whl", hash = "sha256:fd437ab8eb55f9b942226af7865a3801e2fb731665199b74fd9a44737dbe20f9"},
-    {file = "pdoc-15.0.1.tar.gz", hash = "sha256:3b08382c9d312243ee6c2a1813d0ff517a6ab84d596fa2c6c6b5255b17c3d666"},
+    {file = "pdoc-15.0.3-py3-none-any.whl", hash = "sha256:686c921ef2622f166de5f73b7241935a4ddac79c8d10dbfa43def8c1fca86550"},
+    {file = "pdoc-15.0.3.tar.gz", hash = "sha256:6482d8ebbd40185fea5e6aec2f1592f4be92e93cf6bf70b9e2a00378bbaf3252"},
 ]
 
 [package.dependencies]
