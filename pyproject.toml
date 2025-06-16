@@ -52,7 +52,7 @@ mkdocs = "^1.6.1"
 mkdocstrings = "^0.29.0"
 mkdocstrings-python = "^1.16.5"
 mkdocs-material = "^9.6.8"
-safety = "3.3.1"
+safety = "3.5.2"
 
 [tool.poetry.scripts]
 webdown = "webdown.cli:main"
