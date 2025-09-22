@@ -49,10 +49,10 @@ isort = "^6.0.1"
 types-tqdm = "^4.67.0.20250301"
 pdoc = "^15.0.1"
 mkdocs = "^1.6.1"
-mkdocstrings = "^0.29.0"
+mkdocstrings = ">=0.29,<0.31"
 mkdocstrings-python = "^1.16.5"
 mkdocs-material = "^9.6.8"
-safety = "3.3.1"
+safety = "3.6.1"
 
 [tool.poetry.scripts]
 webdown = "webdown.cli:main"
