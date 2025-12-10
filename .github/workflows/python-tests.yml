@@ -103,7 +103,7 @@ jobs:
         poetry build
 
     - name: Store built package
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: dist
         path: dist/
