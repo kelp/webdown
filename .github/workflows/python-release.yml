@@ -17,7 +17,7 @@ jobs:
       id-token: write  # Required for PyPI's trusted publishing
       contents: write  # Required for creating GitHub releases
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
