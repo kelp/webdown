@@ -12,10 +12,12 @@ to download documentation and feed it into an LLM coding tool.
 ## Why Webdown?
 
 - **Clean Conversion**: Produces readable Markdown without formatting artifacts
+- **Multi-Page Crawling**: Crawl entire documentation sites with `webdown crawl`
 - **Selective Extraction**: Target specific page sections with CSS selectors
 - **Claude XML Format**: Optimized output format for Anthropic's Claude AI models
 - **Progress Tracking**: Visual download progress for large pages with `-p` flag
-- **Optimized Handling**: Automatic streaming for large pages (>10MB) with no configuration required
+- **Optimized Handling**: Automatic streaming for large pages (>10MB) with no
+  configuration required
 
 ## Use Cases
 
@@ -140,6 +142,42 @@ Claude XML without the current date in metadata:
 ```bash
 webdown https://example.com --claude-xml --no-date -o doc.xml
 ```
+
+## Crawling Multiple Pages
+
+Crawl an entire documentation site:
+
+```bash
+webdown crawl https://docs.example.com/ -o ./output/
+```
+
+Crawl with depth and delay settings:
+
+```bash
+webdown crawl https://docs.example.com/ -o ./output/ --max-depth 5 --delay 2.0
+```
+
+Crawl from a sitemap:
+
+```bash
+webdown crawl --sitemap https://docs.example.com/sitemap.xml -o ./output/
+```
+
+Crawl with content options:
+
+```bash
+webdown crawl https://docs.example.com/ -o ./output/ -s "main" --claude-xml
+```
+
+### Crawl Options
+
+- `--max-depth N`: Maximum crawl depth from seed URLs (default: 3)
+- `--delay SECONDS`: Delay between requests (default: 1.0)
+- `--same-domain`: Allow crawling any path on the same domain
+- `--path-prefix PREFIX`: Only crawl URLs starting with this prefix
+- `--sitemap URL`: Parse sitemap.xml instead of crawling links
+- `--max-pages N`: Maximum number of pages to crawl (0 for unlimited)
+- `-q, --quiet`: Suppress progress output
 
 For complete documentation, use the `--help` flag:
 

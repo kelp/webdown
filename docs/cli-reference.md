@@ -1,14 +1,26 @@
 # CLI Reference
 
-Webdown offers a straightforward command-line interface for converting web pages to Markdown or Claude XML format.
+Webdown offers a straightforward command-line interface for converting web
+pages to Markdown or Claude XML format.
 
 ## Basic Usage
 
+### Single Page Conversion
+
 ```bash
-webdown URL [options]
+webdown -u URL [options]
+webdown -f FILE [options]
 ```
 
-Where `URL` is the web page you want to convert (e.g., `https://example.com`).
+Convert a single web page or local HTML file to Markdown.
+
+### Multi-Page Crawling
+
+```bash
+webdown crawl URL [options]
+```
+
+Crawl multiple pages from a website and convert them all.
 
 ## Complete Options Reference
 
@@ -125,12 +137,66 @@ This example:
 
 | Task | Command |
 |------|---------|
-| Basic conversion | `webdown https://example.com` |
-| Save to file | `webdown https://example.com -o file.md` |
-| Add table of contents | `webdown https://example.com -t` |
-| Extract main content | `webdown https://example.com -s "main"` |
-| Plain text version | `webdown https://example.com -L -I` |
-| Compact output | `webdown https://example.com -c` |
-| Set text width | `webdown https://example.com -w 80` |
-| Show progress | `webdown https://example.com -p` |
-| Claude XML format | `webdown https://example.com --claude-xml` |
+| Basic conversion | `webdown -u https://example.com` |
+| Save to file | `webdown -u https://example.com -o file.md` |
+| Add table of contents | `webdown -u https://example.com -t` |
+| Extract main content | `webdown -u https://example.com -s "main"` |
+| Plain text version | `webdown -u https://example.com -L -I` |
+| Compact output | `webdown -u https://example.com -c` |
+| Set text width | `webdown -u https://example.com -w 80` |
+| Show progress | `webdown -u https://example.com -p` |
+| Claude XML format | `webdown -u https://example.com --claude-xml` |
+| Crawl site | `webdown crawl https://docs.example.com/ -o ./output/` |
+| Crawl from sitemap | `webdown crawl --sitemap https://example.com/sitemap.xml -o ./output/` |
+
+## Crawl Command Reference
+
+The `crawl` subcommand converts multiple pages from a website.
+
+### Crawl Options
+
+| Option | Description |
+|--------|-------------|
+| `-o DIR, --output DIR` | Output directory for converted files (required) |
+| `--sitemap URL` | Parse sitemap.xml instead of crawling links |
+| `--max-depth N` | Maximum crawl depth from seed URLs (default: 3) |
+| `--delay SECONDS` | Delay between requests in seconds (default: 1.0) |
+| `--same-domain` | Allow crawling any path on the same domain |
+| `--path-prefix PREFIX` | Only crawl URLs starting with this path prefix |
+| `--max-pages N` | Maximum number of pages to crawl (0 for unlimited) |
+| `-q, --quiet` | Suppress progress output |
+
+All content selection and formatting options (`-s`, `-L`, `-I`, `-t`, `-c`,
+`-w`, `--claude-xml`) also work with the crawl command.
+
+### Crawl Examples
+
+Crawl a documentation site:
+
+```bash
+webdown crawl https://docs.example.com/ -o ./output/
+```
+
+Crawl with depth and delay settings:
+
+```bash
+webdown crawl https://docs.example.com/ -o ./output/ --max-depth 5 --delay 2.0
+```
+
+Crawl from a sitemap:
+
+```bash
+webdown crawl --sitemap https://docs.example.com/sitemap.xml -o ./output/
+```
+
+Crawl with content extraction and Claude XML output:
+
+```bash
+webdown crawl https://docs.example.com/ -o ./output/ -s "main" --claude-xml
+```
+
+Crawl only a specific path prefix:
+
+```bash
+webdown crawl https://docs.example.com/api/ -o ./output/ --path-prefix /api/
+```
