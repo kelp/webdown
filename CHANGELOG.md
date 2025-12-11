@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.1] - 2025-12-10
+
+### Changed
+- Updated all dependencies to latest versions
+
+### Security
+- Fixed regex package vulnerability (CVE in version 2024.11.6)
+- Updated cryptography 44.0.2 → 46.0.3
+- Updated urllib3 2.5.0 → 2.6.1
+
+### Dependencies
+- pydantic 2.9.2 → 2.12.5
+- black 25.9.0 → 25.12.0
+- mypy 1.18.2 → 1.19.0
+- mkdocs-material 9.6.21 → 9.7.0
+- coverage 7.8.0 → 7.13.0
+- pre-commit 4.3.0 → 4.5.0
+- beautifulsoup4 4.14.2 → 4.14.3
+- regex 2024.11.6 → 2025.11.3
+- actions/checkout 4 → 6
+- actions/upload-artifact 4 → 5
+
 ## [0.7.0] - 2025-04-05
 
 ### Breaking Changes

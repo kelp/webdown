@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "webdown"
-version = "0.7.0"
+version = "0.7.1"
 description = "Convert web pages and HTML files to markdown and Claude XML formats"
 authors = ["Travis Cole <kelp@plek.org>"]
 readme = "README.md"
