@@ -365,9 +365,7 @@ class TestCrawlSinglePage:
             assert page.depth == 0
             assert page.url == "https://example.com/page"
 
-    def test_failed_crawl(  # type: ignore[no-untyped-def]
-        self, requests_mock
-    ) -> None:
+    def test_failed_crawl(self, requests_mock) -> None:  # type: ignore[no-untyped-def]
         """Test failed single page crawl."""
         # Mock HEAD request
         requests_mock.head(
