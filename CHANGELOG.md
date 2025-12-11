@@ -23,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   compatibility)
 - Updated all dependencies to latest versions
 
+### Documentation
+- Added crawler API documentation to mkdocs (crawler, link_extractor,
+  output_manager modules)
+- Added crawling examples to API overview page
+
 ### Security
 - Fixed regex package vulnerability (CVE in version 2024.11.6)
 - Updated cryptography 44.0.2 → 46.0.3
