@@ -70,10 +70,35 @@ config = WebdownConfig(
 xml_content = convert_url(config)
 ```
 
+## Crawling Multiple Pages
+
+```python
+# Crawl multiple pages from a website
+from webdown import crawl, CrawlerConfig, ScopeType
+
+config = CrawlerConfig(
+    seed_urls=["https://docs.example.com/"],
+    output_dir="./output",
+    max_depth=3,
+    delay_seconds=1.0,
+)
+result = crawl(config)
+print(f"Crawled {result.successful_count} pages")
+
+# Crawl from a sitemap
+from webdown import crawl_from_sitemap, CrawlerConfig
+
+config = CrawlerConfig(
+    seed_urls=[],
+    output_dir="./output",
+)
+result = crawl_from_sitemap("https://docs.example.com/sitemap.xml", config)
+```
+
 See the API documentation for detailed descriptions of all options.
 """
 
-__version__ = "0.7.1"
+__version__ = "0.8.0"
 
 # Import CLI module
 from webdown import cli
@@ -81,21 +106,34 @@ from webdown import cli
 # Import key classes and functions for easy access
 from webdown.config import DocumentOptions, OutputFormat, WebdownConfig, WebdownError
 from webdown.converter import convert_file, convert_url, html_to_markdown
+from webdown.crawler import CrawlerConfig, crawl, crawl_from_sitemap
 from webdown.error_utils import ErrorCode
 from webdown.html_parser import fetch_url, read_html_file
+from webdown.link_extractor import ScopeType
+from webdown.output_manager import CrawledPage, CrawlResult
 from webdown.validation import validate_css_selector, validate_url
 
 # Define public API
 __all__ = [
+    # Configuration
     "WebdownConfig",
     "DocumentOptions",
     "OutputFormat",
     "WebdownError",
+    # Single-page conversion
     "convert_url",
     "convert_file",
     "fetch_url",
     "read_html_file",
     "html_to_markdown",
+    # Crawling
+    "crawl",
+    "crawl_from_sitemap",
+    "CrawlerConfig",
+    "ScopeType",
+    "CrawlResult",
+    "CrawledPage",
+    # Validation
     "validate_url",
     "validate_css_selector",
     "ErrorCode",

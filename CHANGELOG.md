@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2025-12-10
+
+### Added
+- **Crawler feature**: New `webdown crawl` subcommand for converting multiple
+  pages from a website
+- Breadth-first crawling with configurable depth and rate limiting
+- Sitemap.xml parsing support with `--sitemap` option
+- Scope control: `--same-domain`, `--same-subdomain`, `--path-prefix`
+- Output manifest (index.json) with crawl metadata
+- New Python API: `crawl()`, `crawl_from_sitemap()`, `CrawlerConfig`,
+  `ScopeType`, `CrawlResult`, `CrawledPage`
+- New modules: `crawler.py`, `link_extractor.py`, `output_manager.py`
+
+### Changed
+- CLI now supports subcommands (existing behavior unchanged for backward
+  compatibility)
+- Updated all dependencies to latest versions
+
+### Security
+- Fixed regex package vulnerability (CVE in version 2024.11.6)
+- Updated cryptography 44.0.2 → 46.0.3
+- Updated urllib3 2.5.0 → 2.6.1
+
 ## [0.7.1] - 2025-12-10
 
 ### Changed

@@ -44,6 +44,11 @@ class ErrorCode:
     # Configuration errors
     CONFIG_ERROR = "CONFIG_ERROR"
 
+    # Crawler errors
+    CRAWL_SCOPE_ERROR = "CRAWL_SCOPE_ERROR"
+    OUTPUT_DIR_ERROR = "OUTPUT_DIR_ERROR"
+    SITEMAP_PARSE_ERROR = "SITEMAP_PARSE_ERROR"
+
     # Unexpected errors
     UNEXPECTED_ERROR = "UNEXPECTED_ERROR"
 

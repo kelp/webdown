@@ -29,6 +29,20 @@ webdown -u https://example.com -o output.md
 webdown -f ./page.html -o output.md
 ```
 
+## Crawl Mode
+
+To crawl multiple pages from a website:
+
+```bash
+webdown crawl https://docs.example.com/ -o ./output/
+```
+
+Or use a sitemap:
+
+```bash
+webdown crawl --sitemap https://docs.example.com/sitemap.xml -o ./output/
+```
+
 ## Common Options
 
 The CLI offers various options to customize the conversion:
@@ -145,6 +159,28 @@ Options for generating Claude XML format, optimized for use with Claude AI:
    webdown -f ./page.html -s "main" -t -c -w 80 -o output.md
    ```
 
+### Crawl Mode Examples
+
+1. Basic crawl from a seed URL:
+   ```bash
+   webdown crawl https://docs.example.com/ -o ./output/
+   ```
+
+2. Crawl with depth and delay settings:
+   ```bash
+   webdown crawl https://docs.example.com/ -o ./output/ --max-depth 5 --delay 2.0
+   ```
+
+3. Crawl from a sitemap:
+   ```bash
+   webdown crawl --sitemap https://docs.example.com/sitemap.xml -o ./output/
+   ```
+
+4. Crawl with content options:
+   ```bash
+   webdown crawl https://docs.example.com/ -o ./output/ -s "main" --claude-xml
+   ```
+
 The entry point is the `main()` function, which is called when the command
 `webdown` is executed.
 """
@@ -160,6 +196,95 @@ from webdown.converter import convert_file, convert_url
 from webdown.error_utils import format_error_for_cli
 
 
+def _add_common_content_args(parser: argparse.ArgumentParser) -> None:
+    """Add content selection arguments common to both single and crawl modes.
+
+    Args:
+        parser: The argument parser or group to add arguments to.
+    """
+    content_group = parser.add_argument_group("Content Selection")
+    content_group.add_argument(
+        "-s",
+        "--css",
+        metavar="SELECTOR",
+        help="Extract content matching CSS selector (e.g., 'main', '.content')",
+    )
+    content_group.add_argument(
+        "-L",
+        "--no-links",
+        action="store_true",
+        help="Convert hyperlinks to plain text (remove all link markup)",
+    )
+    content_group.add_argument(
+        "-I",
+        "--no-images",
+        action="store_true",
+        help="Exclude images from the output completely",
+    )
+
+
+def _add_common_format_args(parser: argparse.ArgumentParser) -> None:
+    """Add formatting arguments common to both single and crawl modes.
+
+    Args:
+        parser: The argument parser or group to add arguments to.
+    """
+    format_group = parser.add_argument_group("Formatting Options")
+    format_group.add_argument(
+        "-t",
+        "--toc",
+        action="store_true",
+        help="Generate a table of contents based on headings in the document",
+    )
+    format_group.add_argument(
+        "-c",
+        "--compact",
+        action="store_true",
+        help="Remove excessive blank lines for more compact output",
+    )
+    format_group.add_argument(
+        "-w",
+        "--width",
+        type=int,
+        default=0,
+        metavar="N",
+        help="Set line width (0 disables wrapping, 80 recommended for readability)",
+    )
+
+
+def _add_common_output_format_args(parser: argparse.ArgumentParser) -> None:
+    """Add output format arguments common to both single and crawl modes.
+
+    Args:
+        parser: The argument parser or group to add arguments to.
+    """
+    output_format_group = parser.add_argument_group("Output Format Options")
+    output_format_group.add_argument(
+        "--claude-xml",
+        action="store_true",
+        help="Output in Claude XML format optimized for Claude AI models",
+    )
+    output_format_group.add_argument(
+        "--metadata",
+        action="store_true",
+        default=True,
+        help="Include metadata in Claude XML output (default: True)",
+    )
+    output_format_group.add_argument(
+        "--no-metadata",
+        action="store_false",
+        dest="metadata",
+        help="Exclude metadata from Claude XML output",
+    )
+    output_format_group.add_argument(
+        "--no-date",
+        action="store_false",
+        dest="add_date",
+        default=True,
+        help="Don't include current date in Claude XML metadata",
+    )
+
+
 def create_argument_parser() -> argparse.ArgumentParser:
     """Create and configure the argument parser for webdown CLI.
 
@@ -173,7 +298,13 @@ def create_argument_parser() -> argparse.ArgumentParser:
         epilog="For more information: https://github.com/kelp/webdown",
     )
 
-    # Source arguments (mutually exclusive)
+    # Add subparsers for commands
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+    # Create crawl subcommand
+    _add_crawl_subcommand(subparsers)
+
+    # Source arguments (mutually exclusive) for single-page mode
     source_group = parser.add_mutually_exclusive_group()
     source_group.add_argument(
         "-u",
@@ -187,98 +318,28 @@ def create_argument_parser() -> argparse.ArgumentParser:
     )
 
     # Organize arguments in logical groups
-    groups = {
-        "io": parser.add_argument_group("Input/Output Options"),
-        "content": parser.add_argument_group("Content Selection"),
-        "format": parser.add_argument_group("Formatting Options"),
-        "output_format": parser.add_argument_group("Output Format Options"),
-        "meta": parser.add_argument_group("Meta Options"),
-    }
-
-    # Input/Output options
-    groups["io"].add_argument(
+    io_group = parser.add_argument_group("Input/Output Options")
+    io_group.add_argument(
         "-o",
         "--output",
         metavar="FILE",
         help="Write Markdown output to FILE instead of stdout",
     )
-    groups["io"].add_argument(
+    io_group.add_argument(
         "-p",
         "--progress",
         action="store_true",
         help="Display a progress bar during download (useful for large pages)",
     )
 
-    # Content selection options
-    groups["content"].add_argument(
-        "-s",
-        "--css",
-        metavar="SELECTOR",
-        help="Extract content matching CSS selector (e.g., 'main', '.content')",
-    )
-    groups["content"].add_argument(
-        "-L",
-        "--no-links",
-        action="store_true",
-        help="Convert hyperlinks to plain text (remove all link markup)",
-    )
-    groups["content"].add_argument(
-        "-I",
-        "--no-images",
-        action="store_true",
-        help="Exclude images from the output completely",
-    )
-
-    # Formatting options
-    groups["format"].add_argument(
-        "-t",
-        "--toc",
-        action="store_true",
-        help="Generate a table of contents based on headings in the document",
-    )
-    groups["format"].add_argument(
-        "-c",
-        "--compact",
-        action="store_true",
-        help="Remove excessive blank lines for more compact output",
-    )
-    groups["format"].add_argument(
-        "-w",
-        "--width",
-        type=int,
-        default=0,
-        metavar="N",
-        help="Set line width (0 disables wrapping, 80 recommended for readability)",
-    )
-
-    # Output format options (Claude XML)
-    groups["output_format"].add_argument(
-        "--claude-xml",
-        action="store_true",
-        help="Output in Claude XML format optimized for Claude AI models",
-    )
-    groups["output_format"].add_argument(
-        "--metadata",
-        action="store_true",
-        default=True,
-        help="Include metadata in Claude XML output (default: True)",
-    )
-    groups["output_format"].add_argument(
-        "--no-metadata",
-        action="store_false",
-        dest="metadata",
-        help="Exclude metadata from Claude XML output",
-    )
-    groups["output_format"].add_argument(
-        "--no-date",
-        action="store_false",
-        dest="add_date",
-        default=True,
-        help="Don't include current date in Claude XML metadata",
-    )
+    # Add common argument groups
+    _add_common_content_args(parser)
+    _add_common_format_args(parser)
+    _add_common_output_format_args(parser)
 
     # Meta options
-    groups["meta"].add_argument(
+    meta_group = parser.add_argument_group("Meta Options")
+    meta_group.add_argument(
         "-V",
         "--version",
         action="version",
@@ -287,6 +348,88 @@ def create_argument_parser() -> argparse.ArgumentParser:
     )
 
     return parser
+
+
+def _add_crawl_subcommand(
+    subparsers: argparse._SubParsersAction,  # type: ignore[type-arg]
+) -> None:
+    """Add the crawl subcommand to the parser.
+
+    Args:
+        subparsers: The subparsers action to add the crawl command to.
+    """
+    crawl_parser = subparsers.add_parser(
+        "crawl",
+        help="Crawl multiple pages from a website",
+        description="Crawl and convert multiple pages from a website to Markdown "
+        "or Claude XML format.",
+    )
+
+    # Seed URLs (positional, can be multiple)
+    crawl_parser.add_argument(
+        "urls",
+        nargs="*",
+        help="Seed URLs to start crawling from",
+    )
+
+    # Required output directory
+    crawl_parser.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        metavar="DIR",
+        help="Output directory for converted files (required)",
+    )
+
+    # Crawl-specific options
+    crawl_group = crawl_parser.add_argument_group("Crawl Options")
+    crawl_group.add_argument(
+        "--sitemap",
+        metavar="URL",
+        help="Parse sitemap.xml instead of crawling links",
+    )
+    crawl_group.add_argument(
+        "--max-depth",
+        type=int,
+        default=3,
+        metavar="N",
+        help="Maximum crawl depth from seed URLs (default: 3)",
+    )
+    crawl_group.add_argument(
+        "--delay",
+        type=float,
+        default=1.0,
+        metavar="SECONDS",
+        help="Delay between requests in seconds (default: 1.0)",
+    )
+    crawl_group.add_argument(
+        "--same-domain",
+        action="store_true",
+        help="Allow crawling any path on the same domain",
+    )
+    crawl_group.add_argument(
+        "--path-prefix",
+        metavar="PREFIX",
+        help="Only crawl URLs starting with this path prefix",
+    )
+    crawl_group.add_argument(
+        "--max-pages",
+        type=int,
+        default=0,
+        metavar="N",
+        help="Maximum number of pages to crawl (0 for unlimited)",
+    )
+    crawl_group.add_argument(
+        "-q",
+        "--quiet",
+        action="store_true",
+        help="Suppress progress output",
+    )
+
+    # Add common argument groups
+    _add_common_content_args(crawl_parser)
+    _add_common_format_args(crawl_parser)
+    _add_common_output_format_args(crawl_parser)
 
 
 def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
@@ -391,6 +534,80 @@ def _convert_to_selected_format(
     return content, parsed_args.output
 
 
+def _execute_crawl(parsed_args: argparse.Namespace) -> int:
+    """Execute the crawl command.
+
+    Args:
+        parsed_args: Parsed command-line arguments for the crawl command.
+
+    Returns:
+        Exit code: 0 for success, 1 for errors.
+    """
+    from webdown.crawler import CrawlerConfig, crawl, crawl_from_sitemap
+    from webdown.link_extractor import ScopeType
+
+    # Validate that we have either URLs or sitemap
+    if not parsed_args.urls and not parsed_args.sitemap:
+        sys.stderr.write("Error: Either seed URLs or --sitemap must be provided\n")
+        return 1
+
+    # Create document options
+    doc_options = DocumentOptions(
+        include_toc=parsed_args.toc,
+        compact_output=parsed_args.compact,
+        body_width=parsed_args.width,
+        include_metadata=parsed_args.metadata,
+    )
+
+    # Set output format
+    output_format = (
+        OutputFormat.CLAUDE_XML if parsed_args.claude_xml else OutputFormat.MARKDOWN
+    )
+
+    # Create conversion config
+    conversion_config = WebdownConfig(
+        include_links=not parsed_args.no_links,
+        include_images=not parsed_args.no_images,
+        css_selector=parsed_args.css,
+        format=output_format,
+        document_options=doc_options,
+    )
+
+    # Determine scope
+    if parsed_args.path_prefix:
+        scope = ScopeType.PATH_PREFIX
+    elif parsed_args.same_domain:
+        scope = ScopeType.SAME_DOMAIN
+    else:
+        scope = ScopeType.SAME_SUBDOMAIN
+
+    # Auto-fix URLs
+    seed_urls = [auto_fix_url(url) for url in (parsed_args.urls or [])]
+
+    # Create crawler config
+    crawler_config = CrawlerConfig(
+        seed_urls=seed_urls,
+        output_dir=parsed_args.output,
+        max_depth=parsed_args.max_depth,
+        delay_seconds=parsed_args.delay,
+        scope=scope,
+        path_prefix=parsed_args.path_prefix,
+        conversion_config=conversion_config,
+        verbose=not parsed_args.quiet,
+        max_pages=parsed_args.max_pages,
+    )
+
+    # Execute crawl
+    if parsed_args.sitemap:
+        sitemap_url = auto_fix_url(parsed_args.sitemap)
+        result = crawl_from_sitemap(sitemap_url, crawler_config)
+    else:
+        result = crawl(crawler_config)
+
+    # Return success if we crawled at least one page successfully
+    return 0 if result.successful_count > 0 else 1
+
+
 def write_output(content: str, output_path: Optional[str]) -> None:
     """Write content to file or stdout with consistent newline handling.
 
@@ -471,6 +688,10 @@ def main(args: Optional[List[str]] = None) -> int:
     try:
         # Parse command-line arguments
         parsed_args = parse_args(args)
+
+        # Handle crawl subcommand
+        if parsed_args.command == "crawl":
+            return _execute_crawl(parsed_args)
 
         # If neither URL nor file provided, show help
         if parsed_args.url is None and parsed_args.file is None:
