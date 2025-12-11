@@ -69,6 +69,48 @@ This page documents the main API functions and classes provided by Webdown.
       show_docstring_attributes: true
       show_docstring_description: true
 
+## Crawler
+
+::: webdown.crawler
+    options:
+      show_root_heading: false
+      show_root_toc_entry: false
+      members:
+        - crawl
+        - crawl_from_sitemap
+        - CrawlerConfig
+      show_docstring_attributes: true
+      show_docstring_description: true
+
+## Link Extraction
+
+::: webdown.link_extractor
+    options:
+      show_root_heading: false
+      show_root_toc_entry: false
+      members:
+        - ScopeType
+        - extract_links
+        - normalize_url
+        - filter_links_by_scope
+        - parse_sitemap
+      show_docstring_attributes: true
+      show_docstring_description: true
+
+## Output Management
+
+::: webdown.output_manager
+    options:
+      show_root_heading: false
+      show_root_toc_entry: false
+      members:
+        - CrawlResult
+        - CrawledPage
+        - url_to_filepath
+        - write_manifest
+      show_docstring_attributes: true
+      show_docstring_description: true
+
 ## Error Handling
 
 ::: webdown.error_utils
