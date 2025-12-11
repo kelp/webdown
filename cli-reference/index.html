@@ -384,6 +384,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Basic Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-page-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single Page Conversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-page-crawling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Page Crawling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -582,6 +610,45 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#crawl-command-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Command Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Crawl Command Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crawl-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crawl-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1027,6 +1094,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Basic Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-page-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single Page Conversion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-page-crawling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Page Crawling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1228,6 +1323,45 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#crawl-command-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Command Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Crawl Command Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crawl-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#crawl-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1249,11 +1383,18 @@
 
 
 <h1 id="cli-reference">CLI Reference<a class="headerlink" href="#cli-reference" title="Permanent link">&para;</a></h1>
-<p>Webdown offers a straightforward command-line interface for converting web pages to Markdown or Claude XML format.</p>
+<p>Webdown offers a straightforward command-line interface for converting web
+pages to Markdown or Claude XML format.</p>
 <h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>webdown<span class="w"> </span>URL<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+<h3 id="single-page-conversion">Single Page Conversion<a class="headerlink" href="#single-page-conversion" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>URL<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>webdown<span class="w"> </span>-f<span class="w"> </span>FILE<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
 </code></pre></div>
-<p>Where <code>URL</code> is the web page you want to convert (e.g., <code>https://example.com</code>).</p>
+<p>Convert a single web page or local HTML file to Markdown.</p>
+<h3 id="multi-page-crawling">Multi-Page Crawling<a class="headerlink" href="#multi-page-crawling" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>URL<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+</code></pre></div>
+<p>Crawl multiple pages from a website and convert them all.</p>
 <h2 id="complete-options-reference">Complete Options Reference<a class="headerlink" href="#complete-options-reference" title="Permanent link">&para;</a></h2>
 <h3 id="inputoutput-options">Input/Output Options<a class="headerlink" href="#inputoutput-options" title="Permanent link">&para;</a></h3>
 <table>
@@ -1364,39 +1505,39 @@
 </table>
 <h2 id="examples-with-explanations">Examples with Explanations<a class="headerlink" href="#examples-with-explanations" title="Permanent link">&para;</a></h2>
 <h3 id="basic-conversion">Basic Conversion<a class="headerlink" href="#basic-conversion" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>webdown<span class="w"> </span>https://example.com
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>webdown<span class="w"> </span>https://example.com
 </code></pre></div>
 Converts the web page at example.com to Markdown and outputs to the terminal.</p>
 <h3 id="save-to-file">Save to File<a class="headerlink" href="#save-to-file" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-o<span class="w"> </span>example.md
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-o<span class="w"> </span>example.md
 </code></pre></div>
 Converts the web page and saves the output to example.md.</p>
 <h3 id="generate-table-of-contents">Generate Table of Contents<a class="headerlink" href="#generate-table-of-contents" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-t
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-t
 </code></pre></div>
 Adds a table of contents based on the headings found in the document.</p>
 <h3 id="extract-main-content">Extract Main Content<a class="headerlink" href="#extract-main-content" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span>
 </code></pre></div>
 Extracts only the content inside the <code>&lt;main&gt;</code> tag, ignoring headers, footers, sidebars, etc.</p>
 <h3 id="plain-text-no-links-or-images">Plain Text (No Links or Images)<a class="headerlink" href="#plain-text-no-links-or-images" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-L<span class="w"> </span>-I
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-L<span class="w"> </span>-I
 </code></pre></div>
 Creates a plain text version by removing hyperlinks and images.</p>
 <h3 id="compact-output-with-custom-width">Compact Output with Custom Width<a class="headerlink" href="#compact-output-with-custom-width" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span>
 </code></pre></div>
 Removes excessive blank lines and wraps text at 80 characters.</p>
 <h3 id="show-progress-for-large-pages">Show Progress for Large Pages<a class="headerlink" href="#show-progress-for-large-pages" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-p
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-p
 </code></pre></div>
 Displays a progress bar during download, useful for large pages.</p>
 <h3 id="claude-xml-format">Claude XML Format<a class="headerlink" href="#claude-xml-format" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
 </code></pre></div>
 Outputs the page content in Claude XML format, optimized for use with Anthropic's Claude AI.</p>
 <h3 id="complete-example-with-multiple-options">Complete Example with Multiple Options<a class="headerlink" href="#complete-example-with-multiple-options" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>example.md
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>example.md
 </code></pre></div>
 This example:
 - Extracts content from the <code>&lt;main&gt;</code> tag
@@ -1416,42 +1557,113 @@ This example:
 <tbody>
 <tr>
 <td>Basic conversion</td>
-<td><code>webdown https://example.com</code></td>
+<td><code>webdown -u https://example.com</code></td>
 </tr>
 <tr>
 <td>Save to file</td>
-<td><code>webdown https://example.com -o file.md</code></td>
+<td><code>webdown -u https://example.com -o file.md</code></td>
 </tr>
 <tr>
 <td>Add table of contents</td>
-<td><code>webdown https://example.com -t</code></td>
+<td><code>webdown -u https://example.com -t</code></td>
 </tr>
 <tr>
 <td>Extract main content</td>
-<td><code>webdown https://example.com -s "main"</code></td>
+<td><code>webdown -u https://example.com -s "main"</code></td>
 </tr>
 <tr>
 <td>Plain text version</td>
-<td><code>webdown https://example.com -L -I</code></td>
+<td><code>webdown -u https://example.com -L -I</code></td>
 </tr>
 <tr>
 <td>Compact output</td>
-<td><code>webdown https://example.com -c</code></td>
+<td><code>webdown -u https://example.com -c</code></td>
 </tr>
 <tr>
 <td>Set text width</td>
-<td><code>webdown https://example.com -w 80</code></td>
+<td><code>webdown -u https://example.com -w 80</code></td>
 </tr>
 <tr>
 <td>Show progress</td>
-<td><code>webdown https://example.com -p</code></td>
+<td><code>webdown -u https://example.com -p</code></td>
 </tr>
 <tr>
 <td>Claude XML format</td>
-<td><code>webdown https://example.com --claude-xml</code></td>
+<td><code>webdown -u https://example.com --claude-xml</code></td>
+</tr>
+<tr>
+<td>Crawl site</td>
+<td><code>webdown crawl https://docs.example.com/ -o ./output/</code></td>
+</tr>
+<tr>
+<td>Crawl from sitemap</td>
+<td><code>webdown crawl --sitemap https://example.com/sitemap.xml -o ./output/</code></td>
 </tr>
 </tbody>
 </table>
+<h2 id="crawl-command-reference">Crawl Command Reference<a class="headerlink" href="#crawl-command-reference" title="Permanent link">&para;</a></h2>
+<p>The <code>crawl</code> subcommand converts multiple pages from a website.</p>
+<h3 id="crawl-options">Crawl Options<a class="headerlink" href="#crawl-options" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-o DIR, --output DIR</code></td>
+<td>Output directory for converted files (required)</td>
+</tr>
+<tr>
+<td><code>--sitemap URL</code></td>
+<td>Parse sitemap.xml instead of crawling links</td>
+</tr>
+<tr>
+<td><code>--max-depth N</code></td>
+<td>Maximum crawl depth from seed URLs (default: 3)</td>
+</tr>
+<tr>
+<td><code>--delay SECONDS</code></td>
+<td>Delay between requests in seconds (default: 1.0)</td>
+</tr>
+<tr>
+<td><code>--same-domain</code></td>
+<td>Allow crawling any path on the same domain</td>
+</tr>
+<tr>
+<td><code>--path-prefix PREFIX</code></td>
+<td>Only crawl URLs starting with this path prefix</td>
+</tr>
+<tr>
+<td><code>--max-pages N</code></td>
+<td>Maximum number of pages to crawl (0 for unlimited)</td>
+</tr>
+<tr>
+<td><code>-q, --quiet</code></td>
+<td>Suppress progress output</td>
+</tr>
+</tbody>
+</table>
+<p>All content selection and formatting options (<code>-s</code>, <code>-L</code>, <code>-I</code>, <code>-t</code>, <code>-c</code>,
+<code>-w</code>, <code>--claude-xml</code>) also work with the crawl command.</p>
+<h3 id="crawl-examples">Crawl Examples<a class="headerlink" href="#crawl-examples" title="Permanent link">&para;</a></h3>
+<p>Crawl a documentation site:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/
+</code></pre></div>
+<p>Crawl with depth and delay settings:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/<span class="w"> </span>--max-depth<span class="w"> </span><span class="m">5</span><span class="w"> </span>--delay<span class="w"> </span><span class="m">2</span>.0
+</code></pre></div>
+<p>Crawl from a sitemap:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>--sitemap<span class="w"> </span>https://docs.example.com/sitemap.xml<span class="w"> </span>-o<span class="w"> </span>./output/
+</code></pre></div>
+<p>Crawl with content extraction and Claude XML output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>--claude-xml
+</code></pre></div>
+<p>Crawl only a specific path prefix:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/api/<span class="w"> </span>-o<span class="w"> </span>./output/<span class="w"> </span>--path-prefix<span class="w"> </span>/api/
+</code></pre></div>
 
 
 
