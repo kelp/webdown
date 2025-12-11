@@ -73,7 +73,7 @@ xml_content = convert_url(config)
 See the API documentation for detailed descriptions of all options.
 """
 
-__version__ = "0.7.0"
+__version__ = "0.7.1"
 
 # Import CLI module
 from webdown import cli
