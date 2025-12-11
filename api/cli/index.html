@@ -724,6 +724,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#webdown.cli--crawl-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#webdown.cli--common-options" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -812,6 +823,17 @@
     <span class="md-ellipsis">
       
         Local HTML File Conversion Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webdown.cli--crawl-mode-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Mode Examples
       
     </span>
   </a>
@@ -858,6 +880,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#webdown.cli--crawl-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#webdown.cli--common-options" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -946,6 +979,17 @@
     <span class="md-ellipsis">
       
         Local HTML File Conversion Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webdown.cli--crawl-mode-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Mode Examples
       
     </span>
   </a>
@@ -1109,6 +1153,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#webdown.cli--crawl-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#webdown.cli--common-options" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1197,6 +1252,17 @@
     <span class="md-ellipsis">
       
         Local HTML File Conversion Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webdown.cli--crawl-mode-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Mode Examples
       
     </span>
   </a>
@@ -1243,6 +1309,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#webdown.cli--crawl-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#webdown.cli--common-options" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1331,6 +1408,17 @@
     <span class="md-ellipsis">
       
         Local HTML File Conversion Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webdown.cli--crawl-mode-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crawl Mode Examples
       
     </span>
   </a>
@@ -1434,6 +1522,13 @@ To save the output to a file:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-o<span class="w"> </span>output.md
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div>
+<h3 id="webdown.cli--crawl-mode">Crawl Mode<a class="headerlink" href="#webdown.cli--crawl-mode" title="Permanent link">&para;</a></h3>
+<p>To crawl multiple pages from a website:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/
+</code></pre></div>
+<p>Or use a sitemap:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>--sitemap<span class="w"> </span>https://docs.example.com/sitemap.xml<span class="w"> </span>-o<span class="w"> </span>./output/
+</code></pre></div>
 <h3 id="webdown.cli--common-options">Common Options<a class="headerlink" href="#webdown.cli--common-options" title="Permanent link">&para;</a></h3>
 <p>The CLI offers various options to customize the conversion:</p>
 <h4 id="webdown.cli--source-options">Source Options<a class="headerlink" href="#webdown.cli--source-options" title="Permanent link">&para;</a></h4>
@@ -1472,47 +1567,47 @@ to optimize memory usage.</p>
 <ol>
 <li>
 <p>Basic conversion with a table of contents:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-t<span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-t<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Extract only the main content area with compact output and text wrapping:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Create a plain text version (no links or images):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-L<span class="w"> </span>-I<span class="w"> </span>-o<span class="w"> </span>text_only.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-L<span class="w"> </span>-I<span class="w"> </span>-o<span class="w"> </span>text_only.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Show download progress for large pages:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Extract content from a specific div:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;#content&quot;</span><span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;#content&quot;</span><span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Process a large webpage with progress bar (streaming is automatic for large pages):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-p
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-p
 </code></pre></div></p>
 </li>
 <li>
 <p>Generate output in Claude XML format for use with Claude AI:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
 </code></pre></div></p>
 </li>
 <li>
 <p>Create Claude XML without metadata:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>--claude-xml<span class="w"> </span>--no-metadata<span class="w"> </span>-o<span class="w"> </span>output.xml
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>--claude-xml<span class="w"> </span>--no-metadata<span class="w"> </span>-o<span class="w"> </span>output.xml
 </code></pre></div></p>
 </li>
 <li>
 <p>Complete example with multiple options:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 </ol>
@@ -1520,32 +1615,55 @@ to optimize memory usage.</p>
 <ol>
 <li>
 <p>Convert a local HTML file to Markdown:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Convert a local file with table of contents:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-t<span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-t<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Extract only main content from a local file:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Create plain text from a local file (no links or images):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-L<span class="w"> </span>-I<span class="w"> </span>-o<span class="w"> </span>text_only.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-L<span class="w"> </span>-I<span class="w"> </span>-o<span class="w"> </span>text_only.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Convert local file to Claude XML format:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
 </code></pre></div></p>
 </li>
 <li>
 <p>Complete local file example with multiple options:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-o<span class="w"> </span>output.md
+</code></pre></div></p>
+</li>
+</ol>
+<h4 id="webdown.cli--crawl-mode-examples">Crawl Mode Examples<a class="headerlink" href="#webdown.cli--crawl-mode-examples" title="Permanent link">&para;</a></h4>
+<ol>
+<li>
+<p>Basic crawl from a seed URL:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/
+</code></pre></div></p>
+</li>
+<li>
+<p>Crawl with depth and delay settings:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/<span class="w"> </span>--max-depth<span class="w"> </span><span class="m">5</span><span class="w"> </span>--delay<span class="w"> </span><span class="m">2</span>.0
+</code></pre></div></p>
+</li>
+<li>
+<p>Crawl from a sitemap:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>--sitemap<span class="w"> </span>https://docs.example.com/sitemap.xml<span class="w"> </span>-o<span class="w"> </span>./output/
+</code></pre></div></p>
+</li>
+<li>
+<p>Crawl with content options:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>--claude-xml
 </code></pre></div></p>
 </li>
 </ol>
@@ -1606,6 +1724,13 @@ To save the output to a file:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-o<span class="w"> </span>output.md
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div>
+<h3 id="webdown.cli--crawl-mode">Crawl Mode<a class="headerlink" href="#webdown.cli--crawl-mode" title="Permanent link">&para;</a></h3>
+<p>To crawl multiple pages from a website:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/
+</code></pre></div>
+<p>Or use a sitemap:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>--sitemap<span class="w"> </span>https://docs.example.com/sitemap.xml<span class="w"> </span>-o<span class="w"> </span>./output/
+</code></pre></div>
 <h3 id="webdown.cli--common-options">Common Options<a class="headerlink" href="#webdown.cli--common-options" title="Permanent link">&para;</a></h3>
 <p>The CLI offers various options to customize the conversion:</p>
 <h4 id="webdown.cli--source-options">Source Options<a class="headerlink" href="#webdown.cli--source-options" title="Permanent link">&para;</a></h4>
@@ -1644,47 +1769,47 @@ to optimize memory usage.</p>
 <ol>
 <li>
 <p>Basic conversion with a table of contents:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-t<span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-t<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Extract only the main content area with compact output and text wrapping:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Create a plain text version (no links or images):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-L<span class="w"> </span>-I<span class="w"> </span>-o<span class="w"> </span>text_only.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-L<span class="w"> </span>-I<span class="w"> </span>-o<span class="w"> </span>text_only.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Show download progress for large pages:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Extract content from a specific div:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;#content&quot;</span><span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;#content&quot;</span><span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Process a large webpage with progress bar (streaming is automatic for large pages):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-p
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-p
 </code></pre></div></p>
 </li>
 <li>
 <p>Generate output in Claude XML format for use with Claude AI:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
 </code></pre></div></p>
 </li>
 <li>
 <p>Create Claude XML without metadata:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>--claude-xml<span class="w"> </span>--no-metadata<span class="w"> </span>-o<span class="w"> </span>output.xml
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>--claude-xml<span class="w"> </span>--no-metadata<span class="w"> </span>-o<span class="w"> </span>output.xml
 </code></pre></div></p>
 </li>
 <li>
 <p>Complete example with multiple options:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>webdown<span class="w"> </span>-u<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 </ol>
@@ -1692,32 +1817,55 @@ to optimize memory usage.</p>
 <ol>
 <li>
 <p>Convert a local HTML file to Markdown:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Convert a local file with table of contents:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-t<span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-t<span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Extract only main content from a local file:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-o<span class="w"> </span>output.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Create plain text from a local file (no links or images):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-L<span class="w"> </span>-I<span class="w"> </span>-o<span class="w"> </span>text_only.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-L<span class="w"> </span>-I<span class="w"> </span>-o<span class="w"> </span>text_only.md
 </code></pre></div></p>
 </li>
 <li>
 <p>Convert local file to Claude XML format:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
 </code></pre></div></p>
 </li>
 <li>
 <p>Complete local file example with multiple options:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-o<span class="w"> </span>output.md
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>webdown<span class="w"> </span>-f<span class="w"> </span>./page.html<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-o<span class="w"> </span>output.md
+</code></pre></div></p>
+</li>
+</ol>
+<h4 id="webdown.cli--crawl-mode-examples">Crawl Mode Examples<a class="headerlink" href="#webdown.cli--crawl-mode-examples" title="Permanent link">&para;</a></h4>
+<ol>
+<li>
+<p>Basic crawl from a seed URL:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/
+</code></pre></div></p>
+</li>
+<li>
+<p>Crawl with depth and delay settings:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/<span class="w"> </span>--max-depth<span class="w"> </span><span class="m">5</span><span class="w"> </span>--delay<span class="w"> </span><span class="m">2</span>.0
+</code></pre></div></p>
+</li>
+<li>
+<p>Crawl from a sitemap:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>--sitemap<span class="w"> </span>https://docs.example.com/sitemap.xml<span class="w"> </span>-o<span class="w"> </span>./output/
+</code></pre></div></p>
+</li>
+<li>
+<p>Crawl with content options:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>--claude-xml
 </code></pre></div></p>
 </li>
 </ol>
@@ -1835,109 +1983,117 @@ It handles the entire workflow:
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>webdown/cli.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-442">442</a></span>
-<span class="normal"><a href="#__codelineno-0-443">443</a></span>
-<span class="normal"><a href="#__codelineno-0-444">444</a></span>
-<span class="normal"><a href="#__codelineno-0-445">445</a></span>
-<span class="normal"><a href="#__codelineno-0-446">446</a></span>
-<span class="normal"><a href="#__codelineno-0-447">447</a></span>
-<span class="normal"><a href="#__codelineno-0-448">448</a></span>
-<span class="normal"><a href="#__codelineno-0-449">449</a></span>
-<span class="normal"><a href="#__codelineno-0-450">450</a></span>
-<span class="normal"><a href="#__codelineno-0-451">451</a></span>
-<span class="normal"><a href="#__codelineno-0-452">452</a></span>
-<span class="normal"><a href="#__codelineno-0-453">453</a></span>
-<span class="normal"><a href="#__codelineno-0-454">454</a></span>
-<span class="normal"><a href="#__codelineno-0-455">455</a></span>
-<span class="normal"><a href="#__codelineno-0-456">456</a></span>
-<span class="normal"><a href="#__codelineno-0-457">457</a></span>
-<span class="normal"><a href="#__codelineno-0-458">458</a></span>
-<span class="normal"><a href="#__codelineno-0-459">459</a></span>
-<span class="normal"><a href="#__codelineno-0-460">460</a></span>
-<span class="normal"><a href="#__codelineno-0-461">461</a></span>
-<span class="normal"><a href="#__codelineno-0-462">462</a></span>
-<span class="normal"><a href="#__codelineno-0-463">463</a></span>
-<span class="normal"><a href="#__codelineno-0-464">464</a></span>
-<span class="normal"><a href="#__codelineno-0-465">465</a></span>
-<span class="normal"><a href="#__codelineno-0-466">466</a></span>
-<span class="normal"><a href="#__codelineno-0-467">467</a></span>
-<span class="normal"><a href="#__codelineno-0-468">468</a></span>
-<span class="normal"><a href="#__codelineno-0-469">469</a></span>
-<span class="normal"><a href="#__codelineno-0-470">470</a></span>
-<span class="normal"><a href="#__codelineno-0-471">471</a></span>
-<span class="normal"><a href="#__codelineno-0-472">472</a></span>
-<span class="normal"><a href="#__codelineno-0-473">473</a></span>
-<span class="normal"><a href="#__codelineno-0-474">474</a></span>
-<span class="normal"><a href="#__codelineno-0-475">475</a></span>
-<span class="normal"><a href="#__codelineno-0-476">476</a></span>
-<span class="normal"><a href="#__codelineno-0-477">477</a></span>
-<span class="normal"><a href="#__codelineno-0-478">478</a></span>
-<span class="normal"><a href="#__codelineno-0-479">479</a></span>
-<span class="normal"><a href="#__codelineno-0-480">480</a></span>
-<span class="normal"><a href="#__codelineno-0-481">481</a></span>
-<span class="normal"><a href="#__codelineno-0-482">482</a></span>
-<span class="normal"><a href="#__codelineno-0-483">483</a></span>
-<span class="normal"><a href="#__codelineno-0-484">484</a></span>
-<span class="normal"><a href="#__codelineno-0-485">485</a></span>
-<span class="normal"><a href="#__codelineno-0-486">486</a></span>
-<span class="normal"><a href="#__codelineno-0-487">487</a></span>
-<span class="normal"><a href="#__codelineno-0-488">488</a></span>
-<span class="normal"><a href="#__codelineno-0-489">489</a></span>
-<span class="normal"><a href="#__codelineno-0-490">490</a></span>
-<span class="normal"><a href="#__codelineno-0-491">491</a></span>
-<span class="normal"><a href="#__codelineno-0-492">492</a></span>
-<span class="normal"><a href="#__codelineno-0-493">493</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-442" name="__codelineno-0-442"></a><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<a id="__codelineno-0-443" name="__codelineno-0-443"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute the webdown command-line interface.</span>
-<a id="__codelineno-0-444" name="__codelineno-0-444"></a>
-<a id="__codelineno-0-445" name="__codelineno-0-445"></a><span class="sd">    This function is the main entry point for the webdown command-line tool.</span>
-<a id="__codelineno-0-446" name="__codelineno-0-446"></a><span class="sd">    It handles the entire workflow:</span>
-<a id="__codelineno-0-447" name="__codelineno-0-447"></a><span class="sd">    1. Parsing command-line arguments</span>
-<a id="__codelineno-0-448" name="__codelineno-0-448"></a><span class="sd">    2. Converting the content (URL or file) to Markdown with the specified options</span>
-<a id="__codelineno-0-449" name="__codelineno-0-449"></a><span class="sd">    3. Writing the output to a file or stdout</span>
-<a id="__codelineno-0-450" name="__codelineno-0-450"></a><span class="sd">    4. Error handling and reporting</span>
-<a id="__codelineno-0-451" name="__codelineno-0-451"></a>
-<a id="__codelineno-0-452" name="__codelineno-0-452"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-453" name="__codelineno-0-453"></a><span class="sd">        args: Command line arguments as a list of strings. If None, defaults to</span>
-<a id="__codelineno-0-454" name="__codelineno-0-454"></a><span class="sd">              sys.argv[1:] (the command-line arguments passed to the script).</span>
-<a id="__codelineno-0-455" name="__codelineno-0-455"></a>
-<a id="__codelineno-0-456" name="__codelineno-0-456"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-457" name="__codelineno-0-457"></a><span class="sd">        Exit code: 0 for success, 1 for errors</span>
-<a id="__codelineno-0-458" name="__codelineno-0-458"></a>
-<a id="__codelineno-0-459" name="__codelineno-0-459"></a><span class="sd">    Examples:</span>
-<a id="__codelineno-0-460" name="__codelineno-0-460"></a><span class="sd">        &gt;&gt;&gt; main([&#39;-u&#39;, &#39;https://example.com&#39;])  # Convert URL and print to stdout</span>
-<a id="__codelineno-0-461" name="__codelineno-0-461"></a><span class="sd">        0</span>
-<a id="__codelineno-0-462" name="__codelineno-0-462"></a><span class="sd">        &gt;&gt;&gt; main([&#39;-u&#39;, &#39;https://example.com&#39;, &#39;-o&#39;, &#39;output.md&#39;])  # Write URL to file</span>
-<a id="__codelineno-0-463" name="__codelineno-0-463"></a><span class="sd">        0</span>
-<a id="__codelineno-0-464" name="__codelineno-0-464"></a><span class="sd">        &gt;&gt;&gt; main([&#39;-f&#39;, &#39;page.html&#39;])  # Convert file and print to stdout</span>
-<a id="__codelineno-0-465" name="__codelineno-0-465"></a><span class="sd">        0</span>
-<a id="__codelineno-0-466" name="__codelineno-0-466"></a><span class="sd">        &gt;&gt;&gt; main([&#39;-f&#39;, &#39;page.html&#39;, &#39;-o&#39;, &#39;output.md&#39;])  # Write file to file</span>
-<a id="__codelineno-0-467" name="__codelineno-0-467"></a><span class="sd">        0</span>
-<a id="__codelineno-0-468" name="__codelineno-0-468"></a><span class="sd">        &gt;&gt;&gt; main([&#39;-u&#39;, &#39;invalid-url&#39;])  # Handle error</span>
-<a id="__codelineno-0-469" name="__codelineno-0-469"></a><span class="sd">        1</span>
-<a id="__codelineno-0-470" name="__codelineno-0-470"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-471" name="__codelineno-0-471"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-472" name="__codelineno-0-472"></a>        <span class="c1"># Parse command-line arguments</span>
-<a id="__codelineno-0-473" name="__codelineno-0-473"></a>        <span class="n">parsed_args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-<a id="__codelineno-0-474" name="__codelineno-0-474"></a>
-<a id="__codelineno-0-475" name="__codelineno-0-475"></a>        <span class="c1"># If neither URL nor file provided, show help</span>
-<a id="__codelineno-0-476" name="__codelineno-0-476"></a>        <span class="k">if</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">url</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-477" name="__codelineno-0-477"></a>            <span class="c1"># This will print help and exit</span>
-<a id="__codelineno-0-478" name="__codelineno-0-478"></a>            <span class="n">parse_args</span><span class="p">([</span><span class="s2">&quot;-h&quot;</span><span class="p">])</span>  <span class="c1"># pragma: no cover</span>
-<a id="__codelineno-0-479" name="__codelineno-0-479"></a>            <span class="k">return</span> <span class="mi">0</span>  <span class="c1"># pragma: no cover - unreachable after SystemExit</span>
-<a id="__codelineno-0-480" name="__codelineno-0-480"></a>
-<a id="__codelineno-0-481" name="__codelineno-0-481"></a>        <span class="c1"># Process content and generate output</span>
-<a id="__codelineno-0-482" name="__codelineno-0-482"></a>        <span class="n">content</span><span class="p">,</span> <span class="n">output_path</span> <span class="o">=</span> <span class="n">_convert_to_selected_format</span><span class="p">(</span><span class="n">parsed_args</span><span class="p">)</span>
-<a id="__codelineno-0-483" name="__codelineno-0-483"></a>
-<a id="__codelineno-0-484" name="__codelineno-0-484"></a>        <span class="c1"># Write output to file or stdout</span>
-<a id="__codelineno-0-485" name="__codelineno-0-485"></a>        <span class="n">write_output</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
-<a id="__codelineno-0-486" name="__codelineno-0-486"></a>
-<a id="__codelineno-0-487" name="__codelineno-0-487"></a>        <span class="k">return</span> <span class="mi">0</span>
-<a id="__codelineno-0-488" name="__codelineno-0-488"></a>
-<a id="__codelineno-0-489" name="__codelineno-0-489"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<a id="__codelineno-0-490" name="__codelineno-0-490"></a>        <span class="c1"># Format and display error message</span>
-<a id="__codelineno-0-491" name="__codelineno-0-491"></a>        <span class="n">formatted_error</span> <span class="o">=</span> <span class="n">format_error_for_cli</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-<a id="__codelineno-0-492" name="__codelineno-0-492"></a>        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">formatted_error</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-493" name="__codelineno-0-493"></a>        <span class="k">return</span> <span class="mi">1</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-659">659</a></span>
+<span class="normal"><a href="#__codelineno-0-660">660</a></span>
+<span class="normal"><a href="#__codelineno-0-661">661</a></span>
+<span class="normal"><a href="#__codelineno-0-662">662</a></span>
+<span class="normal"><a href="#__codelineno-0-663">663</a></span>
+<span class="normal"><a href="#__codelineno-0-664">664</a></span>
+<span class="normal"><a href="#__codelineno-0-665">665</a></span>
+<span class="normal"><a href="#__codelineno-0-666">666</a></span>
+<span class="normal"><a href="#__codelineno-0-667">667</a></span>
+<span class="normal"><a href="#__codelineno-0-668">668</a></span>
+<span class="normal"><a href="#__codelineno-0-669">669</a></span>
+<span class="normal"><a href="#__codelineno-0-670">670</a></span>
+<span class="normal"><a href="#__codelineno-0-671">671</a></span>
+<span class="normal"><a href="#__codelineno-0-672">672</a></span>
+<span class="normal"><a href="#__codelineno-0-673">673</a></span>
+<span class="normal"><a href="#__codelineno-0-674">674</a></span>
+<span class="normal"><a href="#__codelineno-0-675">675</a></span>
+<span class="normal"><a href="#__codelineno-0-676">676</a></span>
+<span class="normal"><a href="#__codelineno-0-677">677</a></span>
+<span class="normal"><a href="#__codelineno-0-678">678</a></span>
+<span class="normal"><a href="#__codelineno-0-679">679</a></span>
+<span class="normal"><a href="#__codelineno-0-680">680</a></span>
+<span class="normal"><a href="#__codelineno-0-681">681</a></span>
+<span class="normal"><a href="#__codelineno-0-682">682</a></span>
+<span class="normal"><a href="#__codelineno-0-683">683</a></span>
+<span class="normal"><a href="#__codelineno-0-684">684</a></span>
+<span class="normal"><a href="#__codelineno-0-685">685</a></span>
+<span class="normal"><a href="#__codelineno-0-686">686</a></span>
+<span class="normal"><a href="#__codelineno-0-687">687</a></span>
+<span class="normal"><a href="#__codelineno-0-688">688</a></span>
+<span class="normal"><a href="#__codelineno-0-689">689</a></span>
+<span class="normal"><a href="#__codelineno-0-690">690</a></span>
+<span class="normal"><a href="#__codelineno-0-691">691</a></span>
+<span class="normal"><a href="#__codelineno-0-692">692</a></span>
+<span class="normal"><a href="#__codelineno-0-693">693</a></span>
+<span class="normal"><a href="#__codelineno-0-694">694</a></span>
+<span class="normal"><a href="#__codelineno-0-695">695</a></span>
+<span class="normal"><a href="#__codelineno-0-696">696</a></span>
+<span class="normal"><a href="#__codelineno-0-697">697</a></span>
+<span class="normal"><a href="#__codelineno-0-698">698</a></span>
+<span class="normal"><a href="#__codelineno-0-699">699</a></span>
+<span class="normal"><a href="#__codelineno-0-700">700</a></span>
+<span class="normal"><a href="#__codelineno-0-701">701</a></span>
+<span class="normal"><a href="#__codelineno-0-702">702</a></span>
+<span class="normal"><a href="#__codelineno-0-703">703</a></span>
+<span class="normal"><a href="#__codelineno-0-704">704</a></span>
+<span class="normal"><a href="#__codelineno-0-705">705</a></span>
+<span class="normal"><a href="#__codelineno-0-706">706</a></span>
+<span class="normal"><a href="#__codelineno-0-707">707</a></span>
+<span class="normal"><a href="#__codelineno-0-708">708</a></span>
+<span class="normal"><a href="#__codelineno-0-709">709</a></span>
+<span class="normal"><a href="#__codelineno-0-710">710</a></span>
+<span class="normal"><a href="#__codelineno-0-711">711</a></span>
+<span class="normal"><a href="#__codelineno-0-712">712</a></span>
+<span class="normal"><a href="#__codelineno-0-713">713</a></span>
+<span class="normal"><a href="#__codelineno-0-714">714</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-659" name="__codelineno-0-659"></a><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-0-660" name="__codelineno-0-660"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute the webdown command-line interface.</span>
+<a id="__codelineno-0-661" name="__codelineno-0-661"></a>
+<a id="__codelineno-0-662" name="__codelineno-0-662"></a><span class="sd">    This function is the main entry point for the webdown command-line tool.</span>
+<a id="__codelineno-0-663" name="__codelineno-0-663"></a><span class="sd">    It handles the entire workflow:</span>
+<a id="__codelineno-0-664" name="__codelineno-0-664"></a><span class="sd">    1. Parsing command-line arguments</span>
+<a id="__codelineno-0-665" name="__codelineno-0-665"></a><span class="sd">    2. Converting the content (URL or file) to Markdown with the specified options</span>
+<a id="__codelineno-0-666" name="__codelineno-0-666"></a><span class="sd">    3. Writing the output to a file or stdout</span>
+<a id="__codelineno-0-667" name="__codelineno-0-667"></a><span class="sd">    4. Error handling and reporting</span>
+<a id="__codelineno-0-668" name="__codelineno-0-668"></a>
+<a id="__codelineno-0-669" name="__codelineno-0-669"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-670" name="__codelineno-0-670"></a><span class="sd">        args: Command line arguments as a list of strings. If None, defaults to</span>
+<a id="__codelineno-0-671" name="__codelineno-0-671"></a><span class="sd">              sys.argv[1:] (the command-line arguments passed to the script).</span>
+<a id="__codelineno-0-672" name="__codelineno-0-672"></a>
+<a id="__codelineno-0-673" name="__codelineno-0-673"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-674" name="__codelineno-0-674"></a><span class="sd">        Exit code: 0 for success, 1 for errors</span>
+<a id="__codelineno-0-675" name="__codelineno-0-675"></a>
+<a id="__codelineno-0-676" name="__codelineno-0-676"></a><span class="sd">    Examples:</span>
+<a id="__codelineno-0-677" name="__codelineno-0-677"></a><span class="sd">        &gt;&gt;&gt; main([&#39;-u&#39;, &#39;https://example.com&#39;])  # Convert URL and print to stdout</span>
+<a id="__codelineno-0-678" name="__codelineno-0-678"></a><span class="sd">        0</span>
+<a id="__codelineno-0-679" name="__codelineno-0-679"></a><span class="sd">        &gt;&gt;&gt; main([&#39;-u&#39;, &#39;https://example.com&#39;, &#39;-o&#39;, &#39;output.md&#39;])  # Write URL to file</span>
+<a id="__codelineno-0-680" name="__codelineno-0-680"></a><span class="sd">        0</span>
+<a id="__codelineno-0-681" name="__codelineno-0-681"></a><span class="sd">        &gt;&gt;&gt; main([&#39;-f&#39;, &#39;page.html&#39;])  # Convert file and print to stdout</span>
+<a id="__codelineno-0-682" name="__codelineno-0-682"></a><span class="sd">        0</span>
+<a id="__codelineno-0-683" name="__codelineno-0-683"></a><span class="sd">        &gt;&gt;&gt; main([&#39;-f&#39;, &#39;page.html&#39;, &#39;-o&#39;, &#39;output.md&#39;])  # Write file to file</span>
+<a id="__codelineno-0-684" name="__codelineno-0-684"></a><span class="sd">        0</span>
+<a id="__codelineno-0-685" name="__codelineno-0-685"></a><span class="sd">        &gt;&gt;&gt; main([&#39;-u&#39;, &#39;invalid-url&#39;])  # Handle error</span>
+<a id="__codelineno-0-686" name="__codelineno-0-686"></a><span class="sd">        1</span>
+<a id="__codelineno-0-687" name="__codelineno-0-687"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-688" name="__codelineno-0-688"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-689" name="__codelineno-0-689"></a>        <span class="c1"># Parse command-line arguments</span>
+<a id="__codelineno-0-690" name="__codelineno-0-690"></a>        <span class="n">parsed_args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+<a id="__codelineno-0-691" name="__codelineno-0-691"></a>
+<a id="__codelineno-0-692" name="__codelineno-0-692"></a>        <span class="c1"># Handle crawl subcommand</span>
+<a id="__codelineno-0-693" name="__codelineno-0-693"></a>        <span class="k">if</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;crawl&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-694" name="__codelineno-0-694"></a>            <span class="k">return</span> <span class="n">_execute_crawl</span><span class="p">(</span><span class="n">parsed_args</span><span class="p">)</span>
+<a id="__codelineno-0-695" name="__codelineno-0-695"></a>
+<a id="__codelineno-0-696" name="__codelineno-0-696"></a>        <span class="c1"># If neither URL nor file provided, show help</span>
+<a id="__codelineno-0-697" name="__codelineno-0-697"></a>        <span class="k">if</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">url</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-698" name="__codelineno-0-698"></a>            <span class="c1"># This will print help and exit</span>
+<a id="__codelineno-0-699" name="__codelineno-0-699"></a>            <span class="n">parse_args</span><span class="p">([</span><span class="s2">&quot;-h&quot;</span><span class="p">])</span>  <span class="c1"># pragma: no cover</span>
+<a id="__codelineno-0-700" name="__codelineno-0-700"></a>            <span class="k">return</span> <span class="mi">0</span>  <span class="c1"># pragma: no cover - unreachable after SystemExit</span>
+<a id="__codelineno-0-701" name="__codelineno-0-701"></a>
+<a id="__codelineno-0-702" name="__codelineno-0-702"></a>        <span class="c1"># Process content and generate output</span>
+<a id="__codelineno-0-703" name="__codelineno-0-703"></a>        <span class="n">content</span><span class="p">,</span> <span class="n">output_path</span> <span class="o">=</span> <span class="n">_convert_to_selected_format</span><span class="p">(</span><span class="n">parsed_args</span><span class="p">)</span>
+<a id="__codelineno-0-704" name="__codelineno-0-704"></a>
+<a id="__codelineno-0-705" name="__codelineno-0-705"></a>        <span class="c1"># Write output to file or stdout</span>
+<a id="__codelineno-0-706" name="__codelineno-0-706"></a>        <span class="n">write_output</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+<a id="__codelineno-0-707" name="__codelineno-0-707"></a>
+<a id="__codelineno-0-708" name="__codelineno-0-708"></a>        <span class="k">return</span> <span class="mi">0</span>
+<a id="__codelineno-0-709" name="__codelineno-0-709"></a>
+<a id="__codelineno-0-710" name="__codelineno-0-710"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-0-711" name="__codelineno-0-711"></a>        <span class="c1"># Format and display error message</span>
+<a id="__codelineno-0-712" name="__codelineno-0-712"></a>        <span class="n">formatted_error</span> <span class="o">=</span> <span class="n">format_error_for_cli</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<a id="__codelineno-0-713" name="__codelineno-0-713"></a>        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">formatted_error</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-714" name="__codelineno-0-714"></a>        <span class="k">return</span> <span class="mi">1</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2014,27 +2170,27 @@ It handles the entire workflow:
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>webdown/cli.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-292">292</a></span>
-<span class="normal"><a href="#__codelineno-0-293">293</a></span>
-<span class="normal"><a href="#__codelineno-0-294">294</a></span>
-<span class="normal"><a href="#__codelineno-0-295">295</a></span>
-<span class="normal"><a href="#__codelineno-0-296">296</a></span>
-<span class="normal"><a href="#__codelineno-0-297">297</a></span>
-<span class="normal"><a href="#__codelineno-0-298">298</a></span>
-<span class="normal"><a href="#__codelineno-0-299">299</a></span>
-<span class="normal"><a href="#__codelineno-0-300">300</a></span>
-<span class="normal"><a href="#__codelineno-0-301">301</a></span>
-<span class="normal"><a href="#__codelineno-0-302">302</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-292" name="__codelineno-0-292"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">:</span>
-<a id="__codelineno-0-293" name="__codelineno-0-293"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command line arguments.</span>
-<a id="__codelineno-0-294" name="__codelineno-0-294"></a>
-<a id="__codelineno-0-295" name="__codelineno-0-295"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-296" name="__codelineno-0-296"></a><span class="sd">        args: Command line arguments (defaults to sys.argv[1:] if None)</span>
-<a id="__codelineno-0-297" name="__codelineno-0-297"></a>
-<a id="__codelineno-0-298" name="__codelineno-0-298"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-299" name="__codelineno-0-299"></a><span class="sd">        Parsed arguments</span>
-<a id="__codelineno-0-300" name="__codelineno-0-300"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-301" name="__codelineno-0-301"></a>    <span class="n">parser</span> <span class="o">=</span> <span class="n">create_argument_parser</span><span class="p">()</span>
-<a id="__codelineno-0-302" name="__codelineno-0-302"></a>    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-435">435</a></span>
+<span class="normal"><a href="#__codelineno-0-436">436</a></span>
+<span class="normal"><a href="#__codelineno-0-437">437</a></span>
+<span class="normal"><a href="#__codelineno-0-438">438</a></span>
+<span class="normal"><a href="#__codelineno-0-439">439</a></span>
+<span class="normal"><a href="#__codelineno-0-440">440</a></span>
+<span class="normal"><a href="#__codelineno-0-441">441</a></span>
+<span class="normal"><a href="#__codelineno-0-442">442</a></span>
+<span class="normal"><a href="#__codelineno-0-443">443</a></span>
+<span class="normal"><a href="#__codelineno-0-444">444</a></span>
+<span class="normal"><a href="#__codelineno-0-445">445</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-435" name="__codelineno-0-435"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">:</span>
+<a id="__codelineno-0-436" name="__codelineno-0-436"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse command line arguments.</span>
+<a id="__codelineno-0-437" name="__codelineno-0-437"></a>
+<a id="__codelineno-0-438" name="__codelineno-0-438"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-439" name="__codelineno-0-439"></a><span class="sd">        args: Command line arguments (defaults to sys.argv[1:] if None)</span>
+<a id="__codelineno-0-440" name="__codelineno-0-440"></a>
+<a id="__codelineno-0-441" name="__codelineno-0-441"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-442" name="__codelineno-0-442"></a><span class="sd">        Parsed arguments</span>
+<a id="__codelineno-0-443" name="__codelineno-0-443"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-444" name="__codelineno-0-444"></a>    <span class="n">parser</span> <span class="o">=</span> <span class="n">create_argument_parser</span><span class="p">()</span>
+<a id="__codelineno-0-445" name="__codelineno-0-445"></a>    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
