@@ -98,7 +98,7 @@ result = crawl_from_sitemap("https://docs.example.com/sitemap.xml", config)
 See the API documentation for detailed descriptions of all options.
 """
 
-__version__ = "0.8.0"
+__version__ = "0.8.1"
 
 # Import CLI module
 from webdown import cli

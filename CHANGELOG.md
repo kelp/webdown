@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.1] - 2025-12-10
+
+### Documentation
+- Added crawler API documentation to mkdocs (crawler, link_extractor,
+  output_manager modules)
+- Added crawling examples to API overview page
+
 ## [0.8.0] - 2025-12-10
 
 ### Added
@@ -22,11 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI now supports subcommands (existing behavior unchanged for backward
   compatibility)
 - Updated all dependencies to latest versions
-
-### Documentation
-- Added crawler API documentation to mkdocs (crawler, link_extractor,
-  output_manager modules)
-- Added crawling examples to API overview page
 
 ### Security
 - Fixed regex package vulnerability (CVE in version 2024.11.6)
