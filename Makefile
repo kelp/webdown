@@ -1,71 +1,63 @@
 .PHONY: install install-dev test lint type-check clean all-checks integration-test test-coverage format lock update docs docs-serve publish publish-test release bump-version
 
-# Path-independent environment setup
-SCRIPT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-RUN_SCRIPT := $(SCRIPT_DIR)/scripts/run.sh
-
-# Use Poetry for all commands
-POETRY := poetry
-POETRY_RUN := $(RUN_SCRIPT)
-
 install:
-	@echo "Installing package and dependencies with Poetry..."
-	@$(POETRY) install
-	@$(POETRY_RUN) pre-commit install
+	@echo "Installing package and dependencies with uv..."
+	@uv sync
+	@uv run pre-commit install
 
 install-dev:
 	@echo "Installing package in development mode..."
-	@$(POETRY) install
-	@echo "✓ Installed webdown in development mode"
+	@uv sync
+	@echo "Installed webdown in development mode"
 
 test:
 	@echo "Running tests..."
-	@$(POETRY_RUN) pytest
+	@uv run pytest
 
 test-coverage:
 	@echo "Running tests with coverage..."
-	@$(POETRY_RUN) pytest --cov=webdown
+	@uv run pytest --cov=webdown
 
 integration-test:
 	@echo "Running integration tests..."
-	@$(POETRY_RUN) pytest --integration
+	@uv run pytest --integration
 
 lint:
 	@echo "Running linter..."
-	@$(POETRY_RUN) flake8 webdown conftest.py
+	@uv run flake8 webdown conftest.py
 
 type-check:
 	@echo "Running type checker..."
-	@$(POETRY_RUN) mypy webdown conftest.py
+	@uv run mypy webdown conftest.py
 
 format:
 	@echo "Formatting code..."
-	@$(POETRY_RUN) black webdown conftest.py
-	@$(POETRY_RUN) isort webdown conftest.py
+	@uv run black webdown conftest.py
+	@uv run isort webdown conftest.py
 
 pre-commit:
 	@echo "Running pre-commit hooks on all files..."
-	@$(POETRY_RUN) pre-commit run --all-files
+	@uv run pre-commit run --all-files
 
 format-check:
 	@echo "Checking code formatting..."
-	@$(POETRY_RUN) black --check webdown conftest.py
-	@$(POETRY_RUN) isort --check webdown conftest.py
+	@uv run black --check webdown conftest.py
+	@uv run isort --check webdown conftest.py
 
 all-checks: format-check lint type-check test
 	@echo "All checks passed!"
 
 build:
 	@echo "Building package..."
-	@$(POETRY) build
+	@uv build
 
 lock:
 	@echo "Updating lock file..."
-	@$(POETRY) lock
+	@uv lock
 
 update:
 	@echo "Updating dependencies..."
-	@$(POETRY) update
+	@uv lock --upgrade
 
 clean:
 	@echo "Cleaning up..."
@@ -84,22 +76,17 @@ clean:
 
 # Documentation
 docs:
-	$(POETRY) run mkdocs build
+	uv run mkdocs build
 
 docs-serve:
-	$(POETRY) run mkdocs serve
+	uv run mkdocs serve
 
 docs-deploy:
-	$(POETRY) run mkdocs gh-deploy --force
-
-shell:
-	@echo "Starting Poetry shell..."
-	@$(POETRY) shell
+	uv run mkdocs gh-deploy --force
 
 publish-test: clean build
 	@echo "Publishing package to TestPyPI..."
-	@$(POETRY) config repositories.testpypi https://test.pypi.org/legacy/
-	@$(POETRY) publish --repository testpypi
+	@uv publish --index-url https://test.pypi.org/legacy/
 
 publish: clean all-checks build
 	@echo "NOTICE: For production PyPI publishing, use the GitHub Actions workflow by tagging a release."
@@ -110,7 +97,7 @@ publish: clean all-checks build
 	@read -r response; \
 	if [ "$$response" = "y" ] || [ "$$response" = "Y" ]; then \
 		echo "Publishing package to PyPI..."; \
-		$(POETRY) publish; \
+		uv publish; \
 	else \
 		echo "Publishing aborted."; \
 	fi
@@ -185,7 +172,7 @@ bump-version:
 
 help:
 	@echo "Available targets:"
-	@echo "  install         Install package and dependencies with Poetry"
+	@echo "  install         Install package and dependencies with uv"
 	@echo "  test            Run unit tests"
 	@echo "  test-coverage   Run tests with coverage report"
 	@echo "  integration-test Run integration tests"
@@ -196,11 +183,10 @@ help:
 	@echo "  pre-commit      Run pre-commit hooks on all files"
 	@echo "  all-checks      Run format checks, linting, type checking, and tests"
 	@echo "  build           Build package for distribution"
-	@echo "  lock            Update lock file (poetry.lock)"
+	@echo "  lock            Update lock file (uv.lock)"
 	@echo "  update          Update dependencies"
 	@echo "  clean           Remove build artifacts and caches"
-	@echo "  shell           Start Poetry shell (interactive environment)"
-	@echo "  install-dev     Install package in development mode using Poetry"
+	@echo "  install-dev     Install package in development mode using uv"
 	@echo "  docs            Generate documentation with MkDocs"
 	@echo "  docs-serve      Start a local MkDocs documentation server at http://localhost:8000"
 	@echo "  docs-deploy     Deploy documentation to GitHub Pages"

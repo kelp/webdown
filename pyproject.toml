@@ -1,18 +1,16 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "webdown"
 version = "0.8.1"
 description = "Convert web pages and HTML files to markdown and Claude XML formats"
-authors = ["Travis Cole <kelp@plek.org>"]
+authors = [{name = "Travis Cole", email = "kelp@plek.org"}]
 readme = "README.md"
-repository = "https://github.com/kelp/webdown"
-homepage = "https://tcole.net/webdown"
-documentation = "https://tcole.net/webdown/"
-keywords = ["web", "markdown", "html", "converter", "html-to-markdown", "claude-xml", "web-scraping", "content-extraction", "anthropic"]
 license = "MIT"
+requires-python = ">=3.10,<4.0"
+keywords = ["web", "markdown", "html", "converter", "html-to-markdown", "claude-xml", "web-scraping", "content-extraction", "anthropic"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -27,41 +25,46 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Operating System :: OS Independent",
 ]
-packages = [{include = "webdown"}]
+dependencies = [
+    "requests>=2.32.3,<3",
+    "html2text>=2024.2.26,<2025",
+    "beautifulsoup4>=4.13.3,<5",
+    "tqdm>=4.67.1,<5",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-requests = "^2.32.3"
-html2text = "^2024.2.26"
-beautifulsoup4 = "^4.13.3"
-tqdm = "^4.67.1"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.5"
-pytest-cov = "^6.0.0"
-black = "^25.1.0"
-flake8 = "^7.1.2"
-mypy = "^1.15.0"
-requests-mock = "^1.12.1"
-pre-commit = "^4.1.0"
-types-requests = "^2.32.0.20250306"
-isort = "^6.0.1"
-types-tqdm = "^4.67.0.20250301"
-pdoc = "^15.0.1"
-mkdocs = "^1.6.1"
-mkdocstrings = ">=0.29,<0.31"
-mkdocstrings-python = "^1.16.5"
-mkdocs-material = "^9.6.8"
-safety = "3.7.0"
-
-[tool.poetry.scripts]
+[project.scripts]
 webdown = "webdown.cli:main"
 
-[tool.poetry.urls]
-"Documentation" = "https://tcole.net/webdown/"
+[project.urls]
+Homepage = "https://tcole.net/webdown"
+Repository = "https://github.com/kelp/webdown"
+Documentation = "https://tcole.net/webdown/"
 "Bug Tracker" = "https://github.com/kelp/webdown/issues"
 "Source Code" = "https://github.com/kelp/webdown"
-"Changelog" = "https://github.com/kelp/webdown/blob/main/CHANGELOG.md"
+Changelog = "https://github.com/kelp/webdown/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5,<9",
+    "pytest-cov>=6.0.0,<7",
+    "black>=25.1.0,<26",
+    "flake8>=7.1.2,<8",
+    "mypy>=1.15.0,<2",
+    "requests-mock>=1.12.1,<2",
+    "pre-commit>=4.1.0,<5",
+    "types-requests>=2.32.0.20250306",
+    "isort>=6.0.1,<7",
+    "types-tqdm>=4.67.0.20250301",
+    "pdoc>=15.0.1,<16",
+    "mkdocs>=1.6.1,<2",
+    "mkdocstrings>=0.29,<0.31",
+    "mkdocstrings-python>=1.16.5,<2",
+    "mkdocs-material>=9.6.8,<10",
+    "safety==3.7.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["webdown"]
 
 [tool.pytest.ini_options]
 markers = [
