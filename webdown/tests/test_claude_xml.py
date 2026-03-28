@@ -106,13 +106,20 @@ class TestMarkdownToClaudeXML:
 class TestConvertUrlToXML:
     """Tests for Claude XML conversion using convert_url function."""
 
+    @patch("webdown.converter._check_streaming_needed")
+    @patch("webdown.converter.fetch_url")
     @patch("webdown.converter.html_to_markdown")
     @patch("webdown.converter.markdown_to_claude_xml")
     def test_convert_url_xml_format(
-        self, mock_to_xml: MagicMock, mock_html_to_md: MagicMock
+        self,
+        mock_to_xml: MagicMock,
+        mock_html_to_md: MagicMock,
+        mock_fetch_url: MagicMock,
+        mock_check_streaming: MagicMock,
     ) -> None:
         """Test that convert_url with Claude XML format calls the right functions."""
         # Setup mocks
+        mock_fetch_url.return_value = "<html><body>Hello</body></html>"
         mock_html_to_md.return_value = "# Markdown\n\nContent"
         mock_to_xml.return_value = "<xml>content</xml>"
 
@@ -130,13 +137,20 @@ class TestConvertUrlToXML:
         # Verify it returned the XML
         assert result == "<xml>content</xml>"
 
+    @patch("webdown.converter._check_streaming_needed")
+    @patch("webdown.converter.fetch_url")
     @patch("webdown.converter.html_to_markdown")
     @patch("webdown.converter.markdown_to_claude_xml")
     def test_convert_url_xml_with_options(
-        self, mock_to_xml: MagicMock, mock_html_to_md: MagicMock
+        self,
+        mock_to_xml: MagicMock,
+        mock_html_to_md: MagicMock,
+        mock_fetch_url: MagicMock,
+        mock_check_streaming: MagicMock,
     ) -> None:
         """Test conversion with document options."""
         # Setup mocks
+        mock_fetch_url.return_value = "<html><body>Hello</body></html>"
         mock_html_to_md.return_value = "# Markdown\n\nContent"
         mock_to_xml.return_value = "<xml>content</xml>"
 
