@@ -60,7 +60,7 @@ dev = [
     "mkdocstrings>=0.29,<0.31",
     "mkdocstrings-python>=1.16.5,<2",
     "mkdocs-material>=9.6.8,<10",
-    "safety==3.7.0",
+    "safety==3.8.1",
 ]
 
 [tool.hatch.build.targets.wheel]
