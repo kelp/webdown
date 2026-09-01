@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated public PyPI author-email to Travis Cole <pypi@plek.org>
 
+### Security
+- Updated development and transitive dependencies so Safety CI can pass
+  (pytest, safety, urllib3, idna, cryptography, authlib, nltk, pygments,
+  pymdown-extensions, soupsieve)
+
 ## [0.8.2] - 2026-03-28
 
 ### Changed
