@@ -1198,7 +1198,7 @@
 1. Check if the website is accessible in your browser
 2. Try again in a few minutes if the site might be temporarily down
 3. Use a custom User-Agent with the <code>--user-agent</code> flag:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>webdown<span class="w"> </span>--user-agent<span class="w"> </span><span class="s2">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36&quot;</span><span class="w"> </span>https://example.com
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>webdown<span class="w"> </span>--user-agent<span class="w"> </span><span class="s2">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"</span><span class="w"> </span>https://example.com
 </code></pre></div></p>
 <h4 id="timeout-errors">Timeout Errors<a class="headerlink" href="#timeout-errors" title="Permanent link">&para;</a></h4>
 <p><strong>Error Message</strong>: "Request timed out after X seconds"</p>
@@ -1225,7 +1225,7 @@ Ensure your URL starts with either <code>http://</code> or <code>https://</code>
 1. Check the syntax of your CSS selector
 2. Use browser developer tools to verify your selector matches elements on the current page
 3. Try a broader selector:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>webdown<span class="w"> </span>--css<span class="w"> </span><span class="s2">&quot;main, article, .content&quot;</span><span class="w"> </span>https://example.com
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>webdown<span class="w"> </span>--css<span class="w"> </span><span class="s2">"main, article, .content"</span><span class="w"> </span>https://example.com
 </code></pre></div></p>
 <h3 id="content-extraction-errors">Content Extraction Errors<a class="headerlink" href="#content-extraction-errors" title="Permanent link">&para;</a></h3>
 <p><strong>Error Message</strong>: "Failed to extract content" or "No content found after extraction"</p>
@@ -1279,7 +1279,7 @@ Ensure your URL starts with either <code>http://</code> or <code>https://</code>
 </code></pre></div>
 2. Check if the source HTML has valid structure
 3. For complex pages, try extracting specific sections with CSS selectors:
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>--claude-xml<span class="w"> </span>--css<span class="w"> </span><span class="s2">&quot;main, article&quot;</span><span class="w"> </span>https://example.com
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>webdown<span class="w"> </span>--claude-xml<span class="w"> </span>--css<span class="w"> </span><span class="s2">"main, article"</span><span class="w"> </span>https://example.com
 </code></pre></div></p>
 <h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
 <p>If you continue to experience issues not covered in this guide:</p>

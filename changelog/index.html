@@ -788,8 +788,19 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="082-2026-03-28">[0.8.2] - 2026-03-28<a class="headerlink" href="#082-2026-03-28" title="Permanent link">&para;</a></h2>
+<h2 id="083-2026-09-01">[0.8.3] - 2026-09-01<a class="headerlink" href="#083-2026-09-01" title="Permanent link">&para;</a></h2>
 <h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Updated public PyPI author-email to Travis Cole <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#112;&#121;&#112;&#105;&#64;&#112;&#108;&#101;&#107;&#46;&#111;&#114;&#103;">&#112;&#121;&#112;&#105;&#64;&#112;&#108;&#101;&#107;&#46;&#111;&#114;&#103;</a></li>
+</ul>
+<h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Updated development and transitive dependencies so Safety CI can pass
+  (pytest, safety, urllib3, idna, cryptography, authlib, nltk, pygments,
+  pymdown-extensions, soupsieve)</li>
+</ul>
+<h2 id="082-2026-03-28">[0.8.2] - 2026-03-28<a class="headerlink" href="#082-2026-03-28" title="Permanent link">&para;</a></h2>
+<h3 id="changed_1">Changed<a class="headerlink" href="#changed_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Migrated from Poetry to uv for package management</li>
 <li>Updated all dependencies to latest versions</li>
@@ -820,24 +831,24 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
   <code>ScopeType</code>, <code>CrawlResult</code>, <code>CrawledPage</code></li>
 <li>New modules: <code>crawler.py</code>, <code>link_extractor.py</code>, <code>output_manager.py</code></li>
 </ul>
-<h3 id="changed_1">Changed<a class="headerlink" href="#changed_1" title="Permanent link">&para;</a></h3>
+<h3 id="changed_2">Changed<a class="headerlink" href="#changed_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li>CLI now supports subcommands (existing behavior unchanged for backward
   compatibility)</li>
 <li>Updated all dependencies to latest versions</li>
 </ul>
-<h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
+<h3 id="security_1">Security<a class="headerlink" href="#security_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Fixed regex package vulnerability (CVE in version 2024.11.6)</li>
 <li>Updated cryptography 44.0.2 → 46.0.3</li>
 <li>Updated urllib3 2.5.0 → 2.6.1</li>
 </ul>
 <h2 id="071-2025-12-10">[0.7.1] - 2025-12-10<a class="headerlink" href="#071-2025-12-10" title="Permanent link">&para;</a></h2>
-<h3 id="changed_2">Changed<a class="headerlink" href="#changed_2" title="Permanent link">&para;</a></h3>
+<h3 id="changed_3">Changed<a class="headerlink" href="#changed_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Updated all dependencies to latest versions</li>
 </ul>
-<h3 id="security_1">Security<a class="headerlink" href="#security_1" title="Permanent link">&para;</a></h3>
+<h3 id="security_2">Security<a class="headerlink" href="#security_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Fixed regex package vulnerability (CVE in version 2024.11.6)</li>
 <li>Updated cryptography 44.0.2 → 46.0.3</li>
@@ -873,7 +884,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Comprehensive CLI test script (<code>scripts/test_cli.sh</code>) for testing all CLI options with real websites</li>
 </ul>
 <h2 id="063-2025-03-22">[0.6.3] - 2025-03-22<a class="headerlink" href="#063-2025-03-22" title="Permanent link">&para;</a></h2>
-<h3 id="changed_3">Changed<a class="headerlink" href="#changed_3" title="Permanent link">&para;</a></h3>
+<h3 id="changed_4">Changed<a class="headerlink" href="#changed_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Updated project status from Alpha to Beta to reflect stability and completeness</li>
 <li>Enhanced PyPI metadata with improved descriptions and keywords</li>
@@ -881,14 +892,14 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added project URLs for documentation, bug tracker, source code, and changelog</li>
 </ul>
 <h2 id="062-2025-03-22">[0.6.2] - 2025-03-22<a class="headerlink" href="#062-2025-03-22" title="Permanent link">&para;</a></h2>
-<h3 id="changed_4">Changed<a class="headerlink" href="#changed_4" title="Permanent link">&para;</a></h3>
+<h3 id="changed_5">Changed<a class="headerlink" href="#changed_5" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Added poetry.lock to version control for reproducible builds</li>
 <li>Updated all dependencies to their latest compatible versions</li>
 <li>Pin safety package to version 3.3.1</li>
 <li>Enhanced GitHub Actions workflows with better cache handling to avoid conflicts</li>
 </ul>
-<h3 id="security_2">Security<a class="headerlink" href="#security_2" title="Permanent link">&para;</a></h3>
+<h3 id="security_3">Security<a class="headerlink" href="#security_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Updated safety scanner from 2.3.5 to 3.3.1 for improved vulnerability detection</li>
 </ul>
@@ -907,7 +918,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Documentation for streaming large files, explaining the 10MB threshold implementation</li>
 <li>Improved API documentation with correct module references after refactoring</li>
 </ul>
-<h3 id="changed_5">Changed<a class="headerlink" href="#changed_5" title="Permanent link">&para;</a></h3>
+<h3 id="changed_6">Changed<a class="headerlink" href="#changed_6" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Major refactoring to improve code organization and maintainability:</li>
 <li>Split monolithic converter.py into logical modules (html_parser.py, markdown_converter.py, xml_converter.py)</li>
@@ -937,7 +948,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>New test suite for Claude XML functionality</li>
 <li>Documentation for Claude XML format</li>
 </ul>
-<h3 id="changed_6">Changed<a class="headerlink" href="#changed_6" title="Permanent link">&para;</a></h3>
+<h3 id="changed_7">Changed<a class="headerlink" href="#changed_7" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Simplified streaming implementation with fixed 10MB threshold</li>
 <li>Removed <code>stream_threshold</code> parameter from WebdownConfig</li>
@@ -982,7 +993,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Link protection, image handling options, and more in the API</li>
 <li>Improved CLI with advanced options group for better help display</li>
 </ul>
-<h3 id="changed_7">Changed<a class="headerlink" href="#changed_7" title="Permanent link">&para;</a></h3>
+<h3 id="changed_8">Changed<a class="headerlink" href="#changed_8" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Simplified the exception hierarchy to a single WebdownError class</li>
 <li>Updated API to support both parameter-based and config-based approaches</li>
@@ -992,7 +1003,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>beautifulsoup4, requests, tqdm and all dev dependencies updated to latest versions</li>
 </ul>
 <h2 id="031-2025-03-15">[0.3.1] - 2025-03-15<a class="headerlink" href="#031-2025-03-15" title="Permanent link">&para;</a></h2>
-<h3 id="changed_8">Changed<a class="headerlink" href="#changed_8" title="Permanent link">&para;</a></h3>
+<h3 id="changed_9">Changed<a class="headerlink" href="#changed_9" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Updated all dependencies to latest versions</li>
 <li>html2text updated from 2020.1.16 to 2024.2.26</li>
@@ -1007,7 +1018,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Compact output option with <code>-c/--compact</code> to remove excessive blank lines</li>
 <li>Automatic removal of zero-width spaces and other invisible characters</li>
 </ul>
-<h3 id="changed_9">Changed<a class="headerlink" href="#changed_9" title="Permanent link">&para;</a></h3>
+<h3 id="changed_10">Changed<a class="headerlink" href="#changed_10" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Migrated to modern Python packaging using Poetry</li>
 <li>Updated Python requirements to 3.10+</li>

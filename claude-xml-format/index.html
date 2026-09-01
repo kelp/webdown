@@ -1004,9 +1004,9 @@
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="nt">&lt;heading&gt;</span>Section<span class="w"> </span>Heading<span class="nt">&lt;/heading&gt;</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">&lt;text&gt;</span>Regular<span class="w"> </span>paragraph<span class="w"> </span>text<span class="w"> </span>goes<span class="w"> </span>here...<span class="nt">&lt;/text&gt;</span>
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="nt">&lt;code</span><span class="w"> </span><span class="na">language=</span><span class="s">&quot;python&quot;</span><span class="nt">&gt;</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="nt">&lt;code</span><span class="w"> </span><span class="na">language=</span><span class="s">"python"</span><span class="nt">&gt;</span>
 <a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>def<span class="w"> </span>example_function():
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span>return<span class="w"> </span>&quot;This<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>code<span class="w"> </span>example&quot;
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span>return<span class="w"> </span>"This<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>code<span class="w"> </span>example"
 <a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="nt">&lt;/code&gt;</span>
 <a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="nt">&lt;/section&gt;</span>
 <a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span><span class="nt">&lt;/content&gt;</span>
@@ -1017,7 +1017,7 @@
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>output.xml
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Extract specific content with no metadata</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>--claude-xml<span class="w"> </span>--no-metadata<span class="w"> </span>-o<span class="w"> </span>api_docs.xml
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">"main"</span><span class="w"> </span>--claude-xml<span class="w"> </span>--no-metadata<span class="w"> </span>-o<span class="w"> </span>api_docs.xml
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Compact output with no images</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-I<span class="w"> </span>-c<span class="w"> </span>--claude-xml<span class="w"> </span>-o<span class="w"> </span>content.xml
@@ -1026,10 +1026,10 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">webdown.converter</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_url_to_claude_xml</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Basic usage</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">xml</span> <span class="o">=</span> <span class="n">convert_url_to_claude_xml</span><span class="p">(</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">xml</span> <span class="o">=</span> <span class="n">convert_url_to_claude_xml</span><span class="p">(</span><span class="s2">"https://example.com"</span><span class="p">)</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># Save to file</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;output.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"output.xml"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">xml</span><span class="p">)</span>
 </code></pre></div>
 

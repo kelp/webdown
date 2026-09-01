@@ -1517,7 +1517,7 @@ Converts the web page and saves the output to example.md.</p>
 </code></pre></div>
 Adds a table of contents based on the headings found in the document.</p>
 <h3 id="extract-main-content">Extract Main Content<a class="headerlink" href="#extract-main-content" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">"main"</span>
 </code></pre></div>
 Extracts only the content inside the <code>&lt;main&gt;</code> tag, ignoring headers, footers, sidebars, etc.</p>
 <h3 id="plain-text-no-links-or-images">Plain Text (No Links or Images)<a class="headerlink" href="#plain-text-no-links-or-images" title="Permanent link">&para;</a></h3>
@@ -1537,7 +1537,7 @@ Displays a progress bar during download, useful for large pages.</p>
 </code></pre></div>
 Outputs the page content in Claude XML format, optimized for use with Anthropic's Claude AI.</p>
 <h3 id="complete-example-with-multiple-options">Complete Example with Multiple Options<a class="headerlink" href="#complete-example-with-multiple-options" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>example.md
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>webdown<span class="w"> </span>https://example.com<span class="w"> </span>-s<span class="w"> </span><span class="s2">"main"</span><span class="w"> </span>-t<span class="w"> </span>-c<span class="w"> </span>-w<span class="w"> </span><span class="m">80</span><span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>example.md
 </code></pre></div>
 This example:
 - Extracts content from the <code>&lt;main&gt;</code> tag
@@ -1659,7 +1659,7 @@ This example:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>--sitemap<span class="w"> </span>https://docs.example.com/sitemap.xml<span class="w"> </span>-o<span class="w"> </span>./output/
 </code></pre></div>
 <p>Crawl with content extraction and Claude XML output:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span>--claude-xml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/<span class="w"> </span>-o<span class="w"> </span>./output/<span class="w"> </span>-s<span class="w"> </span><span class="s2">"main"</span><span class="w"> </span>--claude-xml
 </code></pre></div>
 <p>Crawl only a specific path prefix:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>webdown<span class="w"> </span>crawl<span class="w"> </span>https://docs.example.com/api/<span class="w"> </span>-o<span class="w"> </span>./output/<span class="w"> </span>--path-prefix<span class="w"> </span>/api/
