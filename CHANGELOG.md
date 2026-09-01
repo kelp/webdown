@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Updated runtime dependencies (requests, beautifulsoup4, tqdm, html2text)
+- Refreshed the lockfile and pre-commit hook revisions to current versions
+  within existing major-version bounds
+- Relaxed the html2text CalVer upper bound from `<2025` to `<2026` so 2025.4.15
+  can be used
+
 ## [0.8.3] - 2026-09-01
 
 ### Changed

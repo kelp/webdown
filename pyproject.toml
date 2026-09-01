@@ -27,7 +27,7 @@ classifiers = [
 ]
 dependencies = [
     "requests>=2.32.3,<3",
-    "html2text>=2024.2.26,<2025",
+    "html2text>=2024.2.26,<2026",
     "beautifulsoup4>=4.13.3,<5",
     "tqdm>=4.67.1,<5",
 ]
