@@ -4,9 +4,9 @@ build-backend = "hatchling.build"
 
 [project]
 name = "webdown"
-version = "0.8.2"
+version = "0.8.3"
 description = "Convert web pages and HTML files to markdown and Claude XML formats"
-authors = [{name = "Travis Cole", email = "kelp@plek.org"}]
+authors = [{name = "Travis Cole", email = "pypi@plek.org"}]
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10,<4.0"
